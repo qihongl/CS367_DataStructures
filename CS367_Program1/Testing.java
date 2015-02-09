@@ -7,7 +7,8 @@ public class Testing {
 		Scanner scnr = new Scanner(System.in); 
 		// TODO Auto-generated method stub
 		List<String> list = new ArrayList<String>();
-
+		System.out.println("hello world");
+		
 	}
 
 }
