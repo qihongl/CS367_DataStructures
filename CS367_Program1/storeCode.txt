@@ -1,0 +1,8 @@
+			if(temp[0].equals(Command.LOGIN)){
+				currentUser = temp[1];
+			} else if(temp[0].equals(Command.EXIT)){
+				System.out.println("Exiting to the real world...");
+				System.exit(0);
+			} else {
+				System.out.println("Invalid command!");
+			}
