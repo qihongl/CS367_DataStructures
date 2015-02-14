@@ -9,12 +9,14 @@
 <fullyQualifiedTypeName name="ListADT"/>
 <fullyQualifiedTypeName name="java.awt.List"/>
 <fullyQualifiedTypeName name="java.lang.Iterable"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
 <fullyQualifiedTypeName name="javax.print.attribute.standard.MediaSize.Other"/>
 <fullyQualifiedTypeName name="EmptyListException"/>
 <fullyQualifiedTypeName name="User"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="InputHandler"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="Post"/>
 </qualifiedTypeNameHistroy>

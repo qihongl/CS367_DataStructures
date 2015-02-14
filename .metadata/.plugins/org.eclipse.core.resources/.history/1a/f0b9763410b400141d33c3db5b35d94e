@@ -140,7 +140,7 @@ public class RedditDB {
 	 */
 	public List<Post> getFrontpage(User user) {
 		// get all posts
-		List<Post> allPosts = getAllPosts();	
+		List<Post> allPosts = getAllPosts();		
 		// if user is null -> display all posts
 		if (user == null){
 			return allPosts;
