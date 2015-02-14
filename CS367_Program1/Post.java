@@ -21,7 +21,6 @@ public class Post {
 	 * Constructs a post with the specified attributes as applicable. 
 	 */
 	public Post(User user, String subreddit, PostType type, String title) {
-		//TODO
 		// initialize all associated fields
 		this.user = user;
 		this.subreddit = subreddit;
@@ -35,7 +34,6 @@ public class Post {
 	 * user who created the post by two each.    
 	 */
 	public void upvote() {
-		//TODO
 		karma += 2;
 		user.getKarma().upvote(type);		
 	}
@@ -45,7 +43,6 @@ public class Post {
 	 * user who created the post by one each.    
 	 */
 	public void downvote() {
-		//TODO
 		karma --;
 		user.getKarma().downvote(type);
 	}

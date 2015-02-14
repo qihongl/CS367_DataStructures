@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * This class controls the entire reddit program.   
@@ -58,15 +59,13 @@ public class Reddit {
 			reddit.addUser(userName);
 			try {
 				// load the reddit files with associated user name 
-				InputHandler.loadRedditFile(tempFile, 
-						reddit.findUser(userName));
+				loadRedditFile(tempFile, reddit.findUser(userName));
 			} catch (FileNotFoundException e) {
 				System.out.println("File " + filename + " not found.");
 				Util.scnr.close();
 				System.exit(0);
 			}
-		}
-//		InputHandler.displayUserInfo(reddit);	// for testing purpose 
+		} 
 		// enter the main loop for the program 
 		while(true){
 			MenuIOHandler();
@@ -227,9 +226,11 @@ public class Reddit {
 	}
 
 	/**
-	 * This method display the front page
-	 * It is used when the input command has length of 1.
-	 * Namely, when the input is exactly "f".
+	 * This method display the front page, it takes input commands and perform 
+	 * corresponding actions.  
+	 * 
+	 * @param commands - the input commands
+	 * 
 	 * */
 	private static void frontPageControl(String [] commands) {
 		// the list of posts that the frontpage is going to display 
@@ -245,22 +246,35 @@ public class Reddit {
 		} else if (commands.length == 2){
 			// if the user input is "r" + "subredditname"
 			if(commands[0].equals(Util.SUBREDDIT_MENU)){
-				// TODO test if this subreddit exist
 				System.out.println("Displaying /r/" + commands[1] + "...");
 				// get all posts belongs to the subreddit
 				posts = reddit.getFrontpage(reddit.findUser(currentUser), 
 											commands[1]);
 				// if the user input is "u" + "userName"
 			} else if (commands[0].equals(Util.USER_NAME_MENU)){
-				// TODO test if this user exist
-				System.out.println("Displaying /u/" + commands[1] + "...");				
-				// get all posts of a user
-				posts = reddit.findUser(commands[1]).getPosted();				
+				String tempName = commands[1];
+				// if the input user name does not exist 
+				if(reddit.findUser(tempName) == null){
+					// do add any post to the posts list  
+					System.out.println("Displaying /u/" + commands[1] + "...");
+					// if user name found 
+				} else {
+					System.out.println("Displaying /u/" + commands[1] + "...");									
+					// get all posts of a user
+					posts = reddit.findUser(commands[1]).getPosted();					
+				}
 			}
 		}		
 		// loop over all posts 
 		Iterator<Post> postsItr = posts.iterator();
 		while(true){
+			// check point 
+			if(! postsItr.hasNext()){
+				System.out.println("No posts left to display.");
+				System.out.println("Exiting to the main menu...");
+				break;
+			}
+			
 			// advance the post if getNextPost
 			if(getNextPost){
 				currentPost = postsItr.next();
@@ -273,6 +287,7 @@ public class Reddit {
 
 			// get a user input command for sub-menu option
 			String userInput = Util.scnr.next();
+			
 			// 1. when user typed like - "a"
 			if (userInput.equals(Util.LIKE)) {	
 				// if no user logged in, remind the user to log in
@@ -284,7 +299,7 @@ public class Reddit {
 					reddit.findUser(currentUser).like(currentPost);
 					getNextPost = true;
 				}
-				if(InputHandler.noNextElement(postsItr)) break;
+				if(noNextPost(postsItr)) break;
 				// 2. when user typed dislike - "z"
 			} else if (userInput.equals(Util.DISLIKE)){ 
 				// if no user logged in, remind the user to log in
@@ -296,10 +311,10 @@ public class Reddit {
 					reddit.findUser(currentUser).dislike(currentPost);
 					getNextPost = true;
 				}
-				if (InputHandler.noNextElement(postsItr)) break;
+				if (noNextPost(postsItr)) break;
 				// 3. when user typed next - "j"
 			} else if (userInput.equals(Util.NEXT)){
-				if(InputHandler.noNextElement(postsItr)) break;
+				if(noNextPost(postsItr)) break;
 				getNextPost = true;
 				// 4. when user typed exit - "x"
 			} else if (userInput.equals(Util.EXIT)){	
@@ -312,6 +327,101 @@ public class Reddit {
 				System.out.println(Util.INVALID_COMMAND_MSG);
 			}	// end of the if-else for handling sub_menu input 
 		}	// end of the while loop - iteratively displaying posts 
+	}
+	
+	
+	/**
+	 * Test if the list has next post with iterator, and print the 
+	 * corresponding information 
+	 * 
+	 * @param the itrator of the post list
+	 * @return true if there is no next post, false if there is a next post
+	 * */
+	private static boolean noNextPost(Iterator<Post> itr) {
+		if(itr.hasNext()){
+			return false;
+		} else {
+			System.out.println("No posts left to display.\n"
+					+ "Exiting to the main menu...");
+			Util.scnr.nextLine();	// clean all input before exit 
+			return true;
+		} 
+	}
+	
+	/**
+	 * Load the .txt format subreddit file. The name of the file should be the 
+	 * user's name. Inside the file, it contains all subreddits that user 
+	 * subscribed, and all posts the user posted.
+	 * 
+	 * @param file - the .txt file 
+	 * @param user - the user 
+	 * */
+	public static void loadRedditFile(File file, User user) 
+			throws FileNotFoundException{
+		boolean isFirstLine = true; 
+		Scanner input = new Scanner(file);
+		while (input.hasNext()) {
+			// read all lines
+			String textLine = input.nextLine();
+			// treat the first line as a list of subreddits 
+			if (isFirstLine){
+				loadSubreddits(textLine, user);
+				isFirstLine = false;
+			} else {
+				// treat other lines as the posts
+				loadPost(textLine, user);
+			}
+		}
+		input.close();	// close the scanner
+	} 
+	
+	/**
+	 * Read all subreddits for a user
+	 * 
+	 * @param subredditLine - a text line contains all subreddits for a user
+	 * @param user - the owner of those subreddits
+	 * */
+	private static void loadSubreddits(String subredditLine, 
+			User user){
+		// split the text line intro subreddit
+		String[] temp = subredditLine.split(", ");
+		for(int i = 0; i < temp.length; i ++) {
+			// read all subreddits into an string array
+			String subredditName = temp[i].toLowerCase();
+			// subscribe it for the user
+			user.subscribe(subredditName);
+		}
+	}
+	
+	/**
+	 * Load a post from the text line and add it to the user's post list
+	 * 
+	 *@param textLine - a text line contains the subreddit, type and title
+	 *@param User - the owner of the post 
+	 * */
+	private static void loadPost(String textLine, User user){
+		// read the entire line
+		Scanner input = new Scanner(textLine);
+		// load subreddit, type, title in order
+		String subreddit = input.next().split(",")[0].toLowerCase();
+		String type = input.next().split(",")[0].toLowerCase();
+		String title = input.nextLine();
+		// add post with corresponding information 
+		switch (type) {
+		case "comment":
+			user.addPost(subreddit, PostType.COMMENT, title);
+			break;
+		case "link":
+			user.addPost(subreddit, PostType.LINK, title);
+			break;
+		case "self":
+			user.addPost(subreddit, PostType.SELF, title);
+			break;
+		default:
+			System.out.println("Invalid PostType detected");
+			break;
+		}
+		input.close();
 	}
 	
 }

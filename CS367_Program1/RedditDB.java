@@ -49,7 +49,6 @@ public class RedditDB {
 	 * @param name
 	 */
 	public User addUser(String name) {
-		//TODO
 		// if user already exist, return null
 		if(findUser(name)!= null){
 			return null;
@@ -68,9 +67,8 @@ public class RedditDB {
 	 * @param name
 	 */
 	public User findUser(String name) {
-		//TODO
 		// loop over all users
-		Iterator<User> userItr = users.iterator();	// TODO use iterator
+		Iterator<User> userItr = users.iterator();
 		while(userItr.hasNext()){
 			User tempUser = userItr.next();
 			// return the user if find a name match
@@ -91,14 +89,35 @@ public class RedditDB {
 	 * @param name
 	 */
 	public boolean delUser(String name) {
-		//TODO)
+		//TODO
 		// create an iterator in order to traverse though the users list 
 		Iterator<User> itr = users.iterator();
 		while (itr.hasNext()){
 			User tempUser = itr.next();
 			// if user can be found 
 			if (tempUser.getName().equals(name)){
-				// TODO i, ii, iii
+				// undo all disliked
+				for (Post dislikedPost: tempUser.getDisliked()){
+					tempUser.undoDislike(dislikedPost);
+				}
+				// undo all liked
+				for (Post likedPost: tempUser.getLiked()){
+					tempUser.undoLike(likedPost);
+				}
+				// loop over all posts 
+				for (Post post: tempUser.getPosted()){
+					// loop over all user
+					for (User user: users){
+						// undo all like or dislike for this post
+						if(user.getLiked().contains(post)){
+							user.undoLike(post);
+						} else if (user.getDisliked().contains(post)){
+							user.undoDislike(post);
+						}
+					}
+				}				
+				
+				
 				itr.remove();
 				return true;
 			}
@@ -120,9 +139,8 @@ public class RedditDB {
 	 * @param user
 	 */
 	public List<Post> getFrontpage(User user) {
-		//TODO
 		// get all posts
-		List<Post> allPosts = getAllPosts();
+		List<Post> allPosts = getAllPosts();		
 		// if user is null -> display all posts
 		if (user == null){
 			return allPosts;
@@ -151,7 +169,7 @@ public class RedditDB {
 		while(postItr.hasNext()){
 			// store the current post 
 			Post currentPost = postItr.next();
-			// skip this post if the user already liked or disliked it 
+			// if the user haven't liked or disliked it 
 			if(!user.getLiked().contains(currentPost) 
 					&& !user.getDisliked().contains(currentPost) 
 					|| user.getPosted().contains(currentPost)){ 
@@ -204,25 +222,98 @@ public class RedditDB {
 	 * have not previously been liked or disliked by the user ,except when 
 	 * the post was created by the user themselves.
 	 * 
-	 * 
 	 * @param user
 	 * @param subreddit
 	 */
 	public List<Post> getFrontpage(User user, String subreddit) {
-		//TODO
-		// get all posts
-		List<Post> allPosts = getAllPosts();
-		// if the user is null, return all posts 
-		if (user == null){
-			return allPosts;
-			// otherwise, return the posts belong to the target subreddit
+		if(! inList(subreddit)){
+			List <Post> empty = new ArrayList<Post>();
+			return empty;
 		} else {
+			// get all posts
+			List<Post> allPosts = getAllPosts();
+			System.out.println(user);
 			List<Post> subredditPosts = getSubredditPosts(allPosts, subreddit);
-			return subredditPosts;
+			// if the user is null, return all posts 
+			if (user == null){
+				return subredditPosts;
+				// otherwise, return the posts belong to the target subreddit
+			} else {
+				return removeSeenPosts(subredditPosts, user);
+			}
 		}
-
 	}
 
+	/**
+	 * This method check if a subreddit exist 
+	 * 
+	 * @param subreddit 
+	 * @return true if subreddit exist, false otherwise
+	 * */
+	private boolean inList(String subreddit){
+		// check if a subreddit exist
+		List<String> list = getAllSubreddits();
+		Iterator<String> listItr = list.iterator();
+		while(listItr.hasNext()){
+			if (subreddit.equals(listItr.next()))
+				return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * This method remove posts from a list, the criterion is to remove posts
+	 * that already been liked or disliked from the user, expect for posts 
+	 * that were posted by the user.
+	 * 
+	 * 
+	 * */
+	private List<Post> removeSeenPosts(List<Post> postList,User user){
+		// create the list to store the posts that met the conditions
+		List<Post> reducedList = new ArrayList<Post>();
+		// loop over all posts 
+		Iterator<Post> postItr = postList.iterator();
+		while(postItr.hasNext()){
+			Post currentPost = postItr.next();
+			// if the user did not like or dislike the post  
+			if(!user.getLiked().contains(currentPost) 
+					&& !user.getDisliked().contains(currentPost) 
+					|| user.getPosted().contains(currentPost)){
+				// add the post to the list 
+				reducedList.add(currentPost);
+			} 
+		}
+		return reducedList;
+	}
+	
+	/**
+	 * Get the list of all subreddits 
+	 * 
+	 * @return allSubreddits 
+	 * */
+	private List<String> getAllSubreddits(){
+		// create a list that stores the subreddits
+		List<String> allSubreddits = new ArrayList<String>();
+		List<Post> allPosts = getAllPosts();
+		Iterator<Post> postsItr = allPosts.iterator();
+		// loop over all posts 
+		while(postsItr.hasNext()){
+			Post tempPost = postsItr.next();
+			// if the list doesn't have this subreddit, add it  
+			if (!allSubreddits.contains(tempPost.getSubreddit())){
+				allSubreddits.add(tempPost.getSubreddit());
+			}
+		}
+		return allSubreddits;
+	}
+
+	/**
+	 * This method find posts that belong to a particular subreddit among the
+	 * list of posts. 
+	 * 
+	 *  @param allPosts - a list of posts
+	 *  @param subreddit - a subreddit name
+	 * */
 	private List<Post>getSubredditPosts(List<Post> allPosts,String subreddit){
 		// create a list of hold all posts belongs to the target subreddit 
 		List<Post> subredditPosts = new ArrayList<Post>();
@@ -238,5 +329,5 @@ public class RedditDB {
 		}
 		return subredditPosts;
 	}
-	
+
 }	// end of the class

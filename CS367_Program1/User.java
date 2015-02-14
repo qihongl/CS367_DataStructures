@@ -33,7 +33,6 @@ public class User {
 	 * @param name
 	 */
 	public User(String name) {
-		//TODO 
 		// initialize all fileds associated with the user 
 		this.name = name;	
 		karma = new Karma();
@@ -61,16 +60,6 @@ public class User {
 		return this.karma;
 	}
 	
-	// TODO try if this works... 
-	private List<Object> getCopy(List<Object> myList){
-		List<Object> copy = new ArrayList<Object>();
-		Iterator<Object> itr = myList.iterator();
-		while(itr.hasNext()){
-			copy.add(itr.next());
-		}
-		return copy;
-	}
-	
 	/**
 	 * Returns a copy of the list of subreddits the user is subscribed to; 
 	 * the list itself should not be exposed.
@@ -78,7 +67,6 @@ public class User {
 	 * @return copy - a copy of subscribed subreddit list 
 	 */
 	public List<String> getSubscribed() {
-		//TODO
 		// create a copy
 		List<String> copy = new ArrayList<String>();
 		// create a iterator in order to traverse though the list
@@ -96,7 +84,6 @@ public class User {
 	 * @return copy - a copy of posts posted by the user
 	 */
 	public List<Post> getPosted() {
-		//TODO
 		List<Post> copy = new ArrayList<Post>();
 		Iterator<Post> itr = posted.iterator();
 		while(itr.hasNext()){
@@ -112,7 +99,6 @@ public class User {
 	 * @return copy - a copy the list liked by the user 
 	 */
 	public List<Post> getLiked() {
-		//TODO
 		List<Post> copy = new ArrayList<Post>();
 		Iterator<Post> itr = liked.iterator();
 		while(itr.hasNext()){
@@ -128,7 +114,6 @@ public class User {
 	 * @return copy - a copy the list disliked by the user
 	 */
 	public List<Post> getDisliked() {
-		//TODO
 		List<Post> copy = new ArrayList<Post>();
 		Iterator<Post> itr = disliked.iterator();
 		while(itr.hasNext()){
@@ -145,7 +130,6 @@ public class User {
 	 * @param subreddit
 	 */
 	public void subscribe(String subreddit) {
-		//TODO
 		// if the user already subscribed the post, remove the subscription
 		if(subscribed.contains(subreddit)){
 			unsubscribe(subreddit);
@@ -162,7 +146,6 @@ public class User {
 	 * @param subreddit
 	 */
 	public void unsubscribe(String subreddit) {
-		//TODO
 		// remove post only if the post is in the subscribed list
 		if(subscribed.contains(subreddit))
 			subscribed.remove(subreddit);
@@ -177,7 +160,6 @@ public class User {
 	 * @param title
 	 */
 	public Post addPost(String subreddit, PostType type, String title) {
-		//TODO
 		// create a new post
 		Post newPost = new Post(this, subreddit, type, title);
 		// add it to user's posted list
@@ -195,7 +177,6 @@ public class User {
 	 * @param post
 	 */
 	public void like(Post post) {
-		//TODO
 		// if already liked...
 		if(liked.contains(post)){
 			// undo the like
@@ -219,7 +200,6 @@ public class User {
 	 * @param post
 	 */
 	public void undoLike(Post post) {
-		//TODO
 		liked.remove(post);
 		post.downvote();
 		post.downvote();
@@ -233,7 +213,6 @@ public class User {
 	 * @param post
 	 */
 	public void dislike(Post post) {
-		//TODO
 		// if already disliked 
 		if(disliked.contains(post)){
 			// undo the dislike 
@@ -257,7 +236,6 @@ public class User {
 	 * @param post
 	 */
 	public void undoDislike(Post post) {
-		//TODO
 		disliked.remove(post);
 		post.upvote();
 		post.downvote();

@@ -36,7 +36,6 @@ public class Karma {
 	 * @param type - the type of the post    
 	 */
 	public void upvote(PostType type) {
-		//TODO
 		if (type.equals(PostType.COMMENT)){
 			commentKarma += 2;
 		} else if (type.equals(PostType.LINK)){
@@ -52,7 +51,6 @@ public class Karma {
 	 * @param type - the type of the post    
 	 */
 	public void downvote(PostType type) {
-		//TODO
 		if (type.equals(PostType.COMMENT)){
 			commentKarma --;
 		} else if (type.equals(PostType.LINK)){
