@@ -10,7 +10,7 @@ public class SimpleArrayList <E> implements ListADT<E>{
 
 
 	public SimpleArrayList() {
-		items = new E[INITSIZE]; // reading version
+		items = (E[]) new Object [INITSIZE]; // reading version
 		numItems = 0;
 	}
 
@@ -70,7 +70,7 @@ public class SimpleArrayList <E> implements ListADT<E>{
 
 
 	private void expandArray() {
-		E[] newArray = new E[numItems*2];
+		E[] newArray = (E[]) new Object [numItems*2];
 		for (int k = 0; k < numItems; k++) {
 			newArray[k] = items[k];
 		}

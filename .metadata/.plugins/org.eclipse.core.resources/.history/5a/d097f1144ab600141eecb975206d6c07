@@ -1,0 +1,12 @@
+
+public class Testing {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		SimpleLinkedList<Integer> head = new SimpleLinkedList<Integer>();
+		head.add(1);
+		
+	}
+
+}

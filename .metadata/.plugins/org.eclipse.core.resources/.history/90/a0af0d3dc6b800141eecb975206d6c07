@@ -1,0 +1,75 @@
+import java.util.LinkedList;
+
+
+public class DLinkedList<E> implements ListADT<E> {	
+
+	private Listnode<E> head;
+	int numItems;
+
+	public DLinkedList(){
+		head = null;
+		numItems = 0;
+	}
+
+
+	@Override
+	public void add(E item) {
+		// TODO Auto-generated method stub
+		if (item == null)
+			throw new IllegalArgumentException();
+		// create a new listnode with input data
+		Listnode <E> newnode = new Listnode<E> (item);
+		Listnode <E> cur;
+		if (head == null){
+			head = newnode;
+		} else {
+			cur = head;
+			
+		}
+		// go to the end of the listnodes
+		while(cur.getNext() != null){
+			cur = cur.getNext();
+		}
+		// set the last one to be the newnode
+		cur.setNext(newnode);
+		numItems ++;
+	}
+
+	@Override
+	public void add(int pos, E item) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean contains(E item) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public E get(int pos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public E remove(int pos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

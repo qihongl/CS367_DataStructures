@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+
+
+public class PracticeListnodes {
+
+	/**
+	 * print all items in the list 
+	 * */
+	public static void printList (List<String> list){
+		Iterator<String> itr = list.iterator();
+		while(itr.hasNext()){
+			String temp = itr.next();
+			System.out.println(temp);
+		}
+		System.out.println();
+	}
+
+	/**
+	 * print all nodes in the input listnodes
+	 * */
+	public static <E> void printListnodes (Listnode<E> head){
+		// check if head is null
+		if (head.getData()!= null){
+			// holding the current node
+			Listnode<E> cur = head;
+			// print the head
+			System.out.print(head.getData());
+			// print all the nodes in the list 
+			while(cur.getNext() != null){
+				cur = cur.getNext();
+				System.out.print(" ---> " + cur.getData());
+			}
+			System.out.println();
+		} else {
+			System.out.println("Null detected");
+		}
+	}
+
+	/**
+	 * initialize the listnodes with a item array
+	 * */
+	public static <E> void initListnodes(E [] items, Listnode<E> head){
+		Listnode<E> cur = head;
+		for(E e : items){
+			cur.setNext(new Listnode<E>(e));
+			cur = cur.getNext();
+		}
+	}
+	
+	/**
+	 * initialize the listnodes with a item array
+	 * */
+	public static <E> void initListnodes(ArrayList<E>items, Listnode<E> head){
+		Listnode<E> cur = head;
+		for(E e : items){
+			cur.setNext(new Listnode<E>(e));
+			cur = cur.getNext();
+		}
+	}
+	
+	
+	public static <E> void add(Listnode<E> items, E item, int pos){
+		if(pos<0){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		// get a current node that traverse the listnodes 
+		Listnode<E> cur = items;
+		for (int i = 0; i < pos; i ++){
+			cur = cur.getNext();
+		}
+		// create a new node with input item, and link to the next item
+		Listnode<E> newnode = new Listnode <E>(item, cur.getNext());
+		// let the previous node link to the new node 
+		cur.setNext(newnode);
+	}
+	
+	/**
+	 * I want to understand list of nodes! 
+	 * */
+	public static void main(String[] args) {
+		
+		// testing Integer Arraylist
+		Listnode<Integer> head0 = new Listnode<Integer>(0);
+		ArrayList<Integer> intList = new ArrayList<Integer>();
+		intList.add(1);intList.add(2);intList.add(3);intList.add(4);
+		initListnodes(intList, head0);
+		printListnodes(head0);
+		
+		int item = 7;
+		add(head0, item, 2);
+		printListnodes(head0);
+		
+		// test String array
+		Listnode<String> head1 = new Listnode<String>("String array");
+		String[] strs = {"first", "second", "third", "fourth"};
+		initListnodes(strs, head1);
+		printListnodes(head1);
+		
+		// test String ArrayList		
+		Listnode<String> head2 = new Listnode<String>("String ArrayList");
+		ArrayList<String> strList = new ArrayList<String>();
+		strList.add("first");strList.add("second");
+		strList.add("third");strList.add("fourth");
+		initListnodes(strList, head2);
+		printListnodes(head2);
+		
+		
+		
+		
+		
+	}
+
+}

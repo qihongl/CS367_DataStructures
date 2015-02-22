@@ -1,0 +1,9 @@
+
+public class Testing {
+	public static void main (String [] args){
+		DLinkedList<String> DLlist = new DLinkedList<>();
+		
+		Listnode<String> head = new Listnode<String>(null);
+		
+	}
+}
