@@ -3,6 +3,7 @@
  */
 public class Product {
 	
+	// declare all parameters for a product as private fields  
 	private String name;
 	private String category;
 	private int price;

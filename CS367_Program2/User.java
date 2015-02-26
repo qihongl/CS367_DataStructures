@@ -128,5 +128,10 @@ public class User {
 		
 		return inStock;
 	}
+	
+	// TODO testing - to be removed 
+	public String toString(){
+		return this.username + ": " + this.passwd + " " + this.credit;
+	}
 
 }
