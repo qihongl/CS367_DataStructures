@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class DLinkedList<E> implements ListADT<E>, Iterable<E>{	
+public class DLinkedList<E> implements ListADT<E>{	
 	// private field
 	private Listnode<E> head;
 	private Listnode<E> tail;
@@ -29,11 +29,11 @@ public class DLinkedList<E> implements ListADT<E>, Iterable<E>{
 			throw new IllegalArgumentException();
 		// create a new listnode with input data
 		Listnode <E> newnode = new Listnode<E> (item);
-		Listnode <E> cur;
+		Listnode <E> cur = head;
+		// check if the list is empty
 		if (head == null){
 			head = newnode;
 		} else {
-			cur = head;
 			// go to the end of the listnodes
 			while(cur.getNext() != null){
 				cur = cur.getNext();
@@ -153,15 +153,6 @@ public class DLinkedList<E> implements ListADT<E>, Iterable<E>{
 	public int size() {
 		// TODO Auto-generated method stub
 		return numItems;
-	}
-
-	/**
-	 * Get an iterator 
-	 */
-	@Override
-	public Iterator<E> iterator() {
-		// TODO Auto-generated method stub
-		return new LinkedList().iterator();
 	}
 
 }

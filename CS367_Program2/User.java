@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.io.PrintStream;
@@ -26,6 +27,7 @@ public class User {
 		this.username = username;
 		this.passwd = passwd;
 		this.credit = credit;
+		this.wishList = new DLinkedList<Product>();
 	}
 	
 	/**
@@ -48,12 +50,15 @@ public class User {
      * @param product the Product to add
      */
 	public void addToWishList(Product product){
-		if (product == null)
+		if (product == null){
 			throw new IllegalArgumentException();
-		else 
+		} else { 
 			// TODO Maintain the order of the wishlist from 
-			// highest priced to lowest priced products. 
+			// highest priced to lowest priced products. 			
 			wishList.add(product);
+			
+		}
+		
 	}
 	
 	/**
@@ -74,27 +79,35 @@ public class User {
 	}
 	
 	/**
-     * Print each product in the user's wishlist in its own line using the PrintStream object passed in the argument
-	 * @param printStream The printstream object on which to print out the wishlist
+     * Print each product in the user's wishlist in its own line using the 
+     * PrintStream object passed in the argument
+	 * @param printStream The printstream object on which to print out 
+	 * 			the wishlist
      */
 	public void printWishList(PrintStream printStream){
 		for (int i = 0; i < wishList.size(); i ++){
 			System.out.println(wishList.get(i) + "\n");
 		}
+		printStream.print("Test printStream");
 		
 	}
 	
 	/**
      * Buys the specified product in the user's wishlist.
-     * Charge the user according to the price of the product by updating the credit
+     * Charge the user according to the price of the product by updating 
+     * the credit
      * Remove the product from the wishlist as well
-     * Throws an InsufficientCreditException if the price of the product is greater than the credit available.
+     * Throws an InsufficientCreditException if the price of the 
+     * product is greater than the credit available.
      * 
      * @param productName name of the product
      * @return true if successfully bought, false if product not found 
      * @throws InsufficientCreditException if price > credit 
      */
 	public boolean buy(String productName) throws InsufficientCreditException{
+		
+		
+		
 		return false;
 	}
 	
