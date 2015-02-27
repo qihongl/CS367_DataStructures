@@ -1,0 +1,6 @@
+
+public interface QueueADT<T> {
+	boolean isEmpty();
+	void enqueue(E ob);
+	E dequeue() throws EmptyQueueException;
+}

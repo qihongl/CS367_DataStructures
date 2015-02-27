@@ -1,0 +1,43 @@
+import java.util.EmptyStackException;
+
+
+public class SimpleStack<E> implements StackADT<E>{
+
+	private static final int INITSIZE = 10;
+	private E[] items;
+	private int numItems;
+	
+	// constructor
+	public SimpleStack(){
+		items = (E[])(new Object[INITSIZE]);
+		numItems = 0;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		if (numItems == 0)
+			return true;
+		return false;
+	}
+
+	@Override
+	public void push(E ob) {
+		// TODO Auto-generated method stub
+		items[numItems]
+		
+	}
+
+	@Override
+	public E pop() throws EmptyStackException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E peek() throws EmptyStackException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

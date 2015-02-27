@@ -27,7 +27,6 @@ public class AmazonStore {
 
 		//load store products
 		loadProducts(args[0]);
-		printByCategory();	// TODO testing to be removed
 
 		//load users one file at a time
 		for(int i = 1; i < args.length; i++)
@@ -68,14 +67,16 @@ public class AmazonStore {
 	 * @returns the currentUser 
 	 */
 	public static User login(String username, String passwd){
-//		for(int i = 0; i < users.size(); i ++){
-//			// loop over all users to find match
-//			if(users.get(i).checkLogin(username, passwd))
-//				// return the user if a match is found
-//				System.out.println("* Found a match for login()");
-//				currentUser = users.get(i); 
-//				return users.get(i);
-//		}
+
+		for(int i = 0; i < users.size(); i ++){
+			// loop over all users to find match
+			if(users.get(i).checkLogin(username, passwd)){
+				// return the user if a match is found
+				System.out.println("* Found a match for login()");
+				currentUser = users.get(i); 
+				return users.get(i);
+			}
+		}
 		return null;
 	}
 
@@ -146,24 +147,15 @@ public class AmazonStore {
 		// read the user info to a file
 		File userFile = new File(fileName);
 		Scanner scnr = null;
-//		PrintStream ps = null;
 		try {
 			// connect a scanner to the userFile
 			scnr = new Scanner(userFile);
-//			ps = new PrintStream(userFile);
 		} catch (FileNotFoundException e) {
 			System.out.println("User "+ fileName +" not found");
 		}
 
-		
-//		ps.print("Here! ");
-		
-		
-		
-		
-		
+
 		// use the information in the first line to create an user
-		System.out.println(scnr);
 		String userInfo = scnr.nextLine();
 		User newUser = createUser(userInfo);
 		System.out.println("*First line: " + newUser.toString());
@@ -174,9 +166,8 @@ public class AmazonStore {
 			// find a product with the corresponding name
 			Product wishedProduct = findProduct(wishedProductName);
 			newUser.addToWishList(wishedProduct);
-			// TODO replaced by print wish list
-			System.out.println(wishedProductName);
-//			newUser.printWishList(new PrintStream(file));
+			// TODO 
+			//			newUser.printWishList(new PrintStream(file));
 		}
 		System.out.println();
 	}
@@ -191,7 +182,7 @@ public class AmazonStore {
 	private static Product findProduct(String productName){
 		// search from all products
 		for(int i = 0; i < products.size(); i ++){
-//			System.out.println(products.get(i).getName());	// TODO test
+			//			System.out.println(products.get(i).getName());	// TODO test
 			if(products.get(i).getName().equals(productName)){
 				// return the product if find a match of name
 				return products.get(i);
@@ -297,10 +288,20 @@ public class AmazonStore {
 				switch(commands[0].charAt(0)){
 				case 'v':
 					System.out.println("INPUT COMMAND \"v\" DETECTED");
+					if (commands.length >= 2){
+						viewHandler(commands[1], inStock);
+					} else {
+						System.out.println("Command length invalid");
+					}
 					break;
 
 				case 's':
 					System.out.println("INPUT COMMAND \"s\" DETECTED");
+					if (commands.length >= 2){
+						searchHandler(commands[1]);
+					} else {
+						System.out.println("Command length invalid");
+					}
 					break;
 
 				case 'a':
@@ -317,6 +318,7 @@ public class AmazonStore {
 
 				case 'c':
 					System.out.println("INPUT COMMAND \"c\" DETECTED");
+					System.out.println("$" + currentUser.getCredit());
 					break;
 
 				case 'l':
@@ -333,5 +335,50 @@ public class AmazonStore {
 			}
 		}
 	}	// end of userMenu method
+
+	/**
+	 * This method takes a string and search all products, and print the product
+	 * that contains the string.
+	 * 
+	 * @param command - the name of the product you want to search 
+	 */
+	private static void searchHandler(String command) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < products.size(); i ++){
+			// if find a name that contains the input command
+			if(products.get(i).getName().contains(command)){
+				System.out.println(products.get(i).toString());//TODO Stream
+			}
+		}
+		
+	}
+
+	/**
+	 * Display products in a way the corresponds to the input command
+	 * 
+	 * @param command - indicate the list that you want to see
+	 * @param inStock - the list of in stock products
+	 */
+	private static void viewHandler(String command, ListADT<Product> inStock) {
+		switch (command) {
+		case "all":
+			printByCategory();
+			break;
+		case "wishlist":
+			// TODO print wish list - PrintStream
+			break;
+		case "instock":
+			// TODO printStream 
+			for(int i = 0; i < inStock.size(); i ++){
+				System.out.println(inStock.get(i).toString());
+			}
+			break;
+		default:
+			System.out.println("Invalid Command");
+			break;
+		}
+	}
+
+
 
 }	// end of the class

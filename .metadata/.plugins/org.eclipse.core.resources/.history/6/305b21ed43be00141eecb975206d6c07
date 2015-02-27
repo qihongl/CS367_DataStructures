@@ -1,0 +1,18 @@
+
+public class Testing {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		SimpleQueue<String> q = new SimpleQueue<String>();
+		System.out.println(q.isEmpty());
+		q.enqueue("a");
+		q.enqueue("b");
+		q.enqueue("c");
+		System.out.println(q.isEmpty());
+		
+		
+		
+	}
+
+}

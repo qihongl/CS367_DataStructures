@@ -1,0 +1,30 @@
+import java.util.EmptyStackException;
+
+
+public class SimpleStack<E> implements StackADT<E>{
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void push(E ob) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public E pop() throws EmptyStackException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public E peek() throws EmptyStackException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

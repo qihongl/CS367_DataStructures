@@ -1,0 +1,13 @@
+
+public class InsufficientCreditException extends Exception {
+	
+	
+	   public InsufficientCreditException (String message) {
+		   System.out.println("Insufficient funds for <PRODUCT-NAME>");
+	        super(message);
+	    }
+	   
+	    public InsufficientCreditException(String message,Throwable throwable){
+	        super(message, throwable);
+	    }
+}

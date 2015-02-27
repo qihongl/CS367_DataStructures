@@ -1,0 +1,30 @@
+
+public class SimpleQueue<E> implements QueueADT<E> {
+
+	private int numItems;
+	
+	
+	// constructor
+	public SimpleQueue(){
+		
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void enqueue(E ob) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public E dequeue() throws EmptyQueueException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

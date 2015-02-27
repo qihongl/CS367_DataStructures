@@ -1,0 +1,13 @@
+
+public class Testing {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		SimpleQueue<String> q = new SimpleQueue<String>();
+		q.enqueue(ob);
+		
+		
+	}
+
+}

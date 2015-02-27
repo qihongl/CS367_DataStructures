@@ -1,0 +1,12 @@
+
+public class InsufficientCreditException extends Exception {
+	
+	
+	   public InsufficientCreditException (String message) {
+	        super(message);
+	    }
+	   
+	    public InsufficientCreditException (String message, Throwable throwable) {
+	        super(message, throwable);
+	    }
+}

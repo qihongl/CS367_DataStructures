@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 import java.io.PrintStream;
 
@@ -56,6 +54,7 @@ public class User {
 			// TODO Maintain the order of the wishlist from 
 			// highest priced to lowest priced products. 			
 			wishList.add(product);
+			System.out.println(product.getName());	//TODO remove	
 			
 		}
 		
@@ -85,11 +84,11 @@ public class User {
 	 * 			the wishlist
      */
 	public void printWishList(PrintStream printStream){
+		// TODO not sure how to user PrintStream
 		for (int i = 0; i < wishList.size(); i ++){
 			System.out.println(wishList.get(i) + "\n");
 		}
 		printStream.print("Test printStream");
-		
 	}
 	
 	/**
@@ -105,9 +104,22 @@ public class User {
      * @throws InsufficientCreditException if price > credit 
      */
 	public boolean buy(String productName) throws InsufficientCreditException{
-		
-		
-		
+		// loop over all products in the wishList
+		for(int i = 0; i < wishList.size(); i ++){
+			// if the name match
+			if (wishList.get(i).getName().equals(productName)){
+				// if the money is not enough, throw exception 
+				if (wishList.get(i).getPrice() > this.credit){
+					// TODO test exception 
+					throw new InsufficientCreditException(productName);
+				} else {
+					// deduct the money otherwise
+					this.credit -= wishList.get(i).getPrice();
+					return true;
+				}
+			}
+		}
+		// if the code reaches here, it implies product not found 
 		return false;
 	}
 	
