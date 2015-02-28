@@ -1,0 +1,52 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.LinkedList;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+
+public class Testing {
+	/**
+	 * print all nodes in the input listnodes
+	 * */
+	public static <E> void printListnodes (Listnode<E> head){
+		// check if head is null
+		if (head.getData()!= null){
+			// holding the current node
+			Listnode<E> cur = head;
+			// print the head
+			System.out.print(head.getData());
+			// print all the nodes in the list 
+			while(cur.getNext() != null){
+				cur = cur.getNext();
+				System.out.print(" ---> " + cur.getData());
+			}
+			System.out.println();
+		} else {
+			System.out.println("Null detected");
+		}
+	}
+	
+	/**
+	 * initialize the listnodes with a item array
+	 * */
+	public static <E> void initListnodes(E [] items, Listnode<E> head){
+		Listnode<E> cur = head;
+		for(E e : items){
+			cur.setNext(new Listnode<E>(e));
+			cur = cur.getNext();
+		}
+	}
+
+	public static void main (String [] args) throws FileNotFoundException{
+		DLinkedList<String> dlist = new DLinkedList<>();
+		
+		Listnode<String> head = new Listnode<String>(null);
+		head.setNext(next);
+	
+		
+		
+	}
+}

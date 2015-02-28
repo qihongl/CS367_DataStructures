@@ -12,6 +12,9 @@ public class AmazonStore {
 	private static ListADT<Product> products = new DLinkedList<Product>();
 	private static ListADT<User> users = new DLinkedList<User>();
 	private static User currentUser = null;//current user logged in
+	
+	private static PrintStream wishedListStream = new PrintStream(System.out);
+	
 
 	//scanner for console input
 	public static final Scanner stdin = new Scanner(System.in);
@@ -40,7 +43,7 @@ public class AmazonStore {
 			String username = stdin.nextLine();
 			System.out.print("Enter password : ");
 			String passwd = stdin.nextLine();
-			System.out.println(login(username, passwd)); // TODO testing
+
 			if(login(username, passwd)!=null)
 			{
 				//generate random items in stock based on this user's wish list
@@ -51,11 +54,11 @@ public class AmazonStore {
 			else
 				System.out.println("Incorrect username or password");
 
-			System.out.println("Enter 'exit' to exit program or anything else to go back to login");
+			System.out.println("Enter 'exit' to exit program or "
+					+ "anything else to go back to login");
 			if(stdin.nextLine().equals("exit"))
 				done = true;
 		}
-
 	}
 
 	/**
@@ -67,12 +70,10 @@ public class AmazonStore {
 	 * @returns the currentUser 
 	 */
 	public static User login(String username, String passwd){
-
 		for(int i = 0; i < users.size(); i ++){
 			// loop over all users to find match
 			if(users.get(i).checkLogin(username, passwd)){
 				// return the user if a match is found
-				System.out.println("* Found a match for login()");
 				currentUser = users.get(i); 
 				return users.get(i);
 			}
@@ -95,9 +96,9 @@ public class AmazonStore {
 		Scanner scnr = null; 
 		File productFile = new File(fileName);
 		try {
+			// connect the file to a scanner
 			scnr = new Scanner(productFile);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			System.out.println("ProductFile <" + fileName + "> not found");
 		}
 		// read all text lines, create products, and add them to the list 
@@ -154,24 +155,18 @@ public class AmazonStore {
 			System.out.println("User "+ fileName +" not found");
 		}
 
-
 		// use the information in the first line to create an user
 		String userInfo = scnr.nextLine();
 		User newUser = createUser(userInfo);
-		System.out.println("*First line: " + newUser.toString());
-
-		// get all items in the wish list
-		while(scnr.hasNext()){
+		// get all items in the file 
+		while(scnr.hasNextLine()){
 			String wishedProductName = scnr.nextLine();
 			// find a product with the corresponding name
 			Product wishedProduct = findProduct(wishedProductName);
+			// add to the wish list 
 			newUser.addToWishList(wishedProduct);
-			// TODO 
-			//			newUser.printWishList(new PrintStream(file));
 		}
-		System.out.println();
 	}
-
 
 	/**
 	 * It finds a product by the name of the product
@@ -182,13 +177,12 @@ public class AmazonStore {
 	private static Product findProduct(String productName){
 		// search from all products
 		for(int i = 0; i < products.size(); i ++){
-			//			System.out.println(products.get(i).getName());	// TODO test
 			if(products.get(i).getName().equals(productName)){
 				// return the product if find a match of name
 				return products.get(i);
 			}
 		}
-		System.out.println( "<" + productName + "> Not Found");
+//		System.out.println(productName + " Not Found");	// TODO verify the msg 
 		return null;
 	}
 
@@ -286,43 +280,49 @@ public class AmazonStore {
 					continue;
 				}
 				switch(commands[0].charAt(0)){
-				case 'v':
-					System.out.println("INPUT COMMAND \"v\" DETECTED");
-					if (commands.length >= 2){
+				case 'v':	// viewing products
+					if (commands.length == 2){
 						viewHandler(commands[1], inStock);
 					} else {
-						System.out.println("Command length invalid");
+						System.out.println("Invalid Command");
 					}
 					break;
 
-				case 's':
-					System.out.println("INPUT COMMAND \"s\" DETECTED");
-					if (commands.length >= 2){
-						searchHandler(commands[1]);
+				case 's':	// searching products
+					if (commands.length == 2){
+						searchProduct(commands[1]);
 					} else {
-						System.out.println("Command length invalid");
+						System.out.println("Invalid Command");
 					}
 					break;
 
-				case 'a':
-					System.out.println("INPUT COMMAND \"a\" DETECTED");
+				case 'a':	//add a product to wish list  
+					if (commands.length == 2){
+						addProduct(commands[1]);
+					} else {
+						System.out.println("Invalid Command");
+					}
 					break;
 
-				case 'r':
-					System.out.println("INPUT COMMAND \"r\" DETECTED");
+				case 'r':	 //remove product
+					// TODO test: remove is problematic... 
+					Product temp = currentUser.removeFromWishList(commands[1]);
+					if(temp == null){
+						System.out.println("Product not found");
+					} else {
+						System.out.println("Removed from wishlist");
+					}
 					break;
 
-				case 'b':
-					System.out.println("INPUT COMMAND \"b\" DETECTED");
+				case 'b':	//buy the product in stock
+					buyProduct(inStock);
 					break;
 
-				case 'c':
-					System.out.println("INPUT COMMAND \"c\" DETECTED");
+				case 'c':	// show credit 
 					System.out.println("$" + currentUser.getCredit());
 					break;
 
-				case 'l':
-					System.out.println("INPUT COMMAND \"l\" DETECTED");
+				case 'l':	// logout 
 					currentUser = null;
 					done = true;
 					System.out.println("Logged Out");
@@ -336,21 +336,63 @@ public class AmazonStore {
 		}
 	}	// end of userMenu method
 
+
+	/**
+	 * Executed user entered 'b', purchase all the stuff in the wished list 
+	 * and also instock.
+	 * @param inStock - a list of instock products
+	 */
+	private static void buyProduct(ListADT<Product> inStock) {
+		// loop over all products in stock
+		for(int i = 0; i < inStock.size(); i++){
+				try {// try to purchase it
+					if(currentUser.buy(inStock.get(i).getName())){
+//						currentUser.removeFromWishList(inStock.get(i).getName());
+						// TODO Problem when remove! might be index problem  
+						System.out.println("Bought "+inStock.get(i).getName());
+					}
+				} catch (InsufficientCreditException e) {
+//					System.out.println(e);
+				}
+			}
+		}
+		
+	/**
+	 * finds a product according to the input name, add and return 
+	 * the product if found. 
+	 * 
+	 * @param product
+	 * @return the product if found, null otherwise
+	 */
+	private static Product addProduct(String product) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < products.size(); i ++){
+			// if find a name that contains the input command
+			if(products.get(i).getName().contains(product)){
+				// add to the wish list 
+				currentUser.addToWishList(products.get(i));
+				System.out.println("Added to wishlist");
+				return products.get(i); 
+			} 
+		}
+		System.out.println("Product not found");
+		return null;	// return null if product not found
+	}
+
 	/**
 	 * This method takes a string and search all products, and print the product
 	 * that contains the string.
 	 * 
 	 * @param command - the name of the product you want to search 
 	 */
-	private static void searchHandler(String command) {
-		// TODO Auto-generated method stub
+	private static void searchProduct(String command) {
 		for(int i = 0; i < products.size(); i ++){
 			// if find a name that contains the input command
 			if(products.get(i).getName().contains(command)){
-				System.out.println(products.get(i).toString());//TODO Stream
+				System.out.println(products.get(i).toString()); 
 			}
 		}
-		
+		System.out.println("Product not found");	// TODO verify the msg is correct
 	}
 
 	/**
@@ -364,21 +406,20 @@ public class AmazonStore {
 		case "all":
 			printByCategory();
 			break;
+			
 		case "wishlist":
-			// TODO print wish list - PrintStream
+			currentUser.printWishList(wishedListStream);
 			break;
+			
 		case "instock":
-			// TODO printStream 
-			for(int i = 0; i < inStock.size(); i ++){
+			for(int i = 0; i < inStock.size(); i ++)
 				System.out.println(inStock.get(i).toString());
-			}
 			break;
+			
 		default:
 			System.out.println("Invalid Command");
 			break;
 		}
 	}
-
-
 
 }	// end of the class

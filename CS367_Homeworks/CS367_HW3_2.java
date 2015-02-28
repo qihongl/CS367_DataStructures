@@ -15,13 +15,13 @@ public class CS367_HW3_2 {
 		PracticeListnodes.initListnodes(intList, head);
 		PracticeListnodes.printListnodes(head);
 		
-		SimpleLinkedList<Integer> llist = new SimpleLinkedList<Integer>();
+//		SimpleLinkedList<Integer> llist = new SimpleLinkedList<Integer>();
 	
 		
 		
 		System.out.println();
 		
-		System.out.println();
+		
 	}
 
 }
