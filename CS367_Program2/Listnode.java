@@ -26,7 +26,7 @@ class Listnode<E> {
 	Listnode(E data, Listnode<E> next, Listnode<E> prev) {
 		this.data = data;
 		this.next = next;
-		this.prev=prev;
+		this.prev = prev;
 	}
 
 	/**

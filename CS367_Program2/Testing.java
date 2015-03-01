@@ -39,18 +39,29 @@ public class Testing {
 	}
 
 
+	
+	
 	public static void main (String [] args) throws FileNotFoundException{
-		DLinkedList<String> dlist = new DLinkedList<>();
-		ArrayList<String> arr = new ArrayList<String>();
-		arr.add("ab");
-		arr.add("bc");
-		arr.add("cd");
-		arr.add("de");
 		
-		Listnode<String> head = new Listnode<String>();
-		initListnodes(arr, head);
-		printListnodes(head);
+		ListADT<String> dlist = new DLinkedList<String>();
+		dlist.add("ab");
+		dlist.add("bc");
+		dlist.add("cd");
+		dlist.add("de");
+		printList(dlist);
+//		dlist.add(0,"ff");
+		
+		System.out.println(dlist.remove(3));
+		printList(dlist);
 
+	}
 
+	private static void printList(ListADT<String> list) {
+		for(int i = 0; i < list.size(); i ++){
+			System.out.print(list.get(i) + " --> ");
+		}
+		System.out.println();
+		
+		
 	}
 }

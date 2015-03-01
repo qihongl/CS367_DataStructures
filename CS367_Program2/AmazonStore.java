@@ -11,10 +11,8 @@ public class AmazonStore {
 	//Store record of users and products
 	private static ListADT<Product> products = new DLinkedList<Product>();
 	private static ListADT<User> users = new DLinkedList<User>();
-	private static User currentUser = null;//current user logged in
-	
+	private static User currentUser = null;	//current user logged in
 	private static PrintStream wishedListStream = new PrintStream(System.out);
-	
 
 	//scanner for console input
 	public static final Scanner stdin = new Scanner(System.in);
@@ -181,8 +179,7 @@ public class AmazonStore {
 				// return the product if find a match of name
 				return products.get(i);
 			}
-		}
-//		System.out.println(productName + " Not Found");	// TODO verify the msg 
+		} 
 		return null;
 	}
 
@@ -351,9 +348,7 @@ public class AmazonStore {
 						// TODO Problem when remove! might be index problem  
 						System.out.println("Bought "+inStock.get(i).getName());
 					}
-				} catch (InsufficientCreditException e) {
-//					System.out.println(e);
-				}
+				} catch (InsufficientCreditException e){}
 			}
 		}
 		
@@ -365,7 +360,6 @@ public class AmazonStore {
 	 * @return the product if found, null otherwise
 	 */
 	private static Product addProduct(String product) {
-		// TODO Auto-generated method stub
 		for(int i = 0; i < products.size(); i ++){
 			// if find a name that contains the input command
 			if(products.get(i).getName().contains(product)){
@@ -392,7 +386,6 @@ public class AmazonStore {
 				System.out.println(products.get(i).toString()); 
 			}
 		}
-		System.out.println("Product not found");	// TODO verify the msg is correct
 	}
 
 	/**

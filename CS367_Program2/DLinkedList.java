@@ -20,14 +20,10 @@ public class DLinkedList<E> implements ListADT<E>{
 	 * */
 	@Override
 	public void add(E item) {
-		// TODO 
 		// Input validation 
 		if (item == null) throw new IllegalArgumentException();
-
 		// create a new listnode with input data
 		Listnode <E> newnode = new Listnode<E> (item);
-		Listnode <E> cur = head;
-
 		// check if the list is empty
 		if (head == null){
 			head = newnode;
@@ -35,6 +31,7 @@ public class DLinkedList<E> implements ListADT<E>{
 		} else {
 			// go to the end of the listnodes
 			tail.setNext(newnode);
+			newnode.setPrev(tail);
 			tail = newnode;
 		}
 		numItems ++;
@@ -48,21 +45,20 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public void add(int pos, E item) {
-		// TODO Auto-generated method stub
 		// check for bad position
 		if (pos < 0 || pos > numItems) throw new IndexOutOfBoundsException();
-
 		// if asked to add to end, let the other add method do the work
-		if (pos == numItems) {
-			add(item);
-		}
+		if (pos == numItems) add(item);
+		
 		// find the node n after which to add a new node and add the new node
 		Listnode<E> cur = head;
-		for (int k = 0; k < pos; k++) {
-			cur = cur.getNext();
-		}
+		for (int k = 0; k < pos; k++) cur = cur.getNext();
+		// create a new node
 		Listnode<E> newnode = new Listnode<E>(item);
+		// link in the new node
 		newnode.setNext(cur.getNext());
+		cur.getNext().setPrev(newnode);
+		newnode.setPrev(cur);
 		cur.setNext(newnode);
 		numItems++;
 	}
@@ -76,11 +72,12 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public boolean contains(E item) {
-		// TODO Auto-generated method stub
 		if (item == null) throw new IllegalArgumentException();
+		// traverse through all nodes
 		Listnode <E> cur = head;
 		while(cur.getNext() != null){
 			cur = cur.getNext();
+			// return true if found a match
 			if(cur.getData().equals(item)){
 				return true;
 			}
@@ -96,7 +93,6 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public E get(int pos) {
-		// TODO Auto-generated method stub
 		// input validation 
 		if(pos < 0 || pos >= numItems)
 			throw new IndexOutOfBoundsException();
@@ -113,7 +109,6 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
 		if (numItems == 0 )
 			return true;
 		else 
@@ -127,15 +122,22 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public E remove(int pos) {
-		// TODO Auto-generated method stub
 		if(pos < 0 || pos > numItems) throw new IllegalArgumentException();
+		
+		// TODO 1ST AND LAST DOESN'T WORK
+		
 		// go to the position 
 		Listnode<E> cur = head;
 		for(int i = 0; i < pos; i ++){
 			cur = cur.getNext();
 		}
-		cur.setNext(cur.getNext().getNext());
-		return null;	// TODO return the item removed 
+		// remove the node
+		Listnode<E> temp = cur.getNext();
+		temp.setPrev(cur.getPrev());
+		temp = cur.getPrev();
+		temp.setNext(cur.getNext());
+		numItems --;
+		return cur.getData();	 
 	}
 
 
