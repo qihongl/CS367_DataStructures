@@ -35,7 +35,8 @@ public class SimpleArrayList <E> implements ListADT<E>{
 		if(this.size()== 0){
 			throw new EmptyListException();
 			// if the list is not empty, start the removing procedure 
-		} else {
+		} 
+		else {
 			try{
 				temp = remove(pos);
 			} catch(IndexOutOfBoundsException ex){
@@ -70,7 +71,7 @@ public class SimpleArrayList <E> implements ListADT<E>{
 
 
 	private void expandArray() {
-		E[] newArray = (E[]) new Object [numItems*2];
+		E[] newArray = (E[]) new Object [numItems * 2];
 		for (int k = 0; k < numItems; k++) {
 			newArray[k] = items[k];
 		}
@@ -108,8 +109,7 @@ public class SimpleArrayList <E> implements ListADT<E>{
 
 
 	public E get(int pos) {
-		if(pos > items.length || pos < 0)
-			throw new IndexOutOfBoundsException();
+		if(pos > numItems || pos < 0) throw new IndexOutOfBoundsException();
 		return items[pos];
 	}
 
@@ -119,10 +119,8 @@ public class SimpleArrayList <E> implements ListADT<E>{
 	}
 
 	public E remove(int pos) {
-		if(pos > items.length || pos < 0)
-			throw new IndexOutOfBoundsException();
-		if (isEmpty())
-			throw new NullPointerException();
+		if (isEmpty()) throw new NullPointerException();
+		if(pos > numItems || pos < 0) throw new IndexOutOfBoundsException();
 
 		E removedItem = items[pos];
 		for (int i = pos; i < items.length - 1; i ++){

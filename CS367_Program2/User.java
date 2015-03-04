@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  AmazonStore.java
+// File:             User.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.Random;
 import java.io.PrintStream;
 
@@ -9,7 +28,6 @@ import java.io.PrintStream;
 public class User {
 	//Random number generator, used for generateStock. DO NOT CHANGE
 	private static Random randGen = new Random(1234);
-
 	private String username;
 	private String passwd;
 	private int credit;
@@ -52,29 +70,25 @@ public class User {
 	public void addToWishList(Product product){
 		if (product == null) throw new IllegalArgumentException();
 
-		wishList.add(product);
-
-		// TODO order according to the price
-		//		if(wishList.size() == 0){ 
-		//			wishList.add(product);
-		//			System.out.println(product.getName() + " added to 0");
-		//		} else {
-		//			
-		//			// order the product from highest priced to lowest priced 
-		//			for(int i = 0; i < wishList.size(); i ++){
-		//				if(wishList.get(i).getPrice() >= product.getPrice()){
-		//					wishList.add(i, product);
-		//					System.out.println(product.getName() + " added to " + i);
-		//					break;
-		//				} else if (i == wishList.size() - 1){
-		//					wishList.add(product);
-		//					System.out.println(product.getName() + " added to end");
-		//					break;
-		//				}
-		//			}
-		//			
-		//		}
-
+		// order the product from highest priced to lowest priced
+		if(wishList.size() == 0){ 
+			wishList.add(product);
+		} else {
+			// loop over all items in the wish list
+			for(int i = 0; i < wishList.size(); i ++){
+				// if found a item that is more expensive
+				if(wishList.get(i).getPrice() <= product.getPrice()){
+					// add to that position
+					wishList.add(i, product);
+					break;
+					// if i am at the end position 
+				} else if (i == wishList.size() - 1){
+					// just add it to the end 
+					wishList.add(product);
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -102,11 +116,11 @@ public class User {
 	 * @param printStream The printstream object on which to print out 
 	 * 			the wishlist
 	 */
-	public void printWishList(PrintStream printStream){	
+	public void printWishList(PrintStream printStream){
+		// print everything in the wishlist 
 		for(int i = 0; i < wishList.size(); i++){
 			printStream.append(wishList.get(i).toString() + "\n");
 		}
-		System.out.println("End of printWishList method.");
 	}
 
 	/**
@@ -132,6 +146,8 @@ public class User {
 				} else {
 					// deduct the money otherwise
 					this.credit -= wishList.get(i).getPrice();
+					// and remove the item fron the wishlist 
+					wishList.remove(i);
 					return true;
 				}
 			}

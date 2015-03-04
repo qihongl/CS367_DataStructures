@@ -132,16 +132,16 @@ public class PracticeListnodes {
 	public static void main(String[] args) {
 
 		// testing Integer Arraylist
-		Listnode<Integer> head0 = new Listnode<Integer>(0);
-		ArrayList<Integer> intList = new ArrayList<Integer>();
+//		Listnode<Integer> head0 = new Listnode<Integer>(0);
+//		ArrayList<Integer> intList = new ArrayList<Integer>();
 //		intList.add(3);intList.add(3);intList.add(2);intList.add(2);
 //		intList.add(3);intList.add(3);intList.add(3);intList.add(3);
-		intList.add(2);
-		initListnodes(intList, head0);
-		printListnodes(head0);
-		
-		removeFromSublist(0, 0, 3, head0);
-		printListnodes(head0);
+//		intList.add(2);
+//		initListnodes(intList, head0);
+//		printListnodes(head0);
+//		
+//		removeFromSublist(0, 0, 3, head0);
+//		printListnodes(head0);
 		
 		
 //		int item = 7;
@@ -154,13 +154,20 @@ public class PracticeListnodes {
 //		initListnodes(strs, head1);
 //		printListnodes(head1);
 //
-//		// test String ArrayList		
-//		Listnode<String> head2 = new Listnode<String>("String ArrayList");
-//		ArrayList<String> strList = new ArrayList<String>();
-//		strList.add("first");strList.add("second");
-//		strList.add("third");strList.add("fourth");
-//		initListnodes(strList, head2);
-//		printListnodes(head2);
+		// test String ArrayList		
+		Listnode<String> head2 = new Listnode<String>("String ArrayList");
+		ArrayList<String> strList = new ArrayList<String>();
+		strList.add("first");strList.add("second");
+		strList.add("third");strList.add("fourth");
+		initListnodes(strList, head2);
+		printListnodes(head2);
+		
+		int pos = 2;
+		Listnode<String> curr = head2;
+		for (int i = 0 ; i < pos; i ++){
+			curr = curr.getNext();
+		}
+		System.out.println(curr.getData());
 
 
 

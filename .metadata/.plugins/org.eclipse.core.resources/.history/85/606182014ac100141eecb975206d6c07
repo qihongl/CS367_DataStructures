@@ -1,0 +1,30 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Testing2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		SimpleArrayList<String> list = new SimpleArrayList<String>();
+		for(int i = 0 ; i < 7; i ++){
+			list.add("a");
+		}
+
+		for (int i = 0; i < 10; i ++){
+			try{
+				list.remove(0);
+			} catch(NullPointerException e){
+				System.out.println("got");
+			}
+		}
+		
+		ArrayList<String> alist = new ArrayList<String>();
+		list.add("ab");
+		list.add("bc");
+		list.add("cd");
+		Iterator<String> itr = alist.iterator();
+		
+
+	}
+
+}

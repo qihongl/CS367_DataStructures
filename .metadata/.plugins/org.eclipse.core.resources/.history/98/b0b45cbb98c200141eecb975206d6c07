@@ -1,0 +1,9 @@
+
+public class InsufficientCreditException extends Exception {
+	
+	// constructor
+	public InsufficientCreditException (String productName) {
+		System.out.println("Insufficient funds for "+ productName);
+	}
+
+}

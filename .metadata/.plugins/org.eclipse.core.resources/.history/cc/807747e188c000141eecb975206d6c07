@@ -1,0 +1,15 @@
+import java.util.ArrayList;
+
+
+public class Testing2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		SimpleArrayList<String> list = new SimpleArrayList<String>();
+		for(int i = 0 ; i < 7; i ++){
+			list.add("a");
+		}
+		
+	}
+
+}
