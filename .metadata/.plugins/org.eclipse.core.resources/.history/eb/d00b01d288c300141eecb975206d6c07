@@ -352,14 +352,10 @@ public class AmazonStore {
 					}
 					break;
 
-				case 'l':	// logout
-					if (commands.length == 1){
-						currentUser = null;
-						done = true;
-						System.out.println("Logged Out");
-					} else {
-						System.out.println("Invalid Command");
-					}
+				case 'l':	// logout 
+					currentUser = null;
+					done = true;
+					System.out.println("Logged Out");
 					break;
 
 				default:  //a command with no argument

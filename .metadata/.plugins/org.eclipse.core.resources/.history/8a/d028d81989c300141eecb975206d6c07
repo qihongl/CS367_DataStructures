@@ -357,7 +357,8 @@ public class AmazonStore {
 						currentUser = null;
 						done = true;
 						System.out.println("Logged Out");
-					} else {
+					} 
+					else {
 						System.out.println("Invalid Command");
 					}
 					break;

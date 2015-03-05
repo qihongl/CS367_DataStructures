@@ -337,29 +337,18 @@ public class AmazonStore {
 					break;
 
 				case 'b':	//buy the product in stock
-					if (commands.length == 1){
-						buyProduct(inStock);
-					} else {
-						System.out.println("Invalid Command");
-					}
+					if (commands.length == 2){
+					buyProduct(inStock);
 					break;
 
-				case 'c':	// show credit
-					if (commands.length == 1){
-						System.out.println("$" + currentUser.getCredit());
-					} else {
-						System.out.println("Invalid Command");
-					}
+				case 'c':	// show credit 
+					System.out.println("$" + currentUser.getCredit());
 					break;
 
-				case 'l':	// logout
-					if (commands.length == 1){
-						currentUser = null;
-						done = true;
-						System.out.println("Logged Out");
-					} else {
-						System.out.println("Invalid Command");
-					}
+				case 'l':	// logout 
+					currentUser = null;
+					done = true;
+					System.out.println("Logged Out");
 					break;
 
 				default:  //a command with no argument
@@ -378,14 +367,14 @@ public class AmazonStore {
 	private static void buyProduct(ListADT<Product> inStock) {
 		// loop over all products in stock
 		for(int i = 0; i < inStock.size(); i++){
-			try {// try to purchase it
-				if(currentUser.buy(inStock.get(i).getName())){ 
-					System.out.println("Bought "+inStock.get(i).getName());
-				}
-			} catch (InsufficientCreditException e){}
+				try {// try to purchase it
+					if(currentUser.buy(inStock.get(i).getName())){ 
+						System.out.println("Bought "+inStock.get(i).getName());
+					}
+				} catch (InsufficientCreditException e){}
+			}
 		}
-	}
-
+		
 	/**
 	 * finds a product according to the input name, add and return 
 	 * the product if found. 
@@ -433,16 +422,16 @@ public class AmazonStore {
 		case "all":
 			printByCategory();
 			break;
-
+			
 		case "wishlist":
 			currentUser.printWishList(wishedListStream);
 			break;
-
+			
 		case "instock":
 			for(int i = 0; i < inStock.size(); i ++)
 				System.out.println(inStock.get(i).toString());
 			break;
-
+			
 		default:
 			System.out.println("Invalid Command");
 			break;
