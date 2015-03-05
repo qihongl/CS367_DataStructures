@@ -91,7 +91,7 @@ public class AmazonStore {
 	 * @returns the currentUser 
 	 */
 	public static User login(String username, String passwd){
-		if (username == null || passwd == null) 
+		if (username == null || passwd == null)
 			throw new IllegalArgumentException();
 		for(int i = 0; i < users.size(); i ++){
 			// loop over all users to find match
@@ -116,7 +116,8 @@ public class AmazonStore {
 	 * @param fileName name of the file to read
 	 */
 	public static void loadProducts(String fileName){
-		if(fileName == null) throw new IllegalArgumentException();
+		if(fileName == null)
+			throw new IllegalArgumentException();
 		Scanner scnr = null; 
 		File productFile = new File(fileName);
 		try {
@@ -169,7 +170,6 @@ public class AmazonStore {
 	 * @param fileName name of the file to read
 	 */
 	public static void loadUser(String fileName){
-		if(fileName == null) throw new IllegalArgumentException();
 		// read the user info to a file
 		File userFile = new File(fileName);
 		Scanner scnr = null;

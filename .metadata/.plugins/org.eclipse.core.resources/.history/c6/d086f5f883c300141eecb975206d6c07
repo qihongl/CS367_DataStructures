@@ -38,7 +38,7 @@ public class Product {
      */
 	public Product(String name, String category, int price, float rating){
 		if(name == null || category == null)
-			throw new IllegalArgumentException();
+			if(fileName == null) throw new IllegalArgumentException();
 		this.name = name;
 		this.category = category;
 		this.price = price;

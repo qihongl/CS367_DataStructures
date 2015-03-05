@@ -106,7 +106,7 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public boolean contains(E item) {
-		// check for null item 
+		// input validation 
 		if (item == null) throw new IllegalArgumentException();
 		// traverse through all nodes
 		Listnode <E> cur = head;

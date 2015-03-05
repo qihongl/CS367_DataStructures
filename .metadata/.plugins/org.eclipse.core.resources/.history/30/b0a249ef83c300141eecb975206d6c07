@@ -37,8 +37,6 @@ public class Product {
      * @param rating rating of product out of 5
      */
 	public Product(String name, String category, int price, float rating){
-		if(name == null || category == null)
-			throw new IllegalArgumentException();
 		this.name = name;
 		this.category = category;
 		this.price = price;

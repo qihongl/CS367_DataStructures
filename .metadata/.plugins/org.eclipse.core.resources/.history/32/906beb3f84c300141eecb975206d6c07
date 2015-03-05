@@ -142,6 +142,7 @@ public class User {
 	 */
 	public boolean buy(String productName) throws InsufficientCreditException{
 		if(productName == null) throw new IllegalArgumentException();
+		
 		// loop over all products in the wishList
 		for(int i = 0; i < wishList.size(); i ++){
 			// if the name match

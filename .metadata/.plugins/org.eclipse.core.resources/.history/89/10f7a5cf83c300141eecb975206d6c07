@@ -69,7 +69,6 @@ public class DLinkedList<E> implements ListADT<E>{
 		if (pos < 0 || pos > numItems) throw new IndexOutOfBoundsException();
 		// check for null item
 		if(item == null) throw new IllegalArgumentException();
-		
 		Listnode<E> newnode = new Listnode<E>(item);
 		// if asked to add to end, let the other add method do the work
 		if (pos == numItems) {
@@ -106,7 +105,7 @@ public class DLinkedList<E> implements ListADT<E>{
 	 */
 	@Override
 	public boolean contains(E item) {
-		// check for null item 
+		// input validation 
 		if (item == null) throw new IllegalArgumentException();
 		// traverse through all nodes
 		Listnode <E> cur = head;
