@@ -2,8 +2,8 @@
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Title:            Amazon Store
 // Files:            AmazonStore.java, User.java, DLinkedList.java, 
-//						Product.java, InsufficientCreditException.java, 
-// 						Listnode.java, ListADT.java  
+//			Product.java, InsufficientCreditException.java, 
+// 			Listnode.java, ListADT.java  
 // Semester:         CS367 Spring 2015
 //
 // Author:           Qihong Lu
@@ -43,8 +43,13 @@ public class AmazonStore {
 	//main method
 	public static void main(String args[]) {
 
+<<<<<<< HEAD
 		//Populate the two lists using the input files: Products.txt 
 		// User1.txt User2.txt ... UserN.txt
+=======
+		//Populate the two lists using the input files: 
+		// Products.txt User1.txt User2.txt ... UserN.txt
+>>>>>>> origin/master
 		if (args.length < 2) {
 			System.out.println("Usage: java AmazonStore [PRODUCT_FILE] "
 					+ "[USER1_FILE] [USER2_FILE] ...");

@@ -153,7 +153,7 @@ public class User {
 				} else {
 					// deduct the money otherwise
 					this.credit -= wishList.get(i).getPrice();
-					// and remove the item fron the wishlist 
+					// and remove the item from the wishlist 
 					wishList.remove(i);
 					return true;
 				}
