@@ -43,11 +43,9 @@ public class AmazonStore {
 	//main method
 	public static void main(String args[]) {
 
-		//Populate the two lists using the input files: Products.txt 
-		// User1.txt User2.txt ... UserN.txt
+		//Populate the two lists using the input files: Products.txt User1.txt User2.txt ... UserN.txt
 		if (args.length < 2) {
-			System.out.println("Usage: java AmazonStore [PRODUCT_FILE] "
-					+ "[USER1_FILE] [USER2_FILE] ...");
+			System.out.println("Usage: java AmazonStore [PRODUCT_FILE] [USER1_FILE] [USER2_FILE] ...");
 			System.exit(0);
 		}
 
@@ -411,8 +409,8 @@ public class AmazonStore {
 	}
 
 	/**
-	 * This method takes a string and search all products, and print the 
-	 * product that contains the string.
+	 * This method takes a string and search all products, and print the product
+	 * that contains the string.
 	 * 
 	 * @param command - the name of the product you want to search 
 	 */

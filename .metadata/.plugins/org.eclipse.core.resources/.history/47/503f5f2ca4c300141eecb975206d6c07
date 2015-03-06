@@ -84,7 +84,7 @@ public class Product {
      * @return a string of info
      */
 	public String toString(){
-		return name + " [Price:$" + price + " Rating:" + rating + " stars]";
+		return name + " [Price:$" + price + " Rating:<" + rating+ "> stars";
 	}
 
 }
