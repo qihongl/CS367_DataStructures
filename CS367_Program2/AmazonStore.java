@@ -2,8 +2,8 @@
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Title:            Amazon Store
 // Files:            AmazonStore.java, User.java, DLinkedList.java, 
-//						Product.java, InsufficientCreditException.java, 
-// 						Listnode.java, ListADT.java  
+//			Product.java, InsufficientCreditException.java, 
+// 			Listnode.java, ListADT.java  
 // Semester:         CS367 Spring 2015
 //
 // Author:           Qihong Lu

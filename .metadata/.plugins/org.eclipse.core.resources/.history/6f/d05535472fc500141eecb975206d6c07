@@ -1,0 +1,16 @@
+
+public class sum_recursion {
+
+	// practice recursion
+	public static int sum(Listnode<Integer> node){
+		if(node == null) return 0;
+		System.out.println(node.getData());
+		return node.getData() + sum(node.getNext());
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

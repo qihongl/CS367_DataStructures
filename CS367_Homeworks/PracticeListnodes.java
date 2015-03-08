@@ -71,7 +71,7 @@ public class PracticeListnodes {
 		System.out.println("There are " + numItems +" nodes in the list");
 		return numItems;
 	}
-	
+
 
 	public static <E> void add(Listnode<E> items, E item, int pos){
 		// input validation 
@@ -90,7 +90,7 @@ public class PracticeListnodes {
 			cur.setNext(newnode);
 		}
 	}
-	
+
 	public static int removeFromSublist (int start, int stop, Integer target, Listnode<Integer> head) {
 		int numItems = countNumNodes(head);
 		//TODO
@@ -100,14 +100,14 @@ public class PracticeListnodes {
 			throw new IllegalArgumentException();
 		}
 		// TODO consider what if list is empty, if list has only 1 item
-		
+
 		int count = 0;
 		Listnode<Integer> cur = head;
 		// skip all nodes before the starting index
 		for(int i = 0; i < start; i ++){
 			cur = cur.getNext();
 		}
-		
+
 		Listnode<Integer> temp; 
 		// check the following index before the stopping index
 		for(int i = 0; i <= stop - start; i ++){
@@ -123,8 +123,13 @@ public class PracticeListnodes {
 		System.out.println("Find target: \"" + target + "\" " + count + " times");
 		return count;
 	}
-	
 
+	// practice recursion
+	public static int sum(Listnode<Integer> node){
+		if(node == null) return 0;
+		System.out.println(node.getData());
+		return node.getData() + sum(node.getNext());
+	}
 
 	/**
 	 * I want to understand list of nodes! 
@@ -132,49 +137,53 @@ public class PracticeListnodes {
 	public static void main(String[] args) {
 
 		// testing Integer Arraylist
-//		Listnode<Integer> head0 = new Listnode<Integer>(0);
-//		ArrayList<Integer> intList = new ArrayList<Integer>();
+		Listnode<Integer> head0 = new Listnode<Integer>(0);
+		ArrayList<Integer> intList = new ArrayList<Integer>();
 //		intList.add(3);intList.add(3);intList.add(2);intList.add(2);
 //		intList.add(3);intList.add(3);intList.add(3);intList.add(3);
 //		intList.add(2);
-//		initListnodes(intList, head0);
-//		printListnodes(head0);
-//		
-//		removeFromSublist(0, 0, 3, head0);
-//		printListnodes(head0);
-		
-		
-//		int item = 7;
-//		add(head0, item, 2);
-//		printListnodes(head0);
-//
-//		// test String array
-//		Listnode<String> head1 = new Listnode<String>("String array");
-//		String[] strs = {"first", "second", "third", "fourth"};
-//		initListnodes(strs, head1);
-//		printListnodes(head1);
-//
-		// test String ArrayList		
-		Listnode<String> head2 = new Listnode<String>("String ArrayList");
-		ArrayList<String> strList = new ArrayList<String>();
-		strList.add("first");strList.add("second");
-		strList.add("third");strList.add("fourth");
-		initListnodes(strList, head2);
-		printListnodes(head2);
-		
-		int pos = 2;
-		Listnode<String> curr = head2;
-		for (int i = 0 ; i < pos; i ++){
-			curr = curr.getNext();
+		for (int i = 0; i < 10; i ++){
+			intList.add(i);
 		}
-		System.out.println(curr.getData());
-
-
-
-
-
-
+		initListnodes(intList, head0);
+		printListnodes(head0);
 		
+		System.out.println(sum(head0));
+		
+		printListnodes(head0);
+
+
+		//		int item = 7;
+		//		add(head0, item, 2);
+		//		printListnodes(head0);
+		//
+		//		// test String array
+		//		Listnode<String> head1 = new Listnode<String>("String array");
+		//		String[] strs = {"first", "second", "third", "fourth"};
+		//		initListnodes(strs, head1);
+		//		printListnodes(head1);
+		//
+		// test String ArrayList		
+		//		Listnode<String> head2 = new Listnode<String>("String ArrayList");
+		//		ArrayList<String> strList = new ArrayList<String>();
+		//		strList.add("first");strList.add("second");
+		//		strList.add("third");strList.add("fourth");
+		//		initListnodes(strList, head2);
+		//		printListnodes(head2);
+		//		
+		//		int pos = 2;
+		//		Listnode<String> curr = head2;
+		//		for (int i = 0 ; i < pos; i ++){
+		//			curr = curr.getNext();
+		//		}
+		//		System.out.println(curr.getData());
+
+
+
+
+
+
+
 	}
 
 }

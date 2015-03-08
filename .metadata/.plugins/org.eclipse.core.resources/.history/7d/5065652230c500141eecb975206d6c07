@@ -1,0 +1,17 @@
+
+public class vowels_recur {
+
+	public static String vowels(String str){
+		if (str =="") return "";
+		if()
+		
+		return str.substring(1);
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println(vowels("abc"));
+		
+	}
+
+}
