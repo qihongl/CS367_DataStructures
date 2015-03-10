@@ -52,7 +52,6 @@ public class SimpleQueue<E> implements QueueADT<E> {
 
 	@Override
 	public String toString(){
-		// TODO might not be the right way of displaying 
 		String s = "Queue: "; 
 		for(int i = 0; i < numItems; i ++){
 			s += (String)items[i] + " ";
@@ -62,15 +61,15 @@ public class SimpleQueue<E> implements QueueADT<E> {
 
 	@Override
 	public E peek() throws EmptyQueueException {
+		if( numItems == 0)
 		// TODO Auto-generated method stub
-		if( numItems == 0) throw new EmptyQueueException();		
-		return items[frontIndex];
+		return null;
 	}
 
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return numItems;
+		return 0;
 	}
 
 }
