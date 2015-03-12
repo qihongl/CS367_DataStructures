@@ -25,9 +25,10 @@ public class SimpleStack<E> implements StackADT<E>{
 	
 	@Override
 	public void push(E ob) {
+		if(ob == null) throw new IllegalArgumentException();
 		if(items.length == numItems){
 			// expand
-			
+			// copy every thing to a larger stack
 		} else {
 			items[numItems] = ob;
 			numItems ++;
@@ -50,6 +51,7 @@ public class SimpleStack<E> implements StackADT<E>{
 		if(numItems == 0){
 			throw new EmptyStackException();
 		} else {
+			// return the last item in the array
 			return items[numItems - 1];
 		}
 	}
@@ -66,8 +68,7 @@ public class SimpleStack<E> implements StackADT<E>{
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numItems;
 	}
 
 }
