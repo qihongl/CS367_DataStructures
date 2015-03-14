@@ -63,14 +63,6 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-    	if (repoName == null) throw new IllegalArgumentException();
-    	for (int i = 0; i < workingCopies.size(); i ++ ){
-    		// if the reponame matches
-    		if(workingCopies.get(i).getReponame().equals(repoName)){
-    			// return that copy
-    			return workingCopies.get(i);
-    		}
-    	}
     	return null;
 	}
     
@@ -128,8 +120,6 @@ public class User {
 	 */
 	public void addToPendingCheckIn(Document doc, Change.Type type, String repoName) {
 		// TODO: Implement this method. 
-		if (doc == null || type == null || repoName == null) 
-			throw new IllegalArgumentException();
 	}
 	
 	/**
@@ -143,15 +133,7 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-    	if (repoName == null) throw new IllegalArgumentException();
-    	for (int i = 0; i < pendingCheckIns.size(); i ++ ){
-    		// if the reponame matches
-    		if(pendingCheckIns.get(i).getReponame().equals(repoName)){
-    			// return that copy
-    			return pendingCheckIns.get(i);
-    		}
-    	}
-		return null;
+    	return null;
 	}
     
     /**
@@ -166,7 +148,6 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		if (repoName == null) throw new IllegalArgumentException();
     	return null;
 	}
 	
@@ -184,7 +165,6 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		if (repoName == null) throw new IllegalArgumentException();
     	return null;
 	}
 		

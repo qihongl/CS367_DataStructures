@@ -184,7 +184,6 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		if (repoName == null) throw new IllegalArgumentException();
     	return null;
 	}
 		
