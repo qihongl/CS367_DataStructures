@@ -46,6 +46,7 @@ public class SimpleStack<E> implements StackADT<E>{
 		// and add the item 
 		items[numItems] = ob;
 		numItems ++;
+
 	}
 
 	/**
