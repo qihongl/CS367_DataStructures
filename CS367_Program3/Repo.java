@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Represents a repository which stores and tracks changes to a collection of 
@@ -8,22 +9,22 @@ import java.util.List;
  *
  */
 public class Repo {
-	
+
 	/* The current version of the repo. */
 	private int version;
-	
+
 	/* The name of the repo. It's a unique identifier for a repository. */
 	private final String repoName;
-	
+
 	/* The user who is the administrator of the repo. */
 	private final User admin;
-	
+
 	/* The collection(list) of documents in the repo. */
 	private final List<Document> docs;
-	
+
 	/* The check-ins queued by different users for admin approval. */
 	private final QueueADT<ChangeSet> checkIns;
-	
+
 	/* The stack of copies of the repo at points when any check-in was applied. */
 	private final StackADT<RepoCopy> versionRecords; 
 
@@ -37,13 +38,13 @@ public class Repo {
 		// TODO: Implement this contructor. The following lines 
 		// are just meant for the method to compile. You should 
 		// remove or edit it in whatever way you like.
-		this.admin = null;
-		this.repoName =  null;
-		this.docs =  null;
-		this.checkIns =  null;
-		this.versionRecords =  null;
+		this.admin = admin;
+		this.repoName =  repoName;
+		this.docs = new ArrayList<Document>();
+		this.checkIns =  new SimpleQueue<ChangeSet>();
+		this.versionRecords =  new SimpleStack<RepoCopy>();
 	}
-	
+
 	/**
 	 * Return the name of the repo.
 	 * @return The name of the repository.
@@ -51,7 +52,7 @@ public class Repo {
 	public String getName() {
 		return this.repoName;
 	}
-	
+
 	/**
 	 * Returns the user who is administrator for this repository.
 	 * @return The admin user.
@@ -59,7 +60,7 @@ public class Repo {
 	public User getAdmin() {
 		return this.admin;
 	}
-	
+
 	/**
 	 * Returns a copy of list of all documents in the repository.
 	 * @return A list of documents.
@@ -67,7 +68,7 @@ public class Repo {
 	public List<Document> getDocuments() {
 		return new ArrayList<Document>(this.docs);
 	}
-	
+
 	/**
 	 * Returns a document with a particular name within the repository.
 	 * @param searchName The name of document to be searched.
@@ -75,19 +76,19 @@ public class Repo {
 	 * @throws IllegalArgumentException if any argument is null.
 	 */
 	public Document getDocument(String searchName) {
-    	if (searchName == null) {
+		if (searchName == null) {
 			throw new IllegalArgumentException();
 		}
-    	
+
 		for (Document d : this.docs) {
 			if (d.getName().equals(searchName)) {
 				return d;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Returns the current version of the repository.
 	 * @return The version of the repository.
@@ -95,7 +96,7 @@ public class Repo {
 	public int getVersion() {
 		return this.version;
 	}
-	
+
 	/**
 	 * Returns the number of versions (or changes made) for this repository.
 	 * @return The version count.
@@ -104,9 +105,9 @@ public class Repo {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		return 0;
+		return versionRecords.size();
 	}
-	
+
 	/**
 	 * Returns the history of changes made to the repository. 
 	 * @return The string containing the history of changes.
@@ -115,9 +116,23 @@ public class Repo {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		return null;
+		String history = "";
+		SimpleStack<RepoCopy> tempStack = new SimpleStack<RepoCopy>();
+		while(!versionRecords.isEmpty()){
+			try {
+				// get the historical record
+				history += versionRecords.peek();
+				// push the current item to the temporary stack
+				tempStack.push(versionRecords.pop());
+			} catch (EmptyStackException e) {
+				e.printStackTrace();
+			} 
+		}
+		// restore the versionRecord stack
+		while(!tempStack.isEmpty())	versionRecords.push(tempStack.pop());
+		return history;
 	}
-	
+
 	/**
 	 * Returns the number of pending check-ins queued for approval.
 	 * @return The count of changes.
@@ -126,19 +141,21 @@ public class Repo {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		return 0;
+		return checkIns.size();
 	}
-	
-	
+
+
 	/**
 	 * Queue a new check-in for admin approval.
 	 * @param checkIn The check-in to be queued.
 	 * @throws IllegalArgumentException if any argument is null. 
 	 */
 	public void queueCheckIn(ChangeSet checkIn) {
-		// TODO: Implement this method. 
+		// TODO: Implement this method.
+		if (checkIn == null) throw new IllegalArgumentException();
+		checkIns.enqueue(checkIn);
 	}
-	
+
 	/**
 	 * Returns and removes the next check-in in the queue 
 	 * if the requesting user is the administrator.
@@ -151,13 +168,24 @@ public class Repo {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		return null;
+		if(requestingUser == null) throw new IllegalArgumentException();
+		ChangeSet nextItem = null;
+		// if the requester is the admin
+		if(requestingUser.equals(admin)){
+			try {
+				// get the next item in the queue
+				nextItem = checkIns.dequeue();
+			} catch (EmptyQueueException e) {
+				e.printStackTrace();
+			}
+		}
+		return nextItem;
 	}
-	
+
 	/**
 	 * Applies the changes contained in a particular checkIn and adds
 	 * it to the repository if the requesting user is the administrator.
- 	 * Also saves a copy of changed repository in the versionRecords.
+	 * Also saves a copy of changed repository in the versionRecords.
 	 * @param requestingUser The user requesting the approval.
 	 * @param checkIn The checkIn to approve.
 	 * @return ACCESS_DENIED if requestingUser is not the admin, SUCCESS 
@@ -168,9 +196,18 @@ public class Repo {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it whatever way you like.
+		if (requestingUser == null || checkIn == null)
+			throw new IllegalArgumentException();
+		// if the requester is the admin
+		if(requestingUser.equals(admin)){
+			// TODO not sure about the procedure
+			// apply the changes in the "checkIn"
+			// add it to the repo
+			// save a copy 
+		}
 		return null;
 	}
-	
+
 	/**
 	 * Reverts the repository to the previous version if present version is
 	 * not the oldest version and the requesting user is the administrator.
@@ -184,6 +221,16 @@ public class Repo {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it whatever way you like.
-		return null;
+		if(requestingUser == null) throw new IllegalArgumentException();
+		// if the requester is the admin
+		if(!requestingUser.equals(admin)){
+			return ErrorType.ACCESS_DENIED;
+		} else {
+			// if the current version if the oldest version...
+			if(getVersionCount() == 0) return ErrorType.NO_OLDER_VERSION;
+			// return success otherwise!
+			else return ErrorType.SUCCESS;
+			
+		}
 	}
 }

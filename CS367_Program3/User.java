@@ -31,7 +31,7 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		this.userName = null;
+		this.userName = userName;
 		this.subRepos = null;
 		this.pendingCheckIns = null;
 		this.workingCopies = null;
