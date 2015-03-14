@@ -1,7 +1,7 @@
 /**
  * This generic queue is implemented using circular array, with the 
- * front index at the beginning of the array, and the rear index at 
- * the end of the array. 
+ * front index at the 
+ * beginning of the array, and the rear index at the end of the array. 
  * 
  * @author Qihong
  * @param <E>
