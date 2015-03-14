@@ -131,6 +131,16 @@ public class PracticeListnodes {
 		return node.getData() + sum(node.getNext());
 	}
 
+
+	//	head = method2(head, str); //where str is a String
+	public static Listnode method2(Listnode curr, String s) {
+		if (curr == null) return null;
+		if (curr.getData().equals(s))
+			return method2(curr.getNext(), s);
+		curr.setNext(method2(curr.getNext(), s));
+		return curr;
+	}
+
 	/**
 	 * I want to understand list of nodes! 
 	 * */
@@ -139,50 +149,46 @@ public class PracticeListnodes {
 		// testing Integer Arraylist
 		Listnode<Integer> head0 = new Listnode<Integer>(0);
 		ArrayList<Integer> intList = new ArrayList<Integer>();
-//		intList.add(3);intList.add(3);intList.add(2);intList.add(2);
-//		intList.add(3);intList.add(3);intList.add(3);intList.add(3);
-//		intList.add(2);
-		for (int i = 0; i < 10; i ++){
-			intList.add(i);
-		}
-		initListnodes(intList, head0);
-		printListnodes(head0);
-		
-		System.out.println(sum(head0));
-		
-		printListnodes(head0);
+		//		intList.add(3);intList.add(3);intList.add(2);intList.add(2);
+		//		intList.add(3);intList.add(3);intList.add(3);intList.add(3);
+		//		intList.add(2);
+		//		for (int i = 0; i < 10; i ++){
+		//			intList.add(i);
+		//		}
+		//		initListnodes(intList, head0);
+		//		printListnodes(head0);
+		//		
+		//		System.out.println(sum(head0));
+		//		
+		//		printListnodes(head0);
 
 
 		//		int item = 7;
 		//		add(head0, item, 2);
 		//		printListnodes(head0);
 		//
-		//		// test String array
-		//		Listnode<String> head1 = new Listnode<String>("String array");
-		//		String[] strs = {"first", "second", "third", "fourth"};
-		//		initListnodes(strs, head1);
-		//		printListnodes(head1);
-		//
-		// test String ArrayList		
-		//		Listnode<String> head2 = new Listnode<String>("String ArrayList");
-		//		ArrayList<String> strList = new ArrayList<String>();
-		//		strList.add("first");strList.add("second");
-		//		strList.add("third");strList.add("fourth");
-		//		initListnodes(strList, head2);
-		//		printListnodes(head2);
-		//		
-		//		int pos = 2;
-		//		Listnode<String> curr = head2;
-		//		for (int i = 0 ; i < pos; i ++){
-		//			curr = curr.getNext();
-		//		}
-		//		System.out.println(curr.getData());
+		// test String array
+//		Listnode<String> head1 = new Listnode<String>("String array");
+//		String[] strs = {"first", "second", "third", "fourth"};
+//		initListnodes(strs, head1);
+//		printListnodes(head1);
 
+		//		 test String ArrayList		
+		Listnode<String> head2 = new Listnode<String>("String ArrayList");
+		ArrayList<String> strList = new ArrayList<String>();
+		strList.add("first");strList.add("second");strList.add("first");
+		strList.add("third");strList.add("fourth");
+		initListnodes(strList, head2);
 
+		
+		printListnodes(head2);
 
-
-
-
+		Listnode<String> head = method2(head2, "first"); //where str is a String
+		System.out.println(head.getNext());
+		printListnodes(head2);
+		
+		
+		
 
 	}
 

@@ -1,0 +1,31 @@
+
+public class Testing {
+
+	
+	
+	public static void main(String[] args) throws EmptyQueueException {
+		// TODO Auto-generated method stub
+		SimpleQueue<String> q = new SimpleQueue<String>();
+		
+		q.printIndex();
+		q.enqueue("a");
+		System.out.println(q.toString());
+		q.printIndex();
+		
+		
+		
+		q.enqueue("b");
+		System.out.println(q.toString());
+		q.printIndex();
+		
+		
+		q.enqueue("c");
+		System.out.println(q.toString());
+		q.printIndex();
+		
+		System.out.println(q.dequeue());
+		System.out.println(q.toString());
+		q.printIndex();
+	}
+
+}
