@@ -38,6 +38,9 @@ public class Repo {
 		// TODO: Implement this contructor. The following lines 
 		// are just meant for the method to compile. You should 
 		// remove or edit it in whatever way you like.
+		if(admin == null || repoName == null){
+			throw new IllegalArgumentException();
+		}
 		this.admin = admin;
 		this.repoName =  repoName;
 		this.docs = new ArrayList<Document>();
