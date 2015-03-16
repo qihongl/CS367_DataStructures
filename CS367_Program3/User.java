@@ -31,6 +31,7 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
+		if (userName == null) throw new IllegalArgumentException();
 		this.userName = userName;
 		this.subRepos = new ArrayList<String>();
 		this.pendingCheckIns = new ArrayList<ChangeSet>();
@@ -130,6 +131,10 @@ public class User {
 		// TODO: Implement this method. 
 		if (doc == null || type == null || repoName == null) 
 			throw new IllegalArgumentException();
+		if (getPendingCheckIn(repoName) == null) {
+			getPendingCheckIn(repoName).addChange(doc, type);
+		}
+		getPendingCheckIn(repoName).addChange(doc, type);
 	}
 	
 	/**
