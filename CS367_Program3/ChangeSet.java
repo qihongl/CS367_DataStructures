@@ -20,8 +20,11 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		this.repoName = null;
-		this.changes = null;
+		if (repoName == null) {
+			throw new IllegalArgumentException();
+		}
+		this.repoName = repoName;
+		this.changes = new SimpleQueue<Change>();
 	}
 	
 	/**
@@ -32,6 +35,9 @@ public class ChangeSet {
 	 */
 	public void addChange(Document doc, Change.Type type) {
 		// TODO: Implement this method. 
+	
+		changes.enqueue(new Change(doc,type));
+		
 	}
 	
 	/**
@@ -50,7 +56,9 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-    	return null;
+		
+		return null;
+		//return changes.dequeue();
 	}
 	
 	/**
@@ -61,7 +69,8 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-    	return 0;
+		
+    	return changes.size();
 	}
 	
 	@Override
