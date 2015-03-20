@@ -1,7 +1,0 @@
-
-public class Testing {
-	public static void main (String [] args){
-		DLinkedList<String> DLlist = new DLinkedList<>();
-		
-	}
-}

@@ -3,6 +3,8 @@
 	<section name="org.eclipse.ui.internal.ide.dialogs.ProjectContentsLocationArea">
 		<item value="/Users/Qihong/Code/github/CS367/CS367_Program1" key="OUTSIDE_LOCATION"/>
 	</section>
+	<section name="NewWizardAction">
+	</section>
 	<section name="ChooseWorkspaceDialogSettings">
 		<item value="217" key="DIALOG_X_ORIGIN"/>
 		<item value="222" key="DIALOG_Y_ORIGIN"/>

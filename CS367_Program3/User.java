@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  VersionControlApp.java
+// File:             User.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +50,7 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
+		if (userName == null) throw new IllegalArgumentException();
 		this.userName = userName;
 		this.subRepos = new ArrayList<String>();
 		this.pendingCheckIns = new ArrayList<ChangeSet>();
@@ -130,6 +150,10 @@ public class User {
 		// TODO: Implement this method. 
 		if (doc == null || type == null || repoName == null) 
 			throw new IllegalArgumentException();
+		if (getPendingCheckIn(repoName) == null) {
+			getPendingCheckIn(repoName).addChange(doc, type);
+		}
+		getPendingCheckIn(repoName).addChange(doc, type);
 	}
 	
 	/**

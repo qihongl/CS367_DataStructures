@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  VersionControlApp.java
+// File:             ChangeSet.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 /**
  * Represents a set of change(s) made to a repository.
  * @author
@@ -20,8 +39,11 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		this.repoName = null;
-		this.changes = null;
+		if (repoName == null) {
+			throw new IllegalArgumentException();
+		}
+		this.repoName = repoName;
+		this.changes = new SimpleQueue<Change>();
 	}
 	
 	/**
@@ -32,6 +54,8 @@ public class ChangeSet {
 	 */
 	public void addChange(Document doc, Change.Type type) {
 		// TODO: Implement this method. 
+		changes.enqueue(new Change(doc,type));
+		
 	}
 	
 	/**
@@ -50,7 +74,16 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-    	return null;
+		
+		Change tempChange = null;
+		try {
+			tempChange = changes.dequeue();
+		} catch (EmptyQueueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	// TODO delete: might not conform to the requirement 
+			System.out.println("In getNextChange");
+		}
+		return tempChange;
 	}
 	
 	/**
@@ -61,7 +94,8 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-    	return 0;
+		
+    	return changes.size();
 	}
 	
 	@Override

@@ -1,0 +1,48 @@
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+
+class Treenode <Integer> implements Iterable<Treenode>{
+
+	// fields
+	private int data;
+	private ListADT<Treenode> children;
+
+	Treenode(){
+		children = new ArrayList<Treenode<Integer>>();
+	}
+	
+	// methods
+	public int getData() { 
+		return data; 
+	}
+	
+	public void setData(int data) { 
+		this.data = data; 
+	}
+	
+	public ListADT<Treenode> getChildren() { 
+		return children; 
+	}
+
+	@Override
+	public Iterator<Treenode> iterator() {
+		return children.iterator();
+	}
+	
+	public static int findLargest(Treenode tree){
+		// base cases
+		if(tree == null) return 0;	
+		if (tree.getChildren().isEmpty()) return tree.getData();		
+		// start the recursive case
+		int maxData = 0;
+		int data = tree.getData();
+		if(data > maxData) 
+			maxData = data;
+//		return Math.max(maxData, findLargest(tree.getChildren()));
+		return 0;
+	}
+	
+
+}

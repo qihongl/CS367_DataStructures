@@ -1,4 +1,28 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Title:            VersionControlApp
+// Files:            VersionControlApp.java  Repo.java  RepoCopy.java
+// 		     VersionControlDb.java  User.java  Change.java
+//                   ChangeSet.java  StackADT.java  QueueADT.java
+// 		     EmptyStackException.java   EmptyQueueException.java
+//	 	     Document.java   ErrorType.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.Scanner;
+
 
 /**
  * Version control application. Implements the command line utility
@@ -119,7 +143,7 @@ public class VersionControlApp {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns the Cmd equivalent for a string command. 
 	 * @param strCmd The string command.
@@ -254,21 +278,53 @@ public class VersionControlApp {
 			case AR:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle AR.
+					if (VersionControlDb.findRepo(words[1])==null) {
+						VersionControlDb.addRepo(words[1], logInUser);
+						System.out.println(ErrorType.SUCCESS);
+					}else{
+						System.out.println(ErrorType.REPONAME_ALREADY_EXISTS);
+					}
 				}
 				break;
 			case DR:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle DR.
+					if (VersionControlDb.findRepo(words[1])==null) {
+						System.out.println(ErrorType.REPO_NOT_FOUND);
+					}else{
+						if(VersionControlDb.findRepo(words[1]).getAdmin()
+								!=logInUser){
+							System.out.println(ErrorType.ACCESS_DENIED);
+						}else{
+							VersionControlDb.delRepo(
+									VersionControlDb.findRepo(words[1]));
+							System.out.println(ErrorType.SUCCESS);
+						}
+					}
 				}
 				break;
 			case LR:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle LR.
+					System.out.println(logInUser.getAllSubRepos());
 				}
 				break;
-			case OR:
+			case OR://TODO not sure about this method/////////////////////////////////////////////////
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle OR.
+					if (VersionControlDb.findRepo(words[1])==null) {
+						System.out.println(ErrorType.REPO_NOT_FOUND);
+					}else{
+						if(!logInUser.isSubRepo(words[1])){
+							System.out.println(ErrorType.REPO_NOT_SUBSCRIBED);
+						}
+						if(logInUser.getWorkingCopy(words[1])==null){
+							logInUser.checkOut(words[1]);
+						}
+						System.out.println(ErrorType.SUCCESS);
+						processRepoMenu(logInUser, words[1]);
+
+					}
 				}
 				break;
 			case LO:
@@ -303,7 +359,8 @@ public class VersionControlApp {
 
 		String repoPrompt = "["+ logInUser.getName() + "@" + currRepo + "]: ";
 		boolean execute = true;
-
+		Repo curr = VersionControlDb.findRepo(currRepo);
+		RepoCopy working = logInUser.getWorkingCopy(currRepo);
 		while (execute) {
 
 			String[] words = prompt(repoPrompt);
@@ -313,56 +370,142 @@ public class VersionControlApp {
 			case SU:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle SU.
+					if(VersionControlDb.findUser(words[1])==null){
+						System.out.println(ErrorType.USER_NOT_FOUND);
+					}else{
+						if(curr.getAdmin()!=logInUser){
+							System.out.println(ErrorType.ACCESS_DENIED);
+						}else{
+							//TODO not sure about this
+							//Subscribes an existing user (with <username> ) to the 
+							//current repository if the logged-in user is the admin 
+							//of the current repository.
+							VersionControlDb.findUser(words[1]).subscribeRepo(currRepo);
+							System.out.println(ErrorType.SUCCESS);
+						}
+					}
 				}
 				break;
 			case LD:
 				if (validateInput1(words)) {
+
 					// TODO: Implement logic to handle LD.
+					System.out.println(working.getDocuments());
 				}
 				break;
 			case ED:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle ED.
+					if(working.getDoc(words[1])==null){
+						System.out.println(ErrorType.DOC_NOT_FOUND);
+					}else{
+						Document doc = working.getDoc(words[1]);
+						String ed = 
+								promptFileContent("Enter the file content and press q to quit: ");
+						doc.setContent(ed);
+						logInUser.addToPendingCheckIn(doc, Change.Type.EDIT, currRepo);
+						System.out.println(ErrorType.SUCCESS);
+					}
 				}					
 				break;
 			case AD:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle AD.
+					if(working.getDoc(words[1])!=null){
+						System.out.println(ErrorType.DOCNAME_ALREADY_EXISTS);
+					}else{
+						String content = 
+								promptFileContent("Enter the file content and press q to quit: ");
+						Document doc = new Document(words[1], content, currRepo);
+						working.addDoc(doc);
+						logInUser.addToPendingCheckIn(doc, Change.Type.ADD, currRepo);
+						System.out.println(ErrorType.SUCCESS);
+					}
 				}
 				break;
 			case DD:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle DD.
+					if(working.getDoc(words[1])==null){
+						System.out.println(ErrorType.DOC_NOT_FOUND);
+					}else{
+						Document doc = working.getDoc(words[1]);
+						working.delDoc(doc);
+						logInUser.addToPendingCheckIn(doc, Change.Type.DEL, currRepo);
+						System.out.println(ErrorType.SUCCESS);
+					}
 				}
 				break;
 			case VD:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle VD.
+					if(working.getDoc(words[1])==null){
+						System.out.println(ErrorType.DOC_NOT_FOUND);
+					}else{
+						Document doc = working.getDoc(words[1]);						
+						System.out.println(doc);
+					}
 				}
 				break;
 			case CI:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle CI.
+					System.out.println(logInUser.checkIn(currRepo));
 				}
 				break;
 			case CO:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle CO.
+					System.out.println(logInUser.checkOut(currRepo));
 				}
 				break;
 			case RC:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle RC.
+					if(logInUser.getPendingCheckIn(currRepo)==null){
+						System.out.println(ErrorType.NO_PENDING_CHECKINS);
+					}else{
+						if(curr.getAdmin()!=logInUser){
+							System.out.println(ErrorType.ACCESS_DENIED);
+						}else{
+							ChangeSet checkins = curr.getNextCheckIn(logInUser);
+	//						ChangeSet pending = logInUser.getPendingCheckIn(currRepo);
+							//TODO 	 prints the check-ins one by one//////////////////////////////////
+							// Iterator?
+//							while(pending.getNextChange()!=null){
+//								System.out.println(pending.getNextChange())
+							System.out.println("Approve changes? Press y to accept: ");
+							String line = scnr.nextLine();
+							if(line.equals("y")){
+								curr.approveCheckIn(logInUser, checkins);
+							}
+//							}
+							
+						System.out.println(ErrorType.SUCCESS);	
+						}
+					}
 				}
 				break;
 			case VH:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle VH.
+					System.out.println(curr.getVersionHistory());
 				}
 				break;
 			case RE:	
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle RE.
+					if(curr.getAdmin()!=logInUser){
+						System.out.println(ErrorType.ACCESS_DENIED);
+					}else{
+						//if the current version of repository is the oldest version
+						if(curr.getVersion() == 0){
+							System.out.println(ErrorType.NO_OLDER_VERSION);
+						}else{
+							curr.revert(logInUser);
+							System.out.println(ErrorType.SUCCESS);
+						}
+					}
 				}
 				break;
 			case HE:
@@ -394,7 +537,7 @@ public class VersionControlApp {
 		catch (Exception e) {
 			System.out.println(ErrorType.INTERNAL_ERROR);
 			// Uncomment this to print the stack trace for debugging purpose.
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		// Any clean up code goes here.
 		finally {

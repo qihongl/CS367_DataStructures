@@ -1,0 +1,29 @@
+class BinaryTreenode<K> {
+    // *** fields ***
+    private K key;
+    private BinaryTreenode<K> left, right;
+ 
+    // *** constructor ***
+    public BinaryTreenode(K key, BinaryTreenode<K> left, BinaryTreenode<K> right) {
+        this.key = key;
+        this.left = left;
+        this.right = right;
+    }
+ 
+    // *** methods ***
+    
+    // accessors (access to fields)
+    public K getKey() { return key; }
+    public BinaryTreenode<K> getLeft() { return left; }
+    public BinaryTreenode<K> getRight() { return right; }
+ 
+
+    // mutators (change fields)
+    public void setKey(K newK) { key = newK; }
+    public void setLeft(BinaryTreenode<K> newL) { left = newL; }
+    public void setRight(BinaryTreenode<K> newR) { right = newR; }
+    
+    public static int countMatches(BinaryTreenode<T> tree, T item){
+    	
+    }
+}

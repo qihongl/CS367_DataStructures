@@ -1,6 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  VersionControlApp.java
+// File:             Repo.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Represents a repository which stores and tracks changes to a collection of 
@@ -38,11 +56,16 @@ public class Repo {
 		// TODO: Implement this contructor. The following lines 
 		// are just meant for the method to compile. You should 
 		// remove or edit it in whatever way you like.
+		if(admin == null || repoName == null){
+			throw new IllegalArgumentException();
+		}
 		this.admin = admin;
 		this.repoName =  repoName;
 		this.docs = new ArrayList<Document>();
 		this.checkIns =  new SimpleQueue<ChangeSet>();
 		this.versionRecords =  new SimpleStack<RepoCopy>();
+		//version = getVersionCount()+1;////???????????????
+		
 	}
 
 	/**
@@ -193,20 +216,31 @@ public class Repo {
 	 * @throws IllegalArgumentException if any argument is null. 
 	 */
 	public ErrorType approveCheckIn(User requestingUser, ChangeSet checkIn) {
+		int ver = checkIn.getChangeCount()+1;
+		List<Document> docs = new ArrayList<Document>();
+		while(checkIn.getNextChange()!=null){
+			docs.add(checkIn.getNextChange().getDoc());
+		}
+		
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it whatever way you like.
 		if (requestingUser == null || checkIn == null)
 			throw new IllegalArgumentException();
+		
 		// if the requester is the admin
+		if(!requestingUser.equals(admin)){
+			return ErrorType.ACCESS_DENIED;
+		}	
 		if(requestingUser.equals(admin)){
-			// TODO not sure about the procedure
-			// apply the changes in the "checkIn"
+			// apply the changes in the "checkIn"			
 			// add it to the repo
+			checkIns.enqueue(checkIn);
 			// save a copy 
-			// asdas
+			versionRecords.push(new RepoCopy(repoName, ver, docs));
+			//version = version+1  ???
 		}
-		return null;
+		return ErrorType.SUCCESS;
 	}
 
 	/**
@@ -229,8 +263,11 @@ public class Repo {
 		} else {
 			// if the current version if the oldest version...
 			if(getVersionCount() == 0) return ErrorType.NO_OLDER_VERSION;
-			// return success otherwise!
-			else return ErrorType.SUCCESS;
+			// return success otherwise!			
+			else 
+//TODO				version = version -1; /////////////////////////
+//				versionRecords.pop();///////////////////////////////
+				return ErrorType.SUCCESS;
 			
 		}
 	}

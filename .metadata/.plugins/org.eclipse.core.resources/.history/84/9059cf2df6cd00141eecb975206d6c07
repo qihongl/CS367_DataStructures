@@ -1,0 +1,30 @@
+import java.util.Enumeration;
+import java.util.Iterator;
+
+import javax.swing.tree.TreeNode;
+
+
+public class CS367HW6_2 {
+	
+
+	
+    public static int countMatches(BinaryTreenode<String> tree, String item){
+    	if (tree == null) return 0;
+    	if (tree.getLeft() == null && tree.getRight() == null) {
+    		if(tree.getKey().equals(item)) return 1;
+    		else return 0;
+    	}
+    	
+    	return 0;
+    }
+
+	
+	public static void main(String [] args){
+			
+		Treenode<Integer> t = new Treenode<Integer>();
+		
+		System.out.println(t.getData());
+		System.out.println(t.getData());
+		System.out.println(t.getChildren());
+	}
+}

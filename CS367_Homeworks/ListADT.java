@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /**
  * A List is a general container storing a contiguous collection of items,
  * that is position-oriented using zero-based indexing and where duplicates
@@ -69,7 +71,9 @@ public interface ListADT<E> {
 	 * 
 	 * @return the number of items in the List
 	 */
-	int size();  
+	int size();
+
+	Iterator<Treenode> iterator();  
 }
 /**Everything contained in a Java interface is public so you 
  * do not need to include the public keyword in the method 

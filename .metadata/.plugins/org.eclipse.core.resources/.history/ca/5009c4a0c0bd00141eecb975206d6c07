@@ -1,8 +1,0 @@
-
-public class InsufficientCreditException extends Exception {
-	
-	
-	   public CustomException(String message) {
-	        super(message);
-	    }
-}
