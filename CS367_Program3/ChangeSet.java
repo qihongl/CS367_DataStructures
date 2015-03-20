@@ -35,7 +35,6 @@ public class ChangeSet {
 	 */
 	public void addChange(Document doc, Change.Type type) {
 		// TODO: Implement this method. 
-	
 		changes.enqueue(new Change(doc,type));
 		
 	}
@@ -57,8 +56,15 @@ public class ChangeSet {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		
-		return null;
-		//return changes.dequeue();
+		Change tempChange = null;
+		try {
+			tempChange = changes.dequeue();
+		} catch (EmptyQueueException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	// TODO delete: might not conform to the requirement 
+			System.out.println("In getNextChange");
+		}
+		return tempChange;
 	}
 	
 	/**
