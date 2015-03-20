@@ -46,7 +46,7 @@ public class Repo {
 		this.docs = new ArrayList<Document>();
 		this.checkIns =  new SimpleQueue<ChangeSet>();
 		this.versionRecords =  new SimpleStack<RepoCopy>();
-		version = getVersionCount()+1;////???????????????
+		//version = getVersionCount()+1;////???????????????
 		
 	}
 
