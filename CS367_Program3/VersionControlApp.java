@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Title:            VersionControlApp
-// Files:           VersionControlApp.java  Repo.java  RepoCopy.java
-// 		    VersionControlDb.java  User.java  Change.java
-//                  ChangeSet.java  StackADT.java  QueueADT.java
-// 		    EmptyStackException.java   EmptyQueueException.java
-//	 	    Document.java   ErrorType.java
+// Files:            VersionControlApp.java  Repo.java  RepoCopy.java
+// 		     VersionControlDb.java  User.java  Change.java
+//                   ChangeSet.java  StackADT.java  QueueADT.java
+// 		     EmptyStackException.java   EmptyQueueException.java
+//	 	     Document.java   ErrorType.java
 // Semester:         CS367 Spring 2015
 //
 // Author:           Qihong Lu
