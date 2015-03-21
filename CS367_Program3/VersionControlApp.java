@@ -305,28 +305,29 @@ public class VersionControlApp {
 				}
 				break;
 			case LR:
-				if (validateInput1(words)) {
+				if (validateInput1(words)) 
 					// TODO: Implement logic to handle LR.
-					System.out.println(logInUser.getAllSubRepos());
 					System.out.println(logInUser.toString());
-				}
 				break;
-			case OR://TODO not sure about this method/////////
+			case OR:	//TODO not sure about this method/////////
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle OR.
-					if (VersionControlDb.findRepo(words[1])==null) {
+					
+					// report error if there is no such repo
+					if (VersionControlDb.findRepo(words[1]) == null) {
 						System.out.println(ErrorType.REPO_NOT_FOUND);
-					}else{
-						if(!logInUser.isSubRepo(words[1])){
-							System.out.println(ErrorType.REPO_NOT_SUBSCRIBED);
-						}
-						if(logInUser.getWorkingCopy(words[1])==null){
-							logInUser.checkOut(words[1]);
-						}
+					// report error if user hasn't subscribe the repo  
+					} else if (!logInUser.isSubRepo(words[1])){
+						System.out.println(ErrorType.REPO_NOT_SUBSCRIBED);
+					// else, get working copy 
+					} else {
+						// TODO clearly wrong
+						logInUser.getWorkingCopy(words[1]);
+						logInUser.checkOut(words[1]);
 						System.out.println(ErrorType.SUCCESS);
 						processRepoMenu(logInUser, words[1]);
-
 					}
+					
 				}
 				break;
 			case LO:
@@ -478,9 +479,7 @@ public class VersionControlApp {
 						if(curr.getAdmin()!=logInUser){
 							System.out.println(ErrorType.ACCESS_DENIED);
 						}else{
-
 							//ChangeSet pending = logInUser.getPendingCheckIn(currRepo);
-							//TODO 	 prints the check-ins one by one//////////////////////////////////
 							ChangeSet checkins;
 							// loop over all checkins
 							for(int i = 0; i < curr.getCheckInCount(); i ++){

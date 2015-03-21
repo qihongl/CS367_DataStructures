@@ -215,30 +215,43 @@ public class Repo {
 	 * @throws IllegalArgumentException if any argument is null. 
 	 */
 	public ErrorType approveCheckIn(User requestingUser, ChangeSet checkIn) {
-		int ver = checkIn.getChangeCount()+1;
-		List<Document> docs = new ArrayList<Document>();
-		while(checkIn.getNextChange()!=null){
-			docs.add(checkIn.getNextChange().getDoc());
-		}
-
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it whatever way you like.
-		if (requestingUser == null || checkIn == null)
+		if(requestingUser == null || checkIn == null)
 			throw new IllegalArgumentException();
-
 		// if the requester is the admin
 		if(!requestingUser.equals(admin)){
 			return ErrorType.ACCESS_DENIED;
 		}else{
-			// apply the changes in the "checkIn"
-			
-			
+			// apply the changes in the "checkIn" in accordance to the type
+			for (int i = 0; i < checkIn.getChangeCount(); i ++){
+				Change curChange = checkIn.getNextChange();
+				switch (curChange.getType()) {
+				case ADD:
+					docs.add(curChange.getDoc());
+					break;
+				case DEL:
+					// find the document and remove it 
+					// TODO what if remove null
+					docs.remove(curChange.getDoc().getName());					
+					break;
+				case EDIT:
+					// get the document
+					Document tmpDoc = getDocument(curChange.getDoc().getName());
+					// set it with the new content
+					tmpDoc.setContent(curChange.getDoc().getContent()); 
+					break;
+				default:
+					break;
+				}
+
+			}
 			// add it to the repo
 			checkIns.enqueue(checkIn);
 			// save a copy 
-			versionRecords.push(new RepoCopy(repoName, ver, docs));
 			version ++;
+			versionRecords.push(new RepoCopy(repoName, version, docs));
 			return ErrorType.SUCCESS;
 		}
 	}

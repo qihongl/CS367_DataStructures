@@ -1,5 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
+
 // Main Class File:  VersionControlApp.java
 // File:             User.java
 // Semester:         CS367 Spring 2015
@@ -46,7 +47,6 @@ public class User {
 	 * @throws IllegalArgumentException if any argument is null. 
 	 */
 	public User(String userName) {
-		
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
@@ -84,6 +84,7 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
     	if (repoName == null) throw new IllegalArgumentException();
+    	// loop over all working copies
     	for (int i = 0; i < workingCopies.size(); i ++ ){
     		// if the reponame matches
     		if(workingCopies.get(i).getReponame().equals(repoName)){
@@ -152,7 +153,7 @@ public class User {
 		if (getPendingCheckIn(repoName) == null) {
 			getPendingCheckIn(repoName).addChange(doc, type);
 		}
-		getPendingCheckIn(repoName).addChange(doc, type);
+//		getPendingCheckIn(repoName).addChange(doc, type);	// Why add twice?
 	}
 	
 	/**
@@ -190,6 +191,7 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
+//		VersionControlDb.findRepo(repoName);
 		
     	return null;
 	}
@@ -209,6 +211,8 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
+		
+		
     	return null;
 	}
 		
