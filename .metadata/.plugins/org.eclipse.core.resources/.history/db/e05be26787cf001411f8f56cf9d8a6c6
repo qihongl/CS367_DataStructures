@@ -223,7 +223,7 @@ public class Repo {
 		// if the requester is the admin
 		if(!requestingUser.equals(admin)){
 			return ErrorType.ACCESS_DENIED;
-		} else {
+		}else{
 			// apply the changes in the "checkIn" in accordance to the type
 			for (int i = 0; i < checkIn.getChangeCount(); i ++){
 				Change curChange = checkIn.getNextChange();
@@ -245,11 +245,11 @@ public class Repo {
 				default:
 					break;
 				}
-			}	// end of for 
-			// add the checkIn to the repo
+			}
+			// add it to the repo
 			checkIns.enqueue(checkIn);
 			// save a copy 
-			version ++;	// increment the version
+			version ++;
 			versionRecords.push(new RepoCopy(repoName, version, docs));
 			return ErrorType.SUCCESS;
 		}
@@ -272,20 +272,21 @@ public class Repo {
 		// if the requester is the admin
 		if(!requestingUser.equals(admin)){
 			return ErrorType.ACCESS_DENIED;
-		// if the current version if the oldest version...
-		} else if(getVersionCount() == 0) { 
-			return ErrorType.NO_OLDER_VERSION;
 		} else {
-			// TODO to be confirmed 
-			// TODO might need to handle add, delete, edit separately 
-			version --;	// decrement the version 
-			try {
-				versionRecords.pop();	
-			} catch (EmptyStackException e) {
-				e.printStackTrace();
+			// if the current version if the oldest version...
+			if(getVersionCount() == 0) return ErrorType.NO_OLDER_VERSION;
+			// return success otherwise!			
+			else {
+				// TODO TO BE CONFIRMED 
+				version = version -1; 
+				try {
+					versionRecords.pop();
+				} catch (EmptyStackException e) {
+					e.printStackTrace();
+				}
+				return ErrorType.SUCCESS;	// TODO to be confirmed 
 			}
-			// return success otherwise!	
-			return ErrorType.SUCCESS;	 
+
 		}
-	}	// end of the revert
+	}
 }

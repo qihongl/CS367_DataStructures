@@ -272,20 +272,19 @@ public class Repo {
 		// if the requester is the admin
 		if(!requestingUser.equals(admin)){
 			return ErrorType.ACCESS_DENIED;
-		// if the current version if the oldest version...
 		} else if(getVersionCount() == 0) { 
+			// if the current version if the oldest version...
 			return ErrorType.NO_OLDER_VERSION;
 		} else {
-			// TODO to be confirmed 
-			// TODO might need to handle add, delete, edit separately 
-			version --;	// decrement the version 
-			try {
-				versionRecords.pop();	
-			} catch (EmptyStackException e) {
-				e.printStackTrace();
+				// return success otherwise!	
+				version --; 
+				try {
+					versionRecords.pop();
+				} catch (EmptyStackException e) {
+					e.printStackTrace();
+				}
+				return ErrorType.SUCCESS;	// TODO to be confirmed 
 			}
-			// return success otherwise!	
-			return ErrorType.SUCCESS;	 
-		}
+
 	}	// end of the revert
 }

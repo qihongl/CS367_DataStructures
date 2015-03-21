@@ -312,14 +312,14 @@ public class VersionControlApp {
 			case OR:	//TODO not sure about this method/////////
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle OR.
-
+					
 					// report error if there is no such repo
 					if (VersionControlDb.findRepo(words[1]) == null) {
 						System.out.println(ErrorType.REPO_NOT_FOUND);
-						// report error if user hasn't subscribe the repo  
+					// report error if user hasn't subscribe the repo  
 					} else if (!logInUser.isSubRepo(words[1])){
 						System.out.println(ErrorType.REPO_NOT_SUBSCRIBED);
-						// else, get working copy 
+					// else, get working copy 
 					} else {
 						// TODO clearly wrong
 						logInUser.getWorkingCopy(words[1]);
@@ -327,7 +327,7 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 						processRepoMenu(logInUser, words[1]);
 					}
-
+					
 				}
 				break;
 			case LO:
@@ -380,19 +380,21 @@ public class VersionControlApp {
 			case SU:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle SU.
-					// if user not found 
-					if(VersionControlDb.findUser(words[1]) == null){
+					if(VersionControlDb.findUser(words[1])==null){
 						System.out.println(ErrorType.USER_NOT_FOUND);
-					// if the user is not admin
-					}else if(curr.getAdmin()!=logInUser){
-						System.out.println(ErrorType.ACCESS_DENIED);
 					}else{
-						//TODO not sure about this
-						VersionControlDb.findUser(words[1]).subscribeRepo(currRepo);
-						System.out.println(ErrorType.SUCCESS);
+						if(curr.getAdmin()!=logInUser){
+							System.out.println(ErrorType.ACCESS_DENIED);
+						}else{
+							//TODO not sure about this
+							//Subscribes an existing user (with <username> ) to the 
+							//current repository if the logged-in user is the admin 
+							//of the current repository.
+							VersionControlDb.findUser(words[1]).subscribeRepo(currRepo);
+							System.out.println(ErrorType.SUCCESS);
+						}
 					}
 				}
-
 				break;
 			case LD:
 				if (validateInput1(words)) {

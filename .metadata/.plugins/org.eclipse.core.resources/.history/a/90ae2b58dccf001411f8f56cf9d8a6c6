@@ -380,14 +380,15 @@ public class VersionControlApp {
 			case SU:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle SU.
-					// if user not found 
-					if(VersionControlDb.findUser(words[1]) == null){
+					if(VersionControlDb.findUser(words[1])==null){
 						System.out.println(ErrorType.USER_NOT_FOUND);
-					// if the user is not admin
 					}else if(curr.getAdmin()!=logInUser){
 						System.out.println(ErrorType.ACCESS_DENIED);
 					}else{
 						//TODO not sure about this
+						//Subscribes an existing user (with <username> ) to the 
+						//current repository if the logged-in user is the admin 
+						//of the current repository.
 						VersionControlDb.findUser(words[1]).subscribeRepo(currRepo);
 						System.out.println(ErrorType.SUCCESS);
 					}

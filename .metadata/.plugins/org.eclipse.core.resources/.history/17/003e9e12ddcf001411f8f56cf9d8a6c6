@@ -276,11 +276,9 @@ public class Repo {
 		} else if(getVersionCount() == 0) { 
 			return ErrorType.NO_OLDER_VERSION;
 		} else {
-			// TODO to be confirmed 
-			// TODO might need to handle add, delete, edit separately 
 			version --;	// decrement the version 
 			try {
-				versionRecords.pop();	
+				versionRecords.pop();	// TODO to be confirmed
 			} catch (EmptyStackException e) {
 				e.printStackTrace();
 			}

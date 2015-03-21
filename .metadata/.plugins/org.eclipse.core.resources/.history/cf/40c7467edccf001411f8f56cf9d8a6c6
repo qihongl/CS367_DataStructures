@@ -388,6 +388,9 @@ public class VersionControlApp {
 						System.out.println(ErrorType.ACCESS_DENIED);
 					}else{
 						//TODO not sure about this
+						//Subscribes an existing user (with <username> ) to the 
+						//current repository if the logged-in user is the admin 
+						//of the current repository.
 						VersionControlDb.findUser(words[1]).subscribeRepo(currRepo);
 						System.out.println(ErrorType.SUCCESS);
 					}
