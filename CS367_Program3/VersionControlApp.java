@@ -280,6 +280,7 @@ public class VersionControlApp {
 					// TODO: Implement logic to handle AR.
 					if (VersionControlDb.findRepo(words[1])==null) {
 						VersionControlDb.addRepo(words[1], logInUser);
+						logInUser.subscribeRepo(words[1]);
 						System.out.println(ErrorType.SUCCESS);
 					}else{
 						System.out.println(ErrorType.REPONAME_ALREADY_EXISTS);
@@ -307,6 +308,7 @@ public class VersionControlApp {
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle LR.
 					System.out.println(logInUser.getAllSubRepos());
+					System.out.println(logInUser.toString());
 				}
 				break;
 			case OR://TODO not sure about this method/////////////////////////////////////////////////
