@@ -64,8 +64,7 @@ public class Repo {
 		this.docs = new ArrayList<Document>();
 		this.checkIns =  new SimpleQueue<ChangeSet>();
 		this.versionRecords =  new SimpleStack<RepoCopy>();
-		//version = getVersionCount()+1;////???????????????
-		
+
 	}
 
 	/**
@@ -221,26 +220,27 @@ public class Repo {
 		while(checkIn.getNextChange()!=null){
 			docs.add(checkIn.getNextChange().getDoc());
 		}
-		
+
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it whatever way you like.
 		if (requestingUser == null || checkIn == null)
 			throw new IllegalArgumentException();
-		
+
 		// if the requester is the admin
 		if(!requestingUser.equals(admin)){
 			return ErrorType.ACCESS_DENIED;
-		}	
-		if(requestingUser.equals(admin)){
-			// apply the changes in the "checkIn"			
+		}else{
+			// apply the changes in the "checkIn"
+			
+			
 			// add it to the repo
 			checkIns.enqueue(checkIn);
 			// save a copy 
 			versionRecords.push(new RepoCopy(repoName, ver, docs));
-			//version = version+1  ???
+			version ++;
+			return ErrorType.SUCCESS;
 		}
-		return ErrorType.SUCCESS;
 	}
 
 	/**
@@ -264,11 +264,17 @@ public class Repo {
 			// if the current version if the oldest version...
 			if(getVersionCount() == 0) return ErrorType.NO_OLDER_VERSION;
 			// return success otherwise!			
-			else 
-//TODO				version = version -1; /////////////////////////
-//				versionRecords.pop();///////////////////////////////
-				return ErrorType.SUCCESS;
-			
+			else {
+				// TODO TO BE CONFIRMED 
+				version = version -1; 
+				try {
+					versionRecords.pop();
+				} catch (EmptyStackException e) {
+					e.printStackTrace();
+				}
+				return ErrorType.SUCCESS;	// TODO to be confirmed 
+			}
+
 		}
 	}
 }

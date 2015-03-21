@@ -101,7 +101,6 @@ public class User {
 	 * @throws IllegalArgumentException if any argument is null. 
 	 */
 	public void subscribeRepo(String repoName) {
-		
 		if (repoName == null) {
 			throw new IllegalArgumentException();
 		}
@@ -191,6 +190,7 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
+		
     	return null;
 	}
 	

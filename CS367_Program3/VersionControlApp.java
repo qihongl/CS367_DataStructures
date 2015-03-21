@@ -311,7 +311,7 @@ public class VersionControlApp {
 					System.out.println(logInUser.toString());
 				}
 				break;
-			case OR://TODO not sure about this method/////////////////////////////////////////////////
+			case OR://TODO not sure about this method/////////
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle OR.
 					if (VersionControlDb.findRepo(words[1])==null) {
@@ -361,8 +361,15 @@ public class VersionControlApp {
 
 		String repoPrompt = "["+ logInUser.getName() + "@" + currRepo + "]: ";
 		boolean execute = true;
+		// find the current repo according to the repo name  
 		Repo curr = VersionControlDb.findRepo(currRepo);
+		// get the working copy of the current repo 
 		RepoCopy working = logInUser.getWorkingCopy(currRepo);
+		System.out.println("here");	//TODO DELETE
+		System.out.println(working == null);	//TODO DELETE
+		//		System.out.println()
+
+
 		while (execute) {
 
 			String[] words = prompt(repoPrompt);
@@ -390,9 +397,10 @@ public class VersionControlApp {
 				break;
 			case LD:
 				if (validateInput1(words)) {
-
 					// TODO: Implement logic to handle LD.
-					System.out.println(working.getDocuments());
+					//					System.out.println(working.getDocuments());
+					System.out.println(working.toString());
+					//					System.out.println("here");
 				}
 				break;
 			case ED:
@@ -470,20 +478,22 @@ public class VersionControlApp {
 						if(curr.getAdmin()!=logInUser){
 							System.out.println(ErrorType.ACCESS_DENIED);
 						}else{
-							ChangeSet checkins = curr.getNextCheckIn(logInUser);
-	//						ChangeSet pending = logInUser.getPendingCheckIn(currRepo);
+
+							//ChangeSet pending = logInUser.getPendingCheckIn(currRepo);
 							//TODO 	 prints the check-ins one by one//////////////////////////////////
-							// Iterator?
-//							while(pending.getNextChange()!=null){
-//								System.out.println(pending.getNextChange())
-							System.out.println("Approve changes? Press y to accept: ");
-							String line = scnr.nextLine();
-							if(line.equals("y")){
-								curr.approveCheckIn(logInUser, checkins);
-							}
-//							}
-							
-						System.out.println(ErrorType.SUCCESS);	
+							ChangeSet checkins;
+							// loop over all checkins
+							for(int i = 0; i < curr.getCheckInCount(); i ++){
+								// get the next checkin
+								checkins = curr.getNextCheckIn(logInUser);
+								// ask for approval  
+								System.out.println("Approve changes? Press y to accept: ");
+								String line = scnr.nextLine();
+								if(line.equals("y")){
+									curr.approveCheckIn(logInUser, checkins);
+								}
+							}// end of for
+							System.out.println(ErrorType.SUCCESS);	
 						}
 					}
 				}
