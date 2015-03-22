@@ -204,9 +204,12 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
+		// input validation 
 		if (repoName == null) throw new IllegalArgumentException();
-		Repo temp = VersionControlDb.findRepo(repoName);
-		if(temp == null) return ErrorType.REPO_NOT_FOUND;
+		// get the repo with the corresponding name 
+		Repo tempRepo = VersionControlDb.findRepo(repoName);
+		if(tempRepo == null) return ErrorType.REPO_NOT_FOUND;
+
 		
     	return null;
 	}
@@ -225,12 +228,19 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
+		// input validation
 		if (repoName == null) throw new IllegalArgumentException();
-		Repo temp = VersionControlDb.findRepo(repoName);
-		if(temp == null) return ErrorType.REPO_NOT_FOUND;
-		
-		
-    	return null;
+		// find the repo with the corresponding name
+		Repo tempRepo = VersionControlDb.findRepo(repoName);
+		if(tempRepo == null) return ErrorType.REPO_NOT_FOUND;
+		// check if the user is admin
+		if(tempRepo.getAdmin().equals(userName)){
+			workingCopies.add(new RepoCopy(repoName, tempRepo.getVersion(),
+					tempRepo.getDocuments()));
+			return ErrorType.SUCCESS;
+		} else {
+			return ErrorType.REPO_NOT_SUBSCRIBED;
+		}
 	}
 		
 	@Override

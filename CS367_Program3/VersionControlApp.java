@@ -320,7 +320,7 @@ public class VersionControlApp {
 						// report error if user hasn't subscribe the repo  
 					} else if (!logInUser.isSubRepo(words[1])){
 						System.out.println(ErrorType.REPO_NOT_SUBSCRIBED);
-						// else, get working copy 
+						// else the user should be subscribed to that repo  
 					} else {
 						// TODO clearly wrong
 						logInUser.getWorkingCopy(words[1]);
@@ -343,7 +343,7 @@ public class VersionControlApp {
 				break;
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
-			}
+			}	// end of switch
 
 		}
 	}
@@ -400,7 +400,7 @@ public class VersionControlApp {
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle LD.
 					// System.out.println(working.getDocuments());
-					//					logInUser.getWorkingCopy(currRepo);
+					//logInUser.getWorkingCopy(currRepo);
 					System.out.println(working.toString());
 					// System.out.println("here");
 				}
@@ -508,7 +508,7 @@ public class VersionControlApp {
 					// TODO: Implement logic to handle RE.
 					if(curr.getAdmin()!=logInUser){
 						System.out.println(ErrorType.ACCESS_DENIED);
-					//if the current version of repository is the oldest version
+						//if the current version of repository is the oldest version
 					}else if(curr.getVersion() == 0){
 						System.out.println(ErrorType.NO_OLDER_VERSION);
 					}else{
