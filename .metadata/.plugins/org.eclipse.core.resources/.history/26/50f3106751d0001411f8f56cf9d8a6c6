@@ -547,7 +547,7 @@ public class VersionControlApp {
 		catch (Exception e) {
 			System.out.println(ErrorType.INTERNAL_ERROR);
 			// Uncomment this to print the stack trace for debugging purpose.
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		// Any clean up code goes here.
 		finally {

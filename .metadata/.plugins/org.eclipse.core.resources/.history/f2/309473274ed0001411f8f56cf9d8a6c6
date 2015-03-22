@@ -282,7 +282,7 @@ public class VersionControlApp {
 						VersionControlDb.addRepo(words[1], logInUser);
 						logInUser.subscribeRepo(words[1]);
 						System.out.println(ErrorType.SUCCESS);
-						System.out.println(words[1] + " added");	// TODO delete
+						System.out.println(words[1] + " added");
 					}else{
 						System.out.println(ErrorType.REPONAME_ALREADY_EXISTS);
 					}
@@ -313,7 +313,7 @@ public class VersionControlApp {
 			case OR: //TODO not sure about this method/////////
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle OR.
-
+					
 					// report error if there is no such repo
 					if (VersionControlDb.findRepo(words[1]) == null) {
 						System.out.println(ErrorType.REPO_NOT_FOUND);
@@ -363,13 +363,10 @@ public class VersionControlApp {
 
 		String repoPrompt = "["+ logInUser.getName() + "@" + currRepo + "]: ";
 		boolean execute = true;
-
-
 		// find the current repo according to the repo name  
 		Repo curr = VersionControlDb.findRepo(currRepo);
 		// get the working copy of the current repo 
 		RepoCopy working = logInUser.getWorkingCopy(currRepo);
-
 		System.out.print("TEST: working == null: "); 
 		System.out.println(working == null);	//TODO DELETE
 
@@ -400,8 +397,8 @@ public class VersionControlApp {
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle LD.
 					// System.out.println(working.getDocuments());
-					//					logInUser.getWorkingCopy(currRepo);
-					System.out.println(working.toString());
+					logInUser.getWorkingCopy(currRepo);
+//					System.out.println(working.toString());
 					// System.out.println("here");
 				}
 				break;
@@ -423,7 +420,7 @@ public class VersionControlApp {
 			case AD:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle AD.
-
+					
 					if(working.getDoc(words[1]) != null){
 						System.out.println(ErrorType.DOCNAME_ALREADY_EXISTS);
 					} else {
@@ -496,6 +493,7 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);	
 					}
 				}
+
 				break;
 			case VH:
 				if (validateInput1(words)) {
@@ -508,15 +506,16 @@ public class VersionControlApp {
 					// TODO: Implement logic to handle RE.
 					if(curr.getAdmin()!=logInUser){
 						System.out.println(ErrorType.ACCESS_DENIED);
-					//if the current version of repository is the oldest version
-					}else if(curr.getVersion() == 0){
-						System.out.println(ErrorType.NO_OLDER_VERSION);
 					}else{
-						curr.revert(logInUser);
-						System.out.println(ErrorType.SUCCESS);
+						//if the current version of repository is the oldest version
+						if(curr.getVersion() == 0){
+							System.out.println(ErrorType.NO_OLDER_VERSION);
+						}else{
+							curr.revert(logInUser);
+							System.out.println(ErrorType.SUCCESS);
+						}
 					}
 				}
-
 				break;
 			case HE:
 				if (validateInput1(words)) {
@@ -547,7 +546,7 @@ public class VersionControlApp {
 		catch (Exception e) {
 			System.out.println(ErrorType.INTERNAL_ERROR);
 			// Uncomment this to print the stack trace for debugging purpose.
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		// Any clean up code goes here.
 		finally {
