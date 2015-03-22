@@ -278,10 +278,11 @@ public class VersionControlApp {
 			case AR:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle AR.
-					if (VersionControlDb.findRepo(words[1])==null) {
+					if (VersionControlDb.findRepo(words[1]) == null) {
 						VersionControlDb.addRepo(words[1], logInUser);
 						logInUser.subscribeRepo(words[1]);
 						System.out.println(ErrorType.SUCCESS);
+						System.out.println(words[1] + " added");
 					}else{
 						System.out.println(ErrorType.REPONAME_ALREADY_EXISTS);
 					}
@@ -309,10 +310,10 @@ public class VersionControlApp {
 					// TODO: Implement logic to handle LR.
 					System.out.println(logInUser.toString());
 				break;
-			case OR:	//TODO not sure about this method/////////
+			case OR: //TODO not sure about this method/////////
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle OR.
-
+					
 					// report error if there is no such repo
 					if (VersionControlDb.findRepo(words[1]) == null) {
 						System.out.println(ErrorType.REPO_NOT_FOUND);
@@ -366,10 +367,8 @@ public class VersionControlApp {
 		Repo curr = VersionControlDb.findRepo(currRepo);
 		// get the working copy of the current repo 
 		RepoCopy working = logInUser.getWorkingCopy(currRepo);
-		System.out.println("here");	//TODO DELETE
+		System.out.print("TEST: working == null: "); 
 		System.out.println(working == null);	//TODO DELETE
-		//		System.out.println()
-
 
 		while (execute) {
 
@@ -383,7 +382,7 @@ public class VersionControlApp {
 					// if user not found 
 					if(VersionControlDb.findUser(words[1]) == null){
 						System.out.println(ErrorType.USER_NOT_FOUND);
-					// if the user is not admin
+						// if the user is not admin
 					}else if(curr.getAdmin()!=logInUser){
 						System.out.println(ErrorType.ACCESS_DENIED);
 					}else{
@@ -397,9 +396,10 @@ public class VersionControlApp {
 			case LD:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle LD.
-					//					System.out.println(working.getDocuments());
-					System.out.println(working.toString());
-					//					System.out.println("here");
+					// System.out.println(working.getDocuments());
+					logInUser.getWorkingCopy(currRepo);
+//					System.out.println(working.toString());
+					// System.out.println("here");
 				}
 				break;
 			case ED:
@@ -407,10 +407,10 @@ public class VersionControlApp {
 					// TODO: Implement logic to handle ED.
 					if(working.getDoc(words[1])==null){
 						System.out.println(ErrorType.DOC_NOT_FOUND);
-					}else{
+					} else {
 						Document doc = working.getDoc(words[1]);
-						String ed = 
-								promptFileContent("Enter the file content and press q to quit: ");
+						String ed = promptFileContent("Enter the file "
+								+ "content and press q to quit: ");
 						doc.setContent(ed);
 						logInUser.addToPendingCheckIn(doc, Change.Type.EDIT, currRepo);
 						System.out.println(ErrorType.SUCCESS);
@@ -420,11 +420,12 @@ public class VersionControlApp {
 			case AD:
 				if (validateInput2(words)) {
 					// TODO: Implement logic to handle AD.
-					if(working.getDoc(words[1])!=null){
+					
+					if(working.getDoc(words[1]) != null){
 						System.out.println(ErrorType.DOCNAME_ALREADY_EXISTS);
-					}else{
-						String content = 
-								promptFileContent("Enter the file content and press q to quit: ");
+					} else {
+						String content =  promptFileContent("Enter the "
+								+ "file content and press q to quit: ");
 						Document doc = new Document(words[1], content, currRepo);
 						working.addDoc(doc);
 						logInUser.addToPendingCheckIn(doc, Change.Type.ADD, currRepo);
@@ -473,27 +474,26 @@ public class VersionControlApp {
 					// TODO: Implement logic to handle RC.
 					if(logInUser.getPendingCheckIn(currRepo)==null){
 						System.out.println(ErrorType.NO_PENDING_CHECKINS);
+					}else if(curr.getAdmin()!=logInUser){
+						System.out.println(ErrorType.ACCESS_DENIED);
 					}else{
-						if(curr.getAdmin()!=logInUser){
-							System.out.println(ErrorType.ACCESS_DENIED);
-						}else{
-							//ChangeSet pending = logInUser.getPendingCheckIn(currRepo);
-							ChangeSet checkins;
-							// loop over all checkins
-							for(int i = 0; i < curr.getCheckInCount(); i ++){
-								// get the next checkin
-								checkins = curr.getNextCheckIn(logInUser);
-								// ask for approval  
-								System.out.println("Approve changes? Press y to accept: ");
-								String line = scnr.nextLine();
-								if(line.equals("y")){
-									curr.approveCheckIn(logInUser, checkins);
-								}
-							}// end of for
-							System.out.println(ErrorType.SUCCESS);	
-						}
+						//ChangeSet pending = logInUser.getPendingCheckIn(currRepo);
+						ChangeSet checkins;
+						// loop over all checkins
+						for(int i = 0; i < curr.getCheckInCount(); i ++){
+							// get the next checkin
+							checkins = curr.getNextCheckIn(logInUser);
+							// ask for approval  
+							System.out.println("Approve changes? Press y to accept: ");
+							String line = scnr.nextLine();
+							if(line.equals("y")){
+								curr.approveCheckIn(logInUser, checkins);
+							}
+						}// end of for
+						System.out.println(ErrorType.SUCCESS);	
 					}
 				}
+
 				break;
 			case VH:
 				if (validateInput1(words)) {

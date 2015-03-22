@@ -19,6 +19,7 @@
 //
 //////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -83,15 +84,28 @@ public class User {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
+    	System.out.println("In getWorkingCopies method: ");	//TODO delete
     	if (repoName == null) throw new IllegalArgumentException();
     	// loop over all working copies
-    	for (int i = 0; i < workingCopies.size(); i ++ ){
-    		// if the reponame matches
-    		if(workingCopies.get(i).getReponame().equals(repoName)){
-    			// return that copy
-    			return workingCopies.get(i);
-    		}
+    	Iterator<RepoCopy> itr = workingCopies.iterator();
+    	while(itr.hasNext()){
+    		System.out.println("Print all repo names: ");	// TODO delete
+    		RepoCopy tempCopy = itr.next();	
+    		System.out.println(tempCopy.getReponame());
+    		if (tempCopy.getReponame().equals(repoName))	// if found a match 
+    			return tempCopy;	// return it 
     	}
+    	
+//    	for (int i = 0; i < workingCopies.size(); i ++ ){
+//    		// if the reponame matches
+//    		System.out.println("In getWorkingCopies method: ");
+//    		System.out.println("Print all repo names: ");
+//    		System.out.println(workingCopies.get(i).getReponame());
+//    		if(workingCopies.get(i).getReponame().equals(repoName)){
+//    			// return that copy
+//    			return workingCopies.get(i);
+//    		}
+//    	}
     	return null;
 	}
     
@@ -191,7 +205,8 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
-//		VersionControlDb.findRepo(repoName);
+		Repo temp = VersionControlDb.findRepo(repoName);
+		if(temp == null) return ErrorType.REPO_NOT_FOUND;
 		
     	return null;
 	}
@@ -211,6 +226,8 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
+		Repo temp = VersionControlDb.findRepo(repoName);
+		if(temp == null) return ErrorType.REPO_NOT_FOUND;
 		
 		
     	return null;

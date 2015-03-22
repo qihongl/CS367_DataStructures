@@ -143,7 +143,11 @@ public class Repo {
 		while(!versionRecords.isEmpty()){
 			try {
 				// get the historical record
-				history += versionRecords.peek();
+				history += versionRecords.peek().toString();
+				System.out.println("IN VERSION HISTORY");	// TODO delete the following print
+				System.out.println(versionRecords.peek().toString());
+				System.out.println(versionRecords.peek());
+				System.out.println(versionRecords.toString());
 				// push the current item to the temporary stack
 				tempStack.push(versionRecords.pop());
 			} catch (EmptyStackException e) {
