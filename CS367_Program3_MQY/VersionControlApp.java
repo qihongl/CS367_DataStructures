@@ -162,7 +162,8 @@ public class VersionControlApp {
 	 * Handles add user. Checks if a user with name "username" already exists; 
 	 * if exists the user is not registered. 
 	 * @param username The user name.
-	 * @return USER_ALREADY_EXISTS if the user already exists, SUCCESS otherwise.
+	 * @return USER_ALREADY_EXISTS if the user already exists, 
+	 * SUCCESS otherwise.
 	 */
 	private static ErrorType handleAddUser(String username) {
 		if (VersionControlDb.addUser(username) != null) {
@@ -282,7 +283,7 @@ public class VersionControlApp {
 						VersionControlDb.addRepo(words[1], logInUser);
 						logInUser.subscribeRepo(words[1]);
 						System.out.println(ErrorType.SUCCESS);
-						//System.out.println(words[1] + " added");	// TODO delete
+						//System.out.println(words[1] + " added");	
 					}else{
 						System.out.println(ErrorType.REPONAME_ALREADY_EXISTS);
 					}
