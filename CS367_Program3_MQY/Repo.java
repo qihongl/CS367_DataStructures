@@ -151,7 +151,7 @@ public class Repo {
 				// push the current item to the temporary stack
 				tempStack.push(versionRecords.pop());
 			} catch (EmptyStackException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			} 
 		}
 		//System.out.println();
@@ -203,7 +203,7 @@ public class Repo {
 				// get the next item in the queue
 				nextItem = checkIns.dequeue();
 			} catch (EmptyQueueException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return nextItem;
@@ -230,7 +230,10 @@ public class Repo {
 			return ErrorType.ACCESS_DENIED;
 		} else {
 			// apply the changes in the "checkIn" in accordance to the type
-			for (int i = 0; i < checkIn.getChangeCount(); i ++){
+			//System.out.println(checkIn.getChangeCount());
+			int c = checkIn.getChangeCount();
+			for (int i = 0; i < c; i ++){
+				//System.out.println(checkIn.getChangeCount());
 				Change curChange = checkIn.getNextChange();
 				switch (curChange.getType()) {
 				case ADD:
@@ -250,6 +253,7 @@ public class Repo {
 				default:
 					break;
 				}
+			//System.out.println("Repo.approveCheckIn() done"+i);
 			}	// end of for 		
 			version ++;	// increment the version
 			versionRecords.push(new RepoCopy(repoName, version, docs));
@@ -285,7 +289,7 @@ public class Repo {
 			try {
 				versionRecords.pop();	
 			} catch (EmptyStackException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			// return success otherwise!	
 			docs.clear();
@@ -296,7 +300,7 @@ public class Repo {
 				}
 			} catch (EmptyStackException e) {
 
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 
 			return ErrorType.SUCCESS;	 
