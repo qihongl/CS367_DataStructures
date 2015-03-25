@@ -251,6 +251,7 @@ public class VersionControlApp {
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
 			}
+
 		}
 	}
 
@@ -327,6 +328,7 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 						processRepoMenu(logInUser, words[1]);
 					}
+
 				}
 				break;
 			case LO:
@@ -342,6 +344,7 @@ public class VersionControlApp {
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
 			}	// end of switch
+
 		}
 	}
 
@@ -360,6 +363,7 @@ public class VersionControlApp {
 
 		String repoPrompt = "["+ logInUser.getName() + "@" + currRepo + "]: ";
 		boolean execute = true;
+
 
 		// find the current repo according to the repo name  
 		Repo curr = VersionControlDb.findRepo(currRepo);
@@ -388,6 +392,7 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 					}
 				}
+
 				break;
 			case LD:
 				if (validateInput1(words)) {
@@ -480,39 +485,50 @@ public class VersionControlApp {
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle RC.
 					//TODO Change Set
+					//System.out.println(curr.checkIns.size());
+					ChangeSet temp = curr.getNextCheckIn(curr.getAdmin());
+					if(temp==null){
+						System.out.println(ErrorType.NO_PENDING_CHECKINS);
+						break;
+					}
+					
 					if(curr.getAdmin()!=logInUser){
+						//System.out.println(curr.checkIns.size());
 						System.out.println(ErrorType.ACCESS_DENIED);
+						curr.queueCheckIn(temp);
+						//System.out.println(curr.checkIns.size());
 					}else{
-						ChangeSet temp = curr.getNextCheckIn(logInUser);
-						if(temp==null){
-							System.out.println(ErrorType.NO_PENDING_CHECKINS);
-						}else {
-							System.out.println(temp.toString());
-							// ask for approval  
-							System.out.print("\nApprove changes? Press y to "
-									+ "accept: ");
-							String line = scnr.nextLine();
-							if(line.equals("y")){
-								curr.approveCheckIn(logInUser, temp);
-							}
-							ChangeSet checkins;								
-							// loop over all checkins								
-							for(int i = 0; i < curr.getCheckInCount(); i ++){
-								// get the next checkin
-								checkins = curr.getNextCheckIn(logInUser);
-								System.out.println(checkins.toString());
-								// ask for approval  
-								System.out.print("\nApprove changes? Press y to"
-										+ " accept: ");
-								String line2 = scnr.nextLine();
-								if(line2.equals("y")){
-									curr.approveCheckIn(logInUser, checkins);
-								}
-							}
-							System.out.println(ErrorType.SUCCESS);	
+						//System.out.println("else");
+						//ChangeSet temp = curr.getNextCheckIn(logInUser);
+						//if(temp==null){
+						//	System.out.println(ErrorType.NO_PENDING_CHECKINS);
+						//}else {
+						System.out.println(temp.toString());
+						// ask for approval  
+						System.out.print("Approve changes? Press y to "
+								+ "accept: ");
+						String line = scnr.nextLine();
+						if(line.equals("y")){
+							curr.approveCheckIn(logInUser, temp);
 						}
+						ChangeSet checkins;								
+						// loop over all checkins								
+						for(int i = 0; i < curr.getCheckInCount(); i ++){
+							// get the next checkin
+							checkins = curr.getNextCheckIn(logInUser);
+							System.out.println(checkins.toString());
+							// ask for approval  
+							System.out.print("Approve changes? Press y to"
+									+ " accept: ");
+							String line2 = scnr.nextLine();
+							if(line2.equals("y")){
+								curr.approveCheckIn(logInUser, checkins);
+							}
+						}
+						System.out.println(ErrorType.SUCCESS);	
 					}
 				}
+				//System.out.println(curr.checkIns.size());
 				break;
 			case VH:
 				if (validateInput1(words)) {
@@ -535,6 +551,7 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 					}
 				}
+
 				break;
 			case HE:
 				if (validateInput1(words)) {
@@ -550,6 +567,7 @@ public class VersionControlApp {
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
 			}
+
 		}
 	}
 
@@ -565,7 +583,7 @@ public class VersionControlApp {
 		catch (Exception e) {
 			System.out.println(ErrorType.INTERNAL_ERROR);
 			// Uncomment this to print the stack trace for debugging purpose.
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		// Any clean up code goes here.
 		finally {
