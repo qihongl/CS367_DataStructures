@@ -500,7 +500,8 @@ public class VersionControlApp {
 			case VH:
 				if (validateInput1(words)) {
 					// TODO: Implement logic to handle VH.
-					System.out.println(curr.getVersionHistory());
+					System.out.println(curr.getVersionHistory().toString());
+					
 				}
 				break;
 			case RE:	

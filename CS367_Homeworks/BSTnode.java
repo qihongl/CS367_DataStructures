@@ -16,12 +16,10 @@ class BSTnode<K> {
     public K getKey() { return key; }
     public BSTnode<K> getLeft() { return left; }
     public BSTnode<K> getRight() { return right; }
- 
 
     // mutators (change fields)
     public void setKey(K newK) { key = newK; }
     public void setLeft(BSTnode<K> newL) { left = newL; }
     public void setRight(BSTnode<K> newR) { right = newR; }
     
-
 }

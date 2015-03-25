@@ -249,10 +249,7 @@ public class Repo {
 				default:
 					break;
 				}
-			}	// end of for 
-			// add the checkIn to the repo
-			checkIns.enqueue(checkIn);
-			// save a copy 
+			}	// end of for 		
 			version ++;	// increment the version
 			versionRecords.push(new RepoCopy(repoName, version, docs));
 			return ErrorType.SUCCESS;

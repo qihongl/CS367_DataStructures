@@ -1,0 +1,26 @@
+class BSTnode<K, V> {
+    // *** fields ***
+    private K key;
+    private V value;
+    private BSTnode<K, V> left, right;
+ 
+    // *** constructor ***
+    public BSTnode(K key, BSTnode<K, V> left, BSTnode<K, V> right) {
+        this.key = key;
+        this.left = left;
+        this.right = right;
+    }
+ 
+    // *** methods ***
+    
+    // accessors (access to fields)
+    public K getKey() { return key; }
+    public BSTnode<K, V> getLeft() { return left; }
+    public BSTnode<K, V> getRight() { return right; }
+ 
+
+    // mutators (change fields)
+    public void setKey(K newK) { key = newK; }
+    public void setLeft(BSTnode<K, V> newL) { left = newL; }
+    public void setRight(BSTnode<K, V> newR) { right = newR; }
+}

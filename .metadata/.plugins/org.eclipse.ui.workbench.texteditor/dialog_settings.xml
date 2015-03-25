@@ -6,24 +6,24 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="K" key="selection"/>
+		<item value="T" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="V"/>
+			<item value="here"/>
+			<item value="RC"/>
 			<item value="T"/>
 			<item value="K"/>
 			<item value="BinaryTreeNode"/>
 			<item value="BST"/>
 			<item value="BSTnode"/>
-			<item value="printWishList"/>
-			<item value="out"/>
-			<item value="stream"/>
 		</list>
 		<list key="replacehistory">
-			<item value="K"/>
 			<item value="T"/>
+			<item value="K"/>
 			<item value="BinaryTreenode"/>
 			<item value="BinaryTree"/>
 			<item value="BinaryTreeNode"/>
