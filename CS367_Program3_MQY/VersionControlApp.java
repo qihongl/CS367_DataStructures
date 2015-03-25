@@ -251,7 +251,6 @@ public class VersionControlApp {
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
 			}
-
 		}
 	}
 
@@ -328,7 +327,6 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 						processRepoMenu(logInUser, words[1]);
 					}
-
 				}
 				break;
 			case LO:
@@ -344,7 +342,6 @@ public class VersionControlApp {
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
 			}	// end of switch
-
 		}
 	}
 
@@ -363,7 +360,6 @@ public class VersionControlApp {
 
 		String repoPrompt = "["+ logInUser.getName() + "@" + currRepo + "]: ";
 		boolean execute = true;
-
 
 		// find the current repo according to the repo name  
 		Repo curr = VersionControlDb.findRepo(currRepo);
@@ -392,7 +388,6 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 					}
 				}
-
 				break;
 			case LD:
 				if (validateInput1(words)) {
@@ -540,7 +535,6 @@ public class VersionControlApp {
 						System.out.println(ErrorType.SUCCESS);
 					}
 				}
-
 				break;
 			case HE:
 				if (validateInput1(words)) {
@@ -556,7 +550,6 @@ public class VersionControlApp {
 			default:
 				System.out.println(ErrorType.UNKNOWN_COMMAND);
 			}
-
 		}
 	}
 
