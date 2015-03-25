@@ -128,7 +128,7 @@ public class SimpleQueue<E> implements QueueADT<E> {
 		// TODO might not be the right way of displaying 
 		String s = ""; 
 		for(int i = frontIndex; i <= rearIndex; i ++){
-			s += items[i].toString() + " ";
+			s += items[i].toString() + "\n";
 		}
 		s += "";
 		return s;
