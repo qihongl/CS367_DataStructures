@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
-
 // Main Class File:  VersionControlApp.java
 // File:             User.java
 // Semester:         CS367 Spring 2015
@@ -84,7 +83,7 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
-		for (int i = workingCopies.size()-1; i >=0 ; i -- ){
+		for (int i = 0; i <workingCopies.size(); i ++ ){
 			// if the reponame matches
 			if(workingCopies.get(i).getReponame().equals(repoName)){
 				// return that copy
