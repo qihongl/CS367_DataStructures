@@ -1,0 +1,26 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+
+public class FileSystemMain {
+
+	public static void main(String[] args) {
+
+		System.out.println("hello world");
+		//TODO
+		
+		File inputFile = new File(args[0]);
+		try {
+			Scanner scnr = new Scanner(inputFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}	
+	
+	
+}

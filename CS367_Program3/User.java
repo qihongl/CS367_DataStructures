@@ -1,3 +1,23 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+
+// Main Class File:  VersionControlApp.java
+// File:             User.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.*;
 
 /**
@@ -11,7 +31,8 @@ public class User {
 	/* The name of the user. It's a unique identifier for a user. */
 	private final String userName;
 
-	/*  The list of names of the repositories to which the user is subscribed. */
+	/*  The list of names of the repositories to which the user is
+	 *  subscribed. */
 	private final List<String> subRepos;
 
 	/* The list of all pending check-ins not yet made by the user. */
@@ -63,10 +84,12 @@ public class User {
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
 		if (repoName == null) throw new IllegalArgumentException();
-		for (int i = 0; i < workingCopies.size(); i ++ ){
+		for (int i = workingCopies.size()-1; i >=0 ; i -- ){
 			// if the reponame matches
 			if(workingCopies.get(i).getReponame().equals(repoName)){
 				// return that copy
+				//System.out.println("get");
+				//System.out.println(workingCopies.get(i).getVersion());
 				return workingCopies.get(i);
 			}
 		}
@@ -125,7 +148,8 @@ public class User {
 	 * @param repoName The name of the repository on which the change is done.
 	 * @throws IllegalArgumentException if any argument is null. 
 	 */
-	public void addToPendingCheckIn(Document doc, Change.Type type, String repoName) {
+	public void addToPendingCheckIn(Document doc, 
+			Change.Type type, String repoName) {
 		// TODO: Implement this method. 
 		//Change newChange = new Change(doc,type);
 		if (doc == null || type == null || repoName == null) 
@@ -145,6 +169,7 @@ public class User {
 		if(!changeAdded){
 			ChangeSet tempPendingCheckIn = new ChangeSet(repoName);
 			tempPendingCheckIn.addChange(doc, type);
+			pendingCheckIns.add(tempPendingCheckIn);
 		}
 	}
 
@@ -209,26 +234,29 @@ public class User {
 		if (repoName == null) throw new IllegalArgumentException();
 		Repo temp = VersionControlDb.findRepo(repoName);
 		if (!isSubRepo(repoName)) return ErrorType.REPO_NOT_SUBSCRIBED;
-		
-		//1.deleting any old working copy for repoName in the workingCopies list,
+
+		//1.deleting any old working copy for repoName in the workingCopies 
+		//list,
 		for(int i = 0; i<workingCopies.size(); i++){
 			if(workingCopies.get(i).getReponame()==repoName)
 				workingCopies.remove(i);
 		}
-		
-		//2.deleting any pending check-in for repoName in the pendingCheckIns list,
+
+		//2.deleting any pending check-in for repoName in the pendingCheckIns 
+		//list,
 		for(int i = 0; i<pendingCheckIns.size(); i++){
 			if(pendingCheckIns.get(i).getReponame()==repoName)
 				pendingCheckIns.remove(i);
 		}
 		//3.creating a new working copy (or RepoCopy object) for the current 		
 		//version of repoName containing all its current documents and 
-		RepoCopy newOne = new RepoCopy(repoName, temp.getVersion()+1,
+		//System.out.println(temp.getVersion());
+		RepoCopy newOne = new RepoCopy(repoName, temp.getVersion(),
 				temp.getDocuments());
 		//4.adding the new working copy to the workingCopies list.
-		
+
 		workingCopies.add(newOne);
-		
+
 		return ErrorType.SUCCESS;
 	}
 

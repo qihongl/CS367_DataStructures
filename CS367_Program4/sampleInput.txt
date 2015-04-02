@@ -1,0 +1,11 @@
+root
+ash, pikachu, rock, voldemort, harry
+root/cs302
+root/cs302/h1
+root/cs302/h1/h1.txt hi
+root/cs367
+root/cs367/h1
+root/cs367/h1/h1.txt hello
+root/cs367/h1/soln.txt solved!!!
+root/cs367/p1
+root/cs367/p1/ques.txt It is difficult

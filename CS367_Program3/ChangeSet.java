@@ -23,13 +23,13 @@
  *
  */
 public class ChangeSet {
-	
+
 	/* Queue of changes contained within the change set. */
 	private final  QueueADT<Change> changes;
-	
+
 	/* The name of the repository to which the changes belongs. */
 	private final String repoName;
-	
+
 	/**
 	 * Constructs a change set object. 
 	 * @param reponame The name of the repository.
@@ -45,7 +45,7 @@ public class ChangeSet {
 		this.repoName = repoName;
 		this.changes = new SimpleQueue<Change>();
 	}
-	
+
 	/**
 	 * Adds (queues) a new change to the change set.
 	 * @param doc The doc to which the change was done.
@@ -55,9 +55,9 @@ public class ChangeSet {
 	public void addChange(Document doc, Change.Type type) {
 		// TODO: Implement this method. 
 		changes.enqueue(new Change(doc,type));
-		
+
 	}
-	
+
 	/**
 	 * Returns the repository's name to which this change list belongs.
 	 * @return The repository's name.
@@ -65,7 +65,7 @@ public class ChangeSet {
 	public String getReponame() {
 		return this.repoName;
 	}
-	
+
 	/**
 	 * Returns and removes the next change from the change set.
 	 * @return The next change if present, null otherwise.
@@ -74,30 +74,30 @@ public class ChangeSet {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		
+
 		Change tempChange = null;
 		try {
 			tempChange = changes.dequeue();
 		} catch (EmptyQueueException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();	// TODO delete: might not conform to the requirement 
-			System.out.println("In getNextChange");
+			e.printStackTrace();	
+			//System.out.println("In getNextChange");
 		}
 		return tempChange;
 	}
-	
+
 	/**
-	* Returns the count of changes contained in the change set.
-	* @return The count of changes.
-	*/
+	 * Returns the count of changes contained in the change set.
+	 * @return The count of changes.
+	 */
 	public int getChangeCount() {
 		// TODO: Implement this method. The following lines 
 		// are just meant for the method to compile. You can 
 		// remove or edit it in whatever way you like.
-		
-    	return changes.size();
+
+		return changes.size();
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.changes.toString();	

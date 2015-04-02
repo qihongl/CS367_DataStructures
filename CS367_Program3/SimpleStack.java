@@ -106,7 +106,7 @@ public class SimpleStack<E> implements StackADT<E>{
 	public String toString(){
 		String s = ""; 
 		for(int i = numItems - 1; i >= 0; i --){
-			s += (String)items[i] + "\n";
+			s += items[i].toString() + "\n";
 		}
 		return s;
 	}

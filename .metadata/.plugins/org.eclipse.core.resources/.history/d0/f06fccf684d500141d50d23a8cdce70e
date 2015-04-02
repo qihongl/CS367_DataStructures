@@ -1,0 +1,21 @@
+import java.io.File;
+
+
+public class FileSystemMain {
+
+	private static Scanner scnr;
+
+	public static void main(String[] args) {
+
+		System.out.println("hello world");
+		//TODO
+		
+		File inputFile = new File(args[0]);
+		
+			
+		
+		
+	}	
+	
+	
+}

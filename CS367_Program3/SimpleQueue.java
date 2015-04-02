@@ -51,28 +51,28 @@ public class SimpleQueue<E> implements QueueADT<E> {
 		return false;
 	}
 
-	
+
 	public void enqueue(E ob) {
 		if(ob == null) throw new IllegalArgumentException();
-	    // check for full array and expand if necessary
-	    if (items.length == numItems) {
-	        E[] tmp = (E[])(new Object[items.length*2]);
-	        System.arraycopy(items, frontIndex, tmp, frontIndex,
-		                 items.length-frontIndex);
-	        if (frontIndex != 0) {
-	            System.arraycopy(items, 0, tmp, items.length, frontIndex);
-	        }
-	        items = tmp;
-		    rearIndex = frontIndex + numItems - 1;
-	    }
-	    // if the front index is -1, simply increment it
+		// check for full array and expand if necessary
+		if (items.length == numItems) {
+			E[] tmp = (E[])(new Object[items.length*2]);
+			System.arraycopy(items, frontIndex, tmp, frontIndex,
+					items.length-frontIndex);
+			if (frontIndex != 0) {
+				System.arraycopy(items, 0, tmp, items.length, frontIndex);
+			}
+			items = tmp;
+			rearIndex = frontIndex + numItems - 1;
+		}
+		// if the front index is -1, simply increment it
 		if(frontIndex == -1) 
 			frontIndex = 0;
-	    // use auxiliary method to increment rear index with wraparound
-	    rearIndex = incrementIndex(rearIndex);
-	    // insert new item at rear of queue
-	    items[rearIndex] = ob;
-	    numItems++;
+		// use auxiliary method to increment rear index with wraparound
+		rearIndex = incrementIndex(rearIndex);
+		// insert new item at rear of queue
+		items[rearIndex] = ob;
+		numItems++;
 	}
 
 	/**
@@ -126,11 +126,11 @@ public class SimpleQueue<E> implements QueueADT<E> {
 	@Override
 	public String toString(){
 		// TODO might not be the right way of displaying 
-		String s = "Queue: |F| "; 
+		String s = ""; 
 		for(int i = frontIndex; i <= rearIndex; i ++){
-			s += (String)items[i] + " ";
+			s += items[i].toString() + " ";
 		}
-		s += " |R|";
+		s += "";
 		return s;
 	}
 }
