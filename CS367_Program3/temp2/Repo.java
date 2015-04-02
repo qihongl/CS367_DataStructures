@@ -43,7 +43,8 @@ public class Repo {
 	/* The check-ins queued by different users for admin approval. */
 	private final QueueADT<ChangeSet> checkIns;
 
-	/* The stack of copies of the repo at points when any check-in was applied. */
+	/* The stack of copies of the repo at points when any check-in
+	 *  was applied. */
 	private final StackADT<RepoCopy> versionRecords; 
 
 	/**
@@ -64,7 +65,7 @@ public class Repo {
 		this.docs = new ArrayList<Document>();
 		this.checkIns =  new SimpleQueue<ChangeSet>();
 		this.versionRecords =  new SimpleStack<RepoCopy>();
-
+		versionRecords.push(new RepoCopy(repoName, 0, docs));
 	}
 
 	/**
@@ -140,20 +141,20 @@ public class Repo {
 		// remove or edit it in whatever way you like.
 		String history = "";
 		SimpleStack<RepoCopy> tempStack = new SimpleStack<RepoCopy>();
+		//System.out.println("versionRecords.isEmpty()
+		//"+versionRecords.isEmpty());
 		while(!versionRecords.isEmpty()){
 			try {
 				// get the historical record
-				history += versionRecords.peek().toString();
-				System.out.println("IN VERSION HISTORY");	// TODO delete the following print
-				System.out.println(versionRecords.peek().toString());
-				System.out.println(versionRecords.peek());
-				System.out.println(versionRecords.toString());
+				//System.out.println(versionRecords.size());
+				history =history + versionRecords.peek().toString() + "\n";
 				// push the current item to the temporary stack
 				tempStack.push(versionRecords.pop());
 			} catch (EmptyStackException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			} 
 		}
+		//System.out.println();
 		// restore the versionRecord stack
 		while(!tempStack.isEmpty())	versionRecords.push(tempStack.pop());
 		return history;
@@ -202,7 +203,7 @@ public class Repo {
 				// get the next item in the queue
 				nextItem = checkIns.dequeue();
 			} catch (EmptyQueueException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 		return nextItem;
@@ -229,7 +230,10 @@ public class Repo {
 			return ErrorType.ACCESS_DENIED;
 		} else {
 			// apply the changes in the "checkIn" in accordance to the type
-			for (int i = 0; i < checkIn.getChangeCount(); i ++){
+			//System.out.println(checkIn.getChangeCount());
+			int c = checkIn.getChangeCount();
+			for (int i = 0; i < c; i ++){
+				//System.out.println(checkIn.getChangeCount());
 				Change curChange = checkIn.getNextChange();
 				switch (curChange.getType()) {
 				case ADD:
@@ -238,7 +242,7 @@ public class Repo {
 				case DEL:
 					// find the document and remove it 
 					// TODO what if remove null
-					docs.remove(curChange.getDoc().getName());					
+					docs.remove(curChange.getDoc());					
 					break;
 				case EDIT:
 					// get the document
@@ -249,6 +253,7 @@ public class Repo {
 				default:
 					break;
 				}
+			//System.out.println("Repo.approveCheckIn() done"+i);
 			}	// end of for 		
 			version ++;	// increment the version
 			versionRecords.push(new RepoCopy(repoName, version, docs));
@@ -273,19 +278,31 @@ public class Repo {
 		// if the requester is the admin
 		if(!requestingUser.equals(admin)){
 			return ErrorType.ACCESS_DENIED;
-		// if the current version if the oldest version...
+			// if the current version if the oldest version...
 		} else if(getVersionCount() == 0) { 
 			return ErrorType.NO_OLDER_VERSION;
 		} else {
+
 			// TODO to be confirmed 
 			// TODO might need to handle add, delete, edit separately 
 			version --;	// decrement the version 
 			try {
 				versionRecords.pop();	
 			} catch (EmptyStackException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			// return success otherwise!	
+			docs.clear();
+			try {
+				List<Document> tempdoc = versionRecords.peek().getDocuments();
+				for(int i=0; i<tempdoc.size();i++){
+					docs.add(tempdoc.get(i));
+				}
+			} catch (EmptyStackException e) {
+
+				//e.printStackTrace();
+			}
+
 			return ErrorType.SUCCESS;	 
 		}
 	}	// end of the revert
