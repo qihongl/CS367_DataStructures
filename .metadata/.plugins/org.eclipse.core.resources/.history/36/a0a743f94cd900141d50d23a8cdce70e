@@ -75,6 +75,7 @@ public class FileSystemMain {
 		for(int i = 1 ; i < filesFolders.length; i ++){
 			if(filesFolders[i].contains(".")){
 				// create a file 
+				//				System.out.println("FILE: " + filesFolders[i]);
 				makeFile(filesFolders, i);
 			} else {
 				// create a folder
@@ -96,6 +97,11 @@ public class FileSystemMain {
 
 	private static void makeFile(String[] filesFolders, int fileIndex) {
 		// TODO Auto-generated method stub
+		// reconstruct the path
+		String path = filesFolders[0];
+		for(int i = 1; i < fileIndex; i ++){
+			path += "/" + filesFolders[i];
+		}
 		// separate the content from the file name 
 		int sep = filesFolders[fileIndex].indexOf(" ");
 		String content = filesFolders[fileIndex].substring(sep);

@@ -75,6 +75,7 @@ public class FileSystemMain {
 		for(int i = 1 ; i < filesFolders.length; i ++){
 			if(filesFolders[i].contains(".")){
 				// create a file 
+				//				System.out.println("FILE: " + filesFolders[i]);
 				makeFile(filesFolders, i);
 			} else {
 				// create a folder

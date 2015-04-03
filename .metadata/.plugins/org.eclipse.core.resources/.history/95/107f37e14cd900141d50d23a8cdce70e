@@ -228,17 +228,14 @@ public class SimpleFileSystem {
 				// create and add the file  
 				SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
 						fileContent, currLoc, currUser);
-				currLoc.addFile(newFile);
+				System.out.println("FILENAME:" + fname);
+				System.out.println("EXTENSION:" + extension);
+				System.out.println("PATH:" + getPWD());
+				System.out.println("CONTENT:" + fileContent);
+				System.out.println("PARENT:" + currLoc.getName());
+				System.out.println("OWNER:" + currUser.getName());
 				
-//				// TODO testing print
-//				System.out.println("FILENAME:" + fname);
-//				System.out.println("EXTENSION:" + extension);
-//				System.out.println("PATH:" + getPWD());
-//				System.out.println("CONTENT:" + fileContent);
-//				System.out.println("PARENT:" + currLoc.getName());
-//				System.out.println("OWNER:" + currUser.getName());
-//				System.out.println();
-				
+//				currLoc.addFile(newFile);
 			}
 		}
 	}

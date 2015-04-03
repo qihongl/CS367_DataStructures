@@ -189,7 +189,7 @@ public class SimpleFolder {
 		// add the file if the this folder doesn't has that file yet
 		// TODO not sure if this works as required, what is the criterion of contain?
 		if(getFile(file.getName()) == null)
-			files.add(file);
+			addFile(file);
 	}
 
 	/**

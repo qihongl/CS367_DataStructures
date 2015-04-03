@@ -74,7 +74,9 @@ public class FileSystemMain {
 		String [] filesFolders = pathText.split("/");
 		for(int i = 1 ; i < filesFolders.length; i ++){
 			if(filesFolders[i].contains(".")){
+				System.out.println("HERE!");
 				// create a file 
+				//				System.out.println("FILE: " + filesFolders[i]);
 				makeFile(filesFolders, i);
 			} else {
 				// create a folder
