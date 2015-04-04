@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 public class SimpleFileSystem {
@@ -97,10 +95,10 @@ public class SimpleFileSystem {
 	public boolean containsFileFolder(String fname){
 		//TODO
 		if(fname == null) throw new IllegalArgumentException();
-		// if there is no file or folders with this name ...
+		// if there is no file or folders with this name in the curreLoc...
 		if(currLoc.getSubFolder(fname) == null 
 				&& currLoc.getFile(fname) == null ){
-			// ... implies doesn't contains  
+			// ... implies doesn't contains
 			return false;
 		}
 		return true;
@@ -117,18 +115,60 @@ public class SimpleFileSystem {
 	public boolean moveLoc(String argument){
 		//TODO
 		if(argument == null) throw new IllegalArgumentException();
-
+		// memorize the location before movement
+		SimpleFolder tempCurrLoc = currLoc;// TODO move TF judgment to the last!
+		
+		// handle absolute path - incomplete
+		if(argument.charAt(0) == '/'){
+			System.out.println("ABSOLUTE PATH <"+ argument +">");	//TODO
+			// start from the root 
+			currLoc = root;
+			// split the path into folders
+			String [] folderSeq = argument.split("/"); 
+			// move to the target folder
+			for (int i = 1; i < folderSeq.length; i ++){
+				if(containsFileFolder(folderSeq[i]))
+					currLoc = currLoc.getSubFolder(folderSeq[i]);
+			}
+			return true;
+			
+			// handle relative path - incomplete
+		} else if (containsFileFolder(argument)){
+			String [] folderSeq = argument.split("/");
+			System.out.println("RELATIVE PATH <"+ argument +">");//TODO
+			
+			
+			currLoc = currLoc.getSubFolder(argument);
+			
+			//System.out.println("*" + currLoc); //TODO
+			
+			System.out.println(currLoc.getName() +" HAS PATH:" + currLoc.getPath());//TODO
+			
+			return true;
+		}
+		System.out.println("Invalid location passed");
 		return false;
 	}
 
-
+	private boolean folderExist(String foldername){
+		// check if the folder exist
+		for(int i = 0; i < users.size(); i ++){
+			ArrayList<SimpleFolder> tempFolders = users.get(i).getFolders(); 
+			for(int j = 0; j < tempFolders.size(); j ++){
+				if(tempFolders.get(j).getName().equals(foldername))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * returns the currentlocation.path + currentlocation.name.
 	 * @return the string representation of the current path
 	 */
 	public String getPWD(){
 		//TODO
-		//		return "/" + currLoc.getPath() + "/" + currLoc.getName();
 		return currLoc.getPath();
 	}
 
@@ -141,6 +181,8 @@ public class SimpleFileSystem {
 	public boolean remove(String name){
 		//TODO
 		if(name == null) throw new IllegalArgumentException();
+		// remove 
+
 		return false;
 	}
 
@@ -158,6 +200,10 @@ public class SimpleFileSystem {
 		if(fname == null || username == null || 
 				(permission != 'w' && permission != 'r')) 
 			throw new IllegalArgumentException();
+		// get the file or folder 
+		// check if the currUser is the owner
+		// give the permission 
+		
 		return false;
 	}
 
@@ -229,8 +275,8 @@ public class SimpleFileSystem {
 				SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
 						fileContent, currLoc, currUser);
 				currLoc.addFile(newFile);
-				
-//				// TODO testing print
+
+				// TODO testing print
 //				System.out.println("FILENAME:" + fname);
 //				System.out.println("EXTENSION:" + extension);
 //				System.out.println("PATH:" + getPWD());
@@ -238,7 +284,7 @@ public class SimpleFileSystem {
 //				System.out.println("PARENT:" + currLoc.getName());
 //				System.out.println("OWNER:" + currUser.getName());
 //				System.out.println();
-				
+
 			}
 		}
 	}

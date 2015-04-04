@@ -24,14 +24,14 @@ public class SimpleFile {
 		this.owner = owner;
 
 		this.allowedUsers = new ArrayList<Access>();
-		
-//		if(owner.getName() == "admin"){
-//			Access newAccess = new Access(owner, 'w');
-//			addAllowedUser(newAccess);
-//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
-//		} else {
-//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
-//		}
+
+		//		if(owner.getName() == "admin"){
+		//			Access newAccess = new Access(owner, 'w');
+		//			addAllowedUser(newAccess);
+		//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
+		//		} else {
+		//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
+		//		}
 
 	}
 
@@ -101,7 +101,6 @@ public class SimpleFile {
 	/**
 	 * adds a new user to the list of allowed user.
 	 * @param newAllowedUser
-	 * @return  
 	 */
 	public void addAllowedUser(Access newAllowedUser) {
 		//TODO
@@ -112,7 +111,10 @@ public class SimpleFile {
 		}
 	}
 
-	//adds a list of the users to the list of allowed users.
+	/**
+	 * adds a list of the users to the list of allowed users.
+	 * @param newAllowedUser
+	 */
 	public void addAllowedUsers(ArrayList<Access> newAllowedUser) {
 		//TODO
 		if(newAllowedUser == null) throw new IllegalArgumentException();
@@ -156,7 +158,7 @@ public class SimpleFile {
 	 */
 	public boolean removeFile(User removeUsr){
 		if(removeUsr == null) throw new IllegalArgumentException();
-		
+
 		boolean removeFromAll = false;
 		if(removeUsr.equals(owner) || removeUsr.getName().equals("admin")){
 			removeFromAll = true;
@@ -165,20 +167,18 @@ public class SimpleFile {
 			// traverse through all allowedUsers
 			while(itr.hasNext()){
 				Access curAccess = itr.next();
-				// if the removeUsr is in allowed-list
-				if(curAccess.getUser().equals(removeUsr)){
-					// if the removeUsr has W access
-					if(curAccess.getAccessType() == 'w'){
-						removeFromAll = true;
-					}
+				// if the removeUsr is in allowed-list && the removeUsr has W access
+				if(curAccess.getUser().equals(removeUsr) 
+						&& curAccess.getAccessType() == 'w'){
+					removeFromAll = true;
 				}
 			} // end of while
 		}
-		
+
 		if(removeFromAll){
 			//TODO remove the file from everybody 
 			//TODO how? and what if the removeUsr is not admin?
-			// remove from all
+			
 			return true;
 		} 
 		return false;

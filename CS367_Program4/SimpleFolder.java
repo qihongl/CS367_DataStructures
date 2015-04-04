@@ -13,8 +13,10 @@ public class SimpleFolder {
 
 	public SimpleFolder(String name, String path, SimpleFolder parent, User owner) {
 		//TODO
-//		if(name == null || path == null || owner == null)
-//			throw new IllegalArgumentException();
+		// input validation 
+		if(name == null || path == null || owner == null)
+			throw new IllegalArgumentException();
+		// initialize the constructor fields
 		this.name = name;
 		this.path = path;
 		this.parent = parent;

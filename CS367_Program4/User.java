@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class User {
-	
+
 	private String name; //name of the user.
 	private ArrayList<SimpleFile> files;//list of files owned/created by user
 	private ArrayList<SimpleFolder> folders;//list of folder owned by user.
@@ -14,7 +14,7 @@ public class User {
 		this.files = new ArrayList<SimpleFile>();
 		this.folders = new ArrayList<SimpleFolder>();
 	}
-	
+
 	/**
 	 * Override the equals method of the object to compare two users on 
 	 * name field. 
@@ -41,7 +41,7 @@ public class User {
 		return this.name;
 	}
 
-	
+
 	/**
 	 * returns the list of files owned by the user.
 	 * @return files
@@ -59,10 +59,10 @@ public class User {
 		//TODO do we need to handle dupilication?
 		if(newfile == null) throw new IllegalArgumentException();
 		// if file does not exist
-//		if(!files.contains(newfile))	// TODO handle duplication
-			this.files.add(newfile);
+		//		if(!files.contains(newfile))	// TODO handle duplication
+		this.files.add(newfile);
 	} 
-	
+
 	/**
 	 * Removes the file from the list of owned files of the user. 
 	 * @param rmFile the file you want to remove 
@@ -97,8 +97,8 @@ public class User {
 		//TODO do we need to handle dupilication?
 		if(newFolder == null) throw new IllegalArgumentException();
 		// if folder does not exist
-//		if(!folders.contains(newFolder))	// TODO handle duplication 
-			this.folders.add(newFolder);
+		//		if(!folders.contains(newFolder))	// TODO handle duplication 
+		this.folders.add(newFolder);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class User {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * returns the string representation of the user object.
 	 * @return retType
@@ -135,7 +135,7 @@ public class User {
 		}
 		return retType;
 	}
-	
-	
-	
+
+
+
 }
