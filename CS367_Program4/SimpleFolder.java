@@ -24,13 +24,10 @@ public class SimpleFolder {
 		this.subFolders = new ArrayList<SimpleFolder>();
 		this.files = new ArrayList<SimpleFile>();
 		this.allowedUsers = new ArrayList<Access>();
-//		if(owner.getName() == "admin"){
-//			Access newAccess = new Access(owner, 'w');
-//			addAllowedUser(newAccess);
-//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
-//		} else {
-//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
-//		}
+		
+		// give the owner w access
+		Access newAccess = new Access(owner, 'w');
+		addAllowedUser(newAccess);
 	}
 	
 	
@@ -151,10 +148,8 @@ public class SimpleFolder {
 		//TODO
 		if(subFolder == null) throw new IllegalArgumentException();
 		// if the folder doesn't exists already 
-		if(getSubFolder(subFolder.getName()) == null){
-//		if(!subFolders.contains(subFolder))
+		if(getSubFolder(subFolder.getName()) == null)
 			subFolders.add(subFolder);
-		}
 	}
 
 	/**
@@ -189,9 +184,7 @@ public class SimpleFolder {
 		//TODO
 		if(file == null) throw new IllegalArgumentException();
 		// add the file if the this folder doesn't has that file yet
-		// TODO not sure if this works as required, what is the criterion of contain?
-		if(getFile(file.getName()) == null)
-			files.add(file);
+		if(getFile(file.getName()) == null) files.add(file);
 	}
 
 	/**
@@ -240,7 +233,25 @@ public class SimpleFolder {
 	public boolean removeFolder(User removeUsr){
 		//TODO
 		if(removeUsr == null) throw new IllegalArgumentException();
-		
+		// check the authourity
+		if (removeUsr.getName().equals("admin") || removeUsr.equals(owner)){
+			// TODO remove 
+			
+			return true;
+		} else {
+			// find the user in the allowed list 
+			for (int i = 0; i < allowedUsers.size(); i ++){
+				if(allowedUsers.get(i).equals(removeUsr)){
+					// check if the user has w access
+					if(allowedUsers.get(i).getAccessType() == 'w'){
+						// TODO remove
+						
+						
+						return true;
+					}
+				}
+			}
+		}
 		return false;
 	}
 

@@ -24,15 +24,9 @@ public class SimpleFile {
 		this.owner = owner;
 
 		this.allowedUsers = new ArrayList<Access>();
-
-		//		if(owner.getName() == "admin"){
-		//			Access newAccess = new Access(owner, 'w');
-		//			addAllowedUser(newAccess);
-		//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
-		//		} else {
-		//			addAllowedUser(new Access(new User("admin"), 'w'));// TODO am i creating multiple admin?
-		//		}
-
+		// give the owner w access
+		Access newAccess = new Access(owner, 'w');
+		addAllowedUser(newAccess);
 	}
 
 	/**
