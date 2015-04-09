@@ -47,22 +47,19 @@ public class FileSystemMain {
 		} catch (FileNotFoundException e) { 
 			e.printStackTrace();
 		}
-
 		// read and create the root folder
-		String rootName = scnr.nextLine();// 1st line always has the root name 
-		rootFolder = new SimpleFolder(rootName, "/" + rootName, null, admin);
-
+		String rootName = scnr.nextLine();// 1st line always has the root name
+		rootFolder = new SimpleFolder(rootName, "", null, admin);
+		
 		// read and create users (2nd line always has the user names)  
 		String [] userNames = scnr.nextLine().split(", ");
-		for(int i = 0 ; i < userNames.length; i ++)
+		for(int i = 0 ; i < userNames.length; i ++){
 			users.add(new User (userNames[i]));
+		}
 
 		// create the fileSystem
 		myFileSystem = new SimpleFileSystem(rootFolder, users);
-
-		//		System.out.println(myFileSystem.currLoc);	// TODO: problematic
-		//		System.out.println(myFileSystem.root);		// TODO: problematic
-
+		
 		// process the inputFile, create the file system
 		while(scnr.hasNext()){
 			String textLine = scnr.nextLine();
@@ -70,8 +67,6 @@ public class FileSystemMain {
 			readPathText(textLine);
 		}
 		myFileSystem.reset();
-//		System.out.println(myFileSystem.root);
-		myFileSystem.printAll();
 	}
 
 
@@ -87,10 +82,10 @@ public class FileSystemMain {
 		// ... which contains the file or folder name that I want to create! 
 		if(lastSegment.contains(".")){
 			// create a file 
-			makeFile(filesFolders);
+			makeFile(textLine);
 		} else {
 			// create a folder
-			makeFolder(filesFolders);
+			makeFolder(textLine);
 		}
 	}
 
@@ -99,20 +94,23 @@ public class FileSystemMain {
 	 * 
 	 * @param filesFolders
 	 */
-	private static void makeFolder(String [] filesFolders) {
+	private static void makeFolder(String textLine) {
 		// TODO Auto-generated method stub
+		String [] filesFolders = textLine.split("/");
 		// get the last segment 
 		String foldername = filesFolders[filesFolders.length - 1];
 		// get the parent of the last segment 
-		String path = filesFolders[filesFolders.length - 2];
-		// make the folder and move the location
+		String absPath = textLine.substring(0, textLine.length() - foldername.length());
+		
+		// move to the correct location and create the directory 
+		myFileSystem.moveLoc(absPath);
 		myFileSystem.mkdir(foldername);
-		myFileSystem.moveLoc(path);
-		
-		System.out.println(foldername + " was created in : " + myFileSystem.currLoc.getName());	//TODO DELETE
-//		System.out.println("MOVE TO NEXT CURR_LOC: " + myFileSystem.currLoc.getName()); // TODO DELETE
-		System.out.println();
-		
+		// grant all users 'r' access
+		for(int i = 0; i < users.size(); i ++){
+			myFileSystem.addUser(foldername, users.get(i).getName(), 'r');
+		}
+//		System.out.println("*<" + foldername + "> with path <" + absPath + ">"
+//				+ " was created in <" + myFileSystem.currLoc.getName() + ">\n");	//TODO DELETE
 	}
 
 
@@ -120,24 +118,26 @@ public class FileSystemMain {
 	 * 
 	 * @param filesFolders
 	 */
-	private static void makeFile(String [] filesFolders) {
+	private static void makeFile(String textLine) {
+		String [] filesFolders = textLine.split("/");
 		// get the last segment, which should contains file info 
 		String fileInfo = filesFolders[filesFolders.length - 1];
 		// get the parent of the last segment 
-		String path = filesFolders[filesFolders.length - 2];
-		
+		String absPath = textLine.substring(0, textLine.length() - fileInfo.length());
 		// separate the content from the file name
 		int sep = fileInfo.indexOf(" ");
 		String filenameWithExt = fileInfo.substring(0, sep);
 		String content = fileInfo.substring(sep + 1);
-		// add the file 
+		// move to the correct location and create the file 
+		myFileSystem.moveLoc(absPath);
 		myFileSystem.addFile(filenameWithExt, content);
-		myFileSystem.moveLoc(path);
+		// grant all users 'r' access
+		for(int i = 0; i < users.size(); i ++){
+			myFileSystem.addUser(filenameWithExt, users.get(i).getName(), 'r');
+		}
 		
-		System.out.println(filenameWithExt + " was created in : " + myFileSystem.currLoc.getName());	//TODO DELETE
-		
-//		System.out.println("MOVE TO NEXT CURR_LOC: " + myFileSystem.currLoc.getName()); // TODO DELETE
-		System.out.println();
+//		System.out.println("**<" + fileInfo + "> with path <" + absPath + ">"
+//				+ " was created in <" + myFileSystem.currLoc.getName() + ">\n");	//TODO DELETE
 	}
 
 
@@ -204,7 +204,10 @@ public class FileSystemMain {
 				if(commands.length != 2){
 					System.out.println("Invalid command");
 				} else {
-					myFileSystem.moveLoc(commands[1]);
+					boolean moveSuccess = myFileSystem.moveLoc(commands[1]);
+					if(!moveSuccess){
+						System.out.println("Invalid location passed");
+					}
 				}
 				break;
 
@@ -221,24 +224,39 @@ public class FileSystemMain {
 					System.out.println("Invalid command");
 				} else {
 					myFileSystem.mkdir(commands[1]);
-					System.out.println(commands[1] + "ADDED!");
 				}
 
 				break;
 
 			case "mkfile":
-				if(commands.length != 2){
+
+				if(commands.length < 3){	// TODO temp solution 
 					System.out.println("Invalid command");
 				} else {
-					System.out.println("mkfile <name> DETECTED");
+					String filename = commands[1];
+					String content = input.substring(commands[0].length() 
+							+ commands[1].length() + 2);
+//					System.out.println("FILENAME <" + filename + ">");//TODO
+//					System.out.println("CONTENT <" + content + ">");//TODO
+					myFileSystem.addFile(filename, content);
 				}
 				break;
 
 			case "sh":
-				if(commands.length != 4){
+				if(commands.length != 4 || commands[3].length() != 1){
 					System.out.println("Invalid command");
+				} else if (commands[3].charAt(0)!= 'w' && 
+						commands[3].charAt(0)!= 'r'){
+					System.out.println("Invalid permission type");
 				} else {
-					System.out.println("sh <fname> <username> <accesstype> DETECTED");
+					String filename = commands[1];
+					String username =  commands[2];
+					char accessType =  commands[3].charAt(0);
+					// TODO illegal input will crash the program
+					boolean success = myFileSystem.addUser(filename, username, accessType);
+					if(!success){
+						System.out.println("Invalid command");
+					}
 				}
 				break;
 
@@ -262,11 +280,11 @@ public class FileSystemMain {
 	 * print all users, for debugging purpose merely 
 	 * @param users
 	 */
-	private static void PrintUsers_debugging(ArrayList<User> users) {
+	private static void PrintUsers_debugging() {
 		// TODO Auto-generated method stub
 		System.out.println("Users: ");
 		for (int i = 0; i < users.size(); i ++){
-			System.out.println(users.get(i));
+			System.out.println(users.get(i).getName());
 		}
 	}
 

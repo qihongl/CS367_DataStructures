@@ -16,8 +16,8 @@ public class User {
 	}
 
 	/**
-	 * Override the equals method of the object to compare two users on 
-	 * name field. 
+	 * Override the equals method of the object to compare two users on the 
+	 * NAME field. 
 	 * @return true if names are the same, false otherwise.
 	 */
 	@Override
@@ -25,8 +25,8 @@ public class User {
 		//TODO
 		if(obj == null) throw new IllegalArgumentException();
 		// convert the object to a user type
-		User tempUser = (User) obj;	// TODO casting might be impossible!  
-		// compare the name
+		User tempUser = (User) obj;	  
+		// two users are the same if they have THE SAME NAME!
 		if(tempUser.getName() == this.name)
 			return true;
 		return false;

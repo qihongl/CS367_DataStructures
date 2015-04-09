@@ -20,7 +20,11 @@ public class SimpleFileSystem {
 			throw new IllegalArgumentException();
 		this.root = _root;
 		this.users = _users;
-		reset();
+		setCurrentUser("admin");
+		//		System.out.println("*" + currUser.getName());
+		//		System.out.println("*" + root.getPath());
+		//		System.out.println("*" + currLoc.getPath());
+		//		System.out.println("*" + getPWD());
 	}
 
 	/**
@@ -31,7 +35,7 @@ public class SimpleFileSystem {
 		// set the current user to admin
 		setCurrentUser("admin");
 		// go back to the root dir
-		moveLoc(root.getPath());
+		currLoc = root;		
 	}
 
 
@@ -113,64 +117,60 @@ public class SimpleFileSystem {
 	 * @return true if successful, false otherwise.
 	 */
 	public boolean moveLoc(String argument){
-		//TODO
+		//TODO		
 		if(argument == null) throw new IllegalArgumentException();
-		// memorize the location before movement
-		SimpleFolder tempCurrLoc = currLoc;// TODO move TF judgment to the last!
-
-		// handle absolute path - incomplete
-		if(argument.charAt(0) == '/'){
-			System.out.println("ABSOLUTE PATH <"+ argument +">");	//TODO
-			// start from the root 
+		// split the input command into a array of folder names 
+		String [] pathSeq = argument.split("/");
+		
+		// CASE 1: if the 1st folder is the root, it is absolute path
+		if(pathSeq[0].equals(root.getName())){
+			// start from the root
 			currLoc = root;
-			// split the path into folders
-			String [] folderSeq = argument.split("/"); 
-			// move to the target folder
-			for (int i = 1; i < folderSeq.length; i ++){
-				// if there is a match in the subFolders of the currLoc
-				if(containsFileFolder(folderSeq[i]))
-					// update the current location by going down the tree
-					currLoc = currLoc.getSubFolder(folderSeq[i]);
+			// complete all the remaining movements in the path sequence
+			for(int i = 1; i < pathSeq.length; i ++){
+				//			System.out.println("***<" + currLoc.getName()   + "> has the folder "
+				//					+ "<" + pathSeq[i] + ">: " + containsFileFolder(pathSeq[i]) + "! ");
+				if(containsFileFolder(pathSeq[i])){
+					currLoc = currLoc.getSubFolder(pathSeq[i]);
+				}
 			}
-			return true;
+		} else if (containsFileFolder(pathSeq[0])){
+			// CASE 2: need to move down (relative path)
+			for(int i = 0; i < pathSeq.length; i ++){
+				System.out.println("***<" + currLoc.getName()   + "> has the folder "
+						+ "<" + pathSeq[i] + ">: " + containsFileFolder(pathSeq[i]) + "! ");
+				if(containsFileFolder(pathSeq[i])){
+					currLoc = currLoc.getSubFolder(pathSeq[i]);
+				}
+			}
 
-			// handle relative path - incomplete
-		} else if (containsFileFolder(argument)){
-			String [] folderSeq = argument.split("/");
-			System.out.println("RELATIVE PATH <"+ argument +">");//TODO
+		} else if (pathSeq[0].equals("..")){
+			// CASE 2: need to move up (relative path)
 
-			currLoc = currLoc.getSubFolder(argument);
-
-			//System.out.println("*" + currLoc); //TODO
-
-			System.out.println(currLoc.getName() +" HAS PATH:" + currLoc.getPath());//TODO
-
-			return true;
 		}
-		System.out.println("Invalid location passed");
-		return false;
+
+
+		// check if the currLoc matches the last folder name in the argument
+		if(currLoc.getName().equals(pathSeq[pathSeq.length-1])){
+			//			System.out.println("T: The initial location <" + currLoc.getName() 
+			//					+"> == <" +pathSeq[pathSeq.length-1] + ">");
+			return true;
+		} else {
+			//			System.out.println("F: The initial location <" + currLoc.getName() 
+			//					+"> != <" +pathSeq[pathSeq.length-1] + ">");
+			return false;
+		}
 	}
 
-	private boolean folderExist(String foldername){
-		// check if the folder exist
-		for(int i = 0; i < users.size(); i ++){
-			ArrayList<SimpleFolder> tempFolders = users.get(i).getFolders(); 
-			for(int j = 0; j < tempFolders.size(); j ++){
-				if(tempFolders.get(j).getName().equals(foldername))
-					return true;
-			}
-		}
-		return false;
-	}
 
 
 	/**
-	 * returns the currentlocation.path + currentlocation.name.
-	 * @return the string representation of the current path
+	 * Return the corrent working directory
+	 * @return the currentlocation.path + currentlocation.name.
 	 */
 	public String getPWD(){
-		//TODO
-		return currLoc.getPath();
+		return ((currLoc.getPath().isEmpty()?"":(currLoc.getPath()+"/"))
+				+currLoc.getName());
 	}
 
 
@@ -197,32 +197,39 @@ public class SimpleFileSystem {
 	 * @return true if add is successful, false otherwise.
 	 */
 	public boolean addUser(String fname, String username, char permission){
-		//TODO
+		//TODO check correctness 
 		if(fname == null || username == null || 
 				(permission != 'w' && permission != 'r')) 
 			throw new IllegalArgumentException();
 		// if there exist such a file or folder 
-		if(containsFileFolder(fname)){
+		if(containsFileFolder(fname) && containsUser(username)!= null ){
 			// if the target is not a file, it must be a folder 
 			if(currLoc.getFile(fname) == null){
 				// if the current user is the owner
 				if(currLoc.getSubFolder(fname).getOwner().equals(currUser)){
 					// give the permission
-					// TODO
+					Access newAccess = new Access(containsUser(username), permission);
+					currLoc.getSubFolder(fname).addAllowedUser(newAccess);
+					//					System.out.println("In addUser:");
+					//					System.out.println("*" + containsUser(username).getName() + 
+					//							" WAS GIVEN PERMIT TO " + fname + " !!!");	//TODO
+					return true;
 				}
 				// ... otherwise the target is a file 
 			} else {
 				// if the current user is the owner
 				if(currLoc.getFile(fname).getOwner().equals(currUser)){
 					// give the permission
-					// TODO
+					Access newAccess = new Access(containsUser(username), permission);
+					currLoc.getFile(fname).addAllowedUser(newAccess);
+					//					System.out.println("*" + containsUser(username).getName() + 
+					//							" WAS GIVEN PERMIT TO " + fname + " !!!");	//TODO
+					return true;
 				}	
 			}
-			return true;
-		}
+		}// if the code reaches here simply return false
 		return false;
 	}
-
 
 	/**
 	 * Displays the user info if the current user is admin. 
@@ -235,22 +242,25 @@ public class SimpleFileSystem {
 			System.out.println("admin");
 			System.out.println("Folders owned :");
 
-
 			// TODO TESTING PRINT
-			System.out.println(root.getSubFolders().size() + " FOLDERS FOUND!");
-			for(int i = 0; i < root.getSubFolders().size(); i ++){
-				System.out.println(root.getSubFolders().get(i).getName());
+			// TODO we need recursive alg to print folders 
+			//			System.out.println(root.getSubFolders().size() + " FOLDERS FOUND!");
+			//			for(int i = 0; i < root.getSubFolders().size(); i ++){
+			//				System.out.println(root.getSubFolders().get(i).getName());
+			//			}
+			System.out.println("------------------");
+			for(int i = 1; i < users.size(); i ++){
+				System.out.println(users.get(i));
 			}
-			
-			
+
 			return true;
 		} 
 		// return msg if the current user is not admin 
 		System.out.println("Insufficient privileges");
 		return false;
 	}
-	
-	
+
+
 
 
 	/**
@@ -266,6 +276,7 @@ public class SimpleFileSystem {
 			SimpleFolder newfolder = new SimpleFolder(name, getPWD(), 
 					currLoc, currUser);
 			currLoc.addSubFolder(newfolder);
+			currUser.addFolder(newfolder);
 		}
 
 	}
@@ -292,6 +303,7 @@ public class SimpleFileSystem {
 				SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
 						fileContent, currLoc, currUser);
 				currLoc.addFile(newFile);
+				currUser.addFile(newFile);
 
 				// TODO testing print
 				//				System.out.println("FILENAME:" + fname);
