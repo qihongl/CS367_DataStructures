@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * The SimpleFile class represents a single file in the file system having a 
+ * name (as a String), extension (as an Extension), content (as a String), 
+ * path (as a String), owner (as a User), parent (as a SimpleFolder), and a 
+ * list of allowed users (as a list of Access).
+ * @author Qihong
+ */
 public class SimpleFile {
 	private String name;
 	private Extension extension;
@@ -10,9 +17,18 @@ public class SimpleFile {
 	private String path;
 	private SimpleFolder parent;
 
+	/**
+	 * The constructor of the SimpleFolder class. It makes an instance of
+	 * SimpleFile type.
+	 * @param name
+	 * @param extension
+	 * @param path
+	 * @param content
+	 * @param parent
+	 * @param owner
+	 */
 	public SimpleFile(String name, Extension extension, String path, 
 			String content, SimpleFolder parent, User owner) {
-		//TODO
 		if(name == null || extension == null || path == null || 
 				content == null || parent == null || owner == null)
 			throw new IllegalArgumentException();
@@ -34,7 +50,6 @@ public class SimpleFile {
 	 * @return path
 	 */
 	public String getPath(){
-		//TODO
 		return this.path;
 	}
 
@@ -43,7 +58,6 @@ public class SimpleFile {
 	 * @return parent 
 	 */
 	public SimpleFolder getParent() {
-		//TODO
 		return this.parent;
 	}
 
@@ -52,7 +66,6 @@ public class SimpleFile {
 	 * @return name - the name of the file  
 	 */
 	public String getName() {
-		//TODO
 		return this.name;
 	}
 
@@ -61,7 +74,6 @@ public class SimpleFile {
 	 * @return extension 
 	 */
 	public Extension getExtension() {
-		//TODO
 		return this.extension;
 	}
 
@@ -70,7 +82,6 @@ public class SimpleFile {
 	 * @return content - the content of the file 
 	 */
 	public String getContent() {
-		//TODO
 		return this.content;
 	}
 
@@ -79,7 +90,6 @@ public class SimpleFile {
 	 * @return owner
 	 */
 	public User getOwner() {
-		//TODO
 		return this.owner;
 	}
 
@@ -88,7 +98,6 @@ public class SimpleFile {
 	 * @return allowedUsers
 	 */
 	public ArrayList<Access> getAllowedUsers() {
-		//TODO
 		return this.allowedUsers;
 	}
 
@@ -97,12 +106,14 @@ public class SimpleFile {
 	 * @param newAllowedUser
 	 */
 	public void addAllowedUser(Access newAllowedUser) {
-		//TODO
 		if(newAllowedUser == null) throw new IllegalArgumentException();
 		// add if the user is not in the list yet 
 		if(!containsAllowedUser(newAllowedUser.getUser().getName())){
 			allowedUsers.add(newAllowedUser);
 		}
+		
+//		System.out.println("*<" + newAllowedUser.getUser().getName() + 
+//				"> WAS GIVEN PERMIT TO <" + this.getName() + "." + this.getExtension() + ">");	//TODO
 	}
 
 	/**
@@ -110,7 +121,6 @@ public class SimpleFile {
 	 * @param newAllowedUser
 	 */
 	public void addAllowedUsers(ArrayList<Access> newAllowedUser) {
-		//TODO
 		if(newAllowedUser == null) throw new IllegalArgumentException();
 		// loop over all allowed users
 		Iterator<Access> itr = newAllowedUser.iterator();
@@ -128,7 +138,6 @@ public class SimpleFile {
 	 * @return true if the user name is in allowedUsers, false otherwise
 	 */
 	public boolean containsAllowedUser(String name){
-		//TODO
 		if(name == null) throw new IllegalArgumentException();		
 		// traverse through all allowedUsers
 		Iterator<Access> itr = allowedUsers.iterator();
@@ -152,29 +161,35 @@ public class SimpleFile {
 	 */
 	public boolean removeFile(User removeUsr){
 		if(removeUsr == null) throw new IllegalArgumentException();
-
-		boolean removeFromAll = false;
-		if(removeUsr.equals(owner) || removeUsr.getName().equals("admin")){
-			removeFromAll = true;
-		} else {
-			Iterator<Access> itr = allowedUsers.iterator();
-			// traverse through all allowedUsers
-			while(itr.hasNext()){
-				Access curAccess = itr.next();
-				// if the removeUsr is in allowed-list && the removeUsr has W access
-				if(curAccess.getUser().equals(removeUsr) 
-						&& curAccess.getAccessType() == 'w'){
-					removeFromAll = true;
-				}
-			} // end of while
-		}
-
-		if(removeFromAll){
-			//TODO remove the file from everybody 
-			//TODO how? and what if the removeUsr is not admin?
-			
+		// if the user has the privilege
+		if(removeUsr.equals(owner) || removeUsr.getName().equals("admin") || 
+				hasPermission(removeUsr, 'w')){			
+			// remove the file
+			parent.getFiles().remove(this);
 			return true;
 		} 
+		return false;
+	}
+
+	/**
+	 * This method check if the user has a particular type of permission
+	 * @param user
+	 * @param accessType
+	 * @return true if the user has the permission, false otherwise.
+	 */
+	private boolean hasPermission(User user, char accessType){
+		Iterator<Access> itr = allowedUsers.iterator();
+		// traverse through all allowedUsers
+		while(itr.hasNext()){
+			Access cur = itr.next();
+			// if user is in the allowed list 
+			if(cur.getUser().equals(user)){
+				// if the user also has the right access type
+				if( cur.getAccessType() == accessType){
+					return true;
+				}
+			}
+		}// end of the while
 		return false;
 	}
 

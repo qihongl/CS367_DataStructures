@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * The SimpleFolder class represents a single folder in the file system having 
+ * a name (as a String), path (as a String), parent (as a SimpleFolder), 
+ * owner (as a User), subFolders (as a list of SimpleFolder), files 
+ * (as a list of SimpleFile) and accesses (as a list of Access).
+ * @author Qihong
+ */
 public class SimpleFolder {
 
 	private String name;
@@ -11,8 +18,15 @@ public class SimpleFolder {
 	private ArrayList<SimpleFile> files;
 	private ArrayList<Access> allowedUsers;
 
+	/**
+	 * The constructor of the SimpleFolder class. It makes an instance of 
+	 * SampleFolder type.
+	 * @param name
+	 * @param path
+	 * @param parent
+	 * @param owner
+	 */
 	public SimpleFolder(String name, String path, SimpleFolder parent, User owner) {
-		//TODO
 		// input validation 
 		if(name == null || path == null || owner == null)
 			throw new IllegalArgumentException();
@@ -39,7 +53,6 @@ public class SimpleFolder {
 	 * @return return true if the user is allowed, false otherwise.
 	 */
 	public boolean containsAllowedUser(String name){
-		//TODO
 		if(name == null) throw new IllegalArgumentException();
 		// loop over all allowed users
 		Iterator<Access> itr = allowedUsers.iterator();
@@ -58,7 +71,6 @@ public class SimpleFolder {
 	 * @return the folder in accordance to the name if exist, null otherwise.
 	 */
 	public SimpleFolder getSubFolder(String name){
-		//TODO
 		if(name == null) throw new IllegalArgumentException();
 		// loop over subFolders
 		Iterator<SimpleFolder> itr = subFolders.iterator();
@@ -80,7 +92,6 @@ public class SimpleFolder {
 	 * @return return File if it contain, otherwise null. 
 	 */
 	public SimpleFile getFile(String fname){
-		//TODO
 		if(name == null) throw new IllegalArgumentException();
 		// loop over all files
 		Iterator<SimpleFile> itr = files.iterator();
@@ -101,7 +112,6 @@ public class SimpleFolder {
 	 * @return owner 
 	 */
 	public User getOwner() {
-		//TODO
 		return this.owner;
 	}
 
@@ -110,7 +120,6 @@ public class SimpleFolder {
 	 * @return name
 	 */
 	public String getName() {
-		//TODO
 		return this.name;
 	}
 
@@ -119,7 +128,6 @@ public class SimpleFolder {
 	 * @return path
 	 */
 	public String getPath() {
-		//TODO
 		return this.path;
 	}
 
@@ -128,7 +136,6 @@ public class SimpleFolder {
 	 * @return parent
 	 */
 	public SimpleFolder getParent() {
-		//TODO
 		return this.parent;
 	}
 
@@ -137,7 +144,6 @@ public class SimpleFolder {
 	 * @return subFolders
 	 */
 	public ArrayList<SimpleFolder> getSubFolders() {
-		//TODO
 		return this.subFolders;
 	}
 
@@ -146,7 +152,6 @@ public class SimpleFolder {
 	 * @param subFolder
 	 */
 	public void addSubFolder(SimpleFolder subFolder) {
-		//TODO
 		if(subFolder == null) throw new IllegalArgumentException();
 		// if the folder doesn't exists already 
 		if(getSubFolder(subFolder.getName()) == null)
@@ -158,7 +163,6 @@ public class SimpleFolder {
 	 * @return files - the list of files 
 	 */
 	public ArrayList<SimpleFile> getFiles() {
-		//TODO
 		return files;
 	}
 
@@ -167,10 +171,9 @@ public class SimpleFolder {
 	 * @param file
 	 */
 	public void addFile(SimpleFile file) {
-		//TODO
 		if(file == null) throw new IllegalArgumentException();
-		// add the file if the this folder doesn't has that file yet
-		if(getFile(file.getName()) == null) files.add(file);
+		// add the file
+		files.add(file);
 	}
 
 	/**
@@ -178,7 +181,6 @@ public class SimpleFolder {
 	 * @return allowedUsers
 	 */
 	public ArrayList<Access> getAllowedUsers() {
-		//TODO
 		return allowedUsers;
 	}
 
@@ -187,12 +189,14 @@ public class SimpleFolder {
 	 * @param allowedUser
 	 */
 	public void addAllowedUser(Access allowedUser) {
-		//TODO
 		if(allowedUser == null) throw new IllegalArgumentException();
 		// add if the user in not in the list yet
 		if(!containsAllowedUser(allowedUser.getUser().getName())){
 			allowedUsers.add(allowedUser);
 		}
+		
+//		System.out.println("*<" + allowedUser.getUser().getName() + 
+//				"> WAS GIVEN PERMIT TO <" + this.getName() + ">");	//TODO
 	}
 
 	/**
@@ -200,7 +204,6 @@ public class SimpleFolder {
 	 * @param allowedUser
 	 */
 	public void addAllowedUser(ArrayList<Access> allowedUser) {
-		//TODO
 		if(allowedUser == null) throw new IllegalArgumentException();
 		// loop over all allowedUsers that you want to add
 		Iterator<Access> itr = allowedUser.iterator();
@@ -217,30 +220,39 @@ public class SimpleFolder {
 	 * @return true if deleted, false otherwise.
 	 */
 	public boolean removeFolder(User removeUsr){
-		//TODO
 		if(removeUsr == null) throw new IllegalArgumentException();
-		// check the authourity
-		if (removeUsr.getName().equals("admin") || removeUsr.equals(owner)){
-			// TODO remove 
-			
+		// if the user has the privilege
+		if(removeUsr.equals(owner) || removeUsr.getName().equals("admin") || 
+				hasPermission(removeUsr, 'w')){			
+			// remove the file
+			parent.getSubFolders().remove(this);
 			return true;
-		} else {
-			// find the user in the allowed list 
-			for (int i = 0; i < allowedUsers.size(); i ++){
-				if(allowedUsers.get(i).equals(removeUsr)){
-					// check if the user has w access
-					if(allowedUsers.get(i).getAccessType() == 'w'){
-						// TODO remove
-						
-						
-						return true;
-					}
-				}
-			}
-		}
+		} 
 		return false;
 	}
 
+	/**
+	 * This method check if the user has a particular type of permission
+	 * @param user
+	 * @param accessType
+	 * @return true if the user has the permission, false otherwise.
+	 */
+	private boolean hasPermission(User user, char accessType){
+		Iterator<Access> itr = allowedUsers.iterator();
+		// traverse through all allowedUsers
+		while(itr.hasNext()){
+			Access cur = itr.next();
+			// if user is in the allowed list 
+			if(cur.getUser().equals(user)){
+				// if the user also has the right access type
+				if( cur.getAccessType() == accessType){
+					return true;
+				}
+			}
+		}// end of the while
+		return false;
+	}
+	
 
 	/**
 	 * returns the string representation of the Folder object.

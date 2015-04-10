@@ -1,11 +1,22 @@
 import java.util.ArrayList;
 
+/**
+ * The User class represents a user having a name (as a String), 
+ * folders (as a list of SimpleFolder), files (as a list of SimpleFile) 
+ * owned by the user.
+ * @author Qihong
+ */
 public class User {
 
 	private String name; //name of the user.
 	private ArrayList<SimpleFile> files;//list of files owned/created by user
 	private ArrayList<SimpleFolder> folders;//list of folder owned by user.
 
+	/**
+	 * Constructs a user with name. It also initializes the lists 
+	 * appropriately.
+	 * @param name
+	 */
 	public User(String name) {
 		//TODO
 		// init associated private fields

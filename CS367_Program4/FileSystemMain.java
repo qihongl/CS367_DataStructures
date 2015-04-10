@@ -1,9 +1,15 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
+/**
+ * The central class for the FileSystem, which controls the flow of the 
+ * execution. This program allows the user to make file, folders, and 
+ * do some basic operations on them.    
+ * @author Qihong
+ */
 public class FileSystemMain {
 
 	private static Scanner scnr;
@@ -35,7 +41,6 @@ public class FileSystemMain {
 		cmdInterface();
 	}	// end of the main method	
 
-
 	/**
 	 * This method takes the input file and initialize the fileSystem 
 	 * @param inputFile - a text file contains information about the fileSys
@@ -59,7 +64,7 @@ public class FileSystemMain {
 
 		// create the fileSystem
 		myFileSystem = new SimpleFileSystem(rootFolder, users);
-		
+
 		// process the inputFile, create the file system
 		while(scnr.hasNext()){
 			String textLine = scnr.nextLine();
@@ -68,7 +73,6 @@ public class FileSystemMain {
 		}
 		myFileSystem.reset();
 	}
-
 
 	/**
 	 * 
@@ -89,9 +93,8 @@ public class FileSystemMain {
 		}
 	}
 
-
 	/**
-	 * 
+	 * Takes a line of information and make a folder
 	 * @param filesFolders
 	 */
 	private static void makeFolder(String textLine) {
@@ -101,21 +104,21 @@ public class FileSystemMain {
 		String foldername = filesFolders[filesFolders.length - 1];
 		// get the parent of the last segment 
 		String absPath = textLine.substring(0, textLine.length() - foldername.length());
-		
+
 		// move to the correct location and create the directory 
 		myFileSystem.moveLoc(absPath);
 		myFileSystem.mkdir(foldername);
 		// grant all users 'r' access
-		for(int i = 0; i < users.size(); i ++){
+		for(int i = 1; i < users.size(); i ++){
 			myFileSystem.addUser(foldername, users.get(i).getName(), 'r');
 		}
-//		System.out.println("*<" + foldername + "> with path <" + absPath + ">"
-//				+ " was created in <" + myFileSystem.currLoc.getName() + ">\n");	//TODO DELETE
+		//				System.out.println("*<" + foldername + "> with path <" + absPath + ">"
+		//						+ " was created in <" + myFileSystem.currLoc.getName() + ">\n");	//TODO DELETE
 	}
 
 
 	/**
-	 * 
+	 * Takes a line of information and make a file 
 	 * @param filesFolders
 	 */
 	private static void makeFile(String textLine) {
@@ -132,12 +135,9 @@ public class FileSystemMain {
 		myFileSystem.moveLoc(absPath);
 		myFileSystem.addFile(filenameWithExt, content);
 		// grant all users 'r' access
-		for(int i = 0; i < users.size(); i ++){
+		for(int i = 1; i < users.size(); i ++){
 			myFileSystem.addUser(filenameWithExt, users.get(i).getName(), 'r');
 		}
-		
-//		System.out.println("**<" + fileInfo + "> with path <" + absPath + ">"
-//				+ " was created in <" + myFileSystem.currLoc.getName() + ">\n");	//TODO DELETE
 	}
 
 
@@ -146,126 +146,160 @@ public class FileSystemMain {
 	 * it handles inputs with appropriate outputs
 	 */
 	private static void cmdInterface() {
-		// TODO Auto-generated method stub
-		// flag variable for the keep running the while loop 
-		boolean execute = true;
-		while(execute){
-			// command prompt
-			System.out.print(myFileSystem.currUser.getName() + "@CS367$ ");
+		while(true){
+			displayCommandPrompt();
 			// get user input 
 			String input = inputScnr.nextLine();
 			// covert the input to lower case and split it to command pieces
 			String [] commands = input.toLowerCase().split(" ");
-
 			// decide which command to execute according to the input command
 			switch (commands[0]) {
 			case "reset":
+				// reset to admin and root location 
 				if(commands.length != 1){
-					System.out.println("Invalid command");
+					System.out.println("No Argument Needed");
 				} else {
 					myFileSystem.reset();
+					displayCommandPrompt();
+					System.out.println("Reset done");
 				}
 				break;
 
 			case "pwd":
+				// display the current working directory 
 				if(commands.length != 1){
-					System.out.println("Invalid command");
+					System.out.println("No Argument Needed");
 				} else {
 					System.out.println(myFileSystem.getPWD());
 				}
 				break;
 
 			case "ls":
+				// display what's in the current directory 
 				if(commands.length != 1){
-					System.out.println("Invalid command");
+					System.out.println("No Argument Needed");
 				} else {
 					myFileSystem.printAll();
 				}
 				break;
 
 			case "u":
+				// change user 
 				if(commands.length != 2){
-					System.out.println("Invalid command");
+					System.out.println("One Argument Needed");
 				} else {
 					// set the current user according to the input command
-					myFileSystem.setCurrentUser(commands[1]);
+					if(!myFileSystem.setCurrentUser(commands[1])){
+						displayCommandPrompt();
+						System.out.println("user <" + commands[1] + 
+								"> does not exist");
+					};
 				}
 				break;
 
 			case "uinfo":
+				// display user info 
 				if(commands.length != 1){
-					System.out.println("Invalid command");
+					System.out.println("No Argument Needed");
 				} else {
-					myFileSystem.printUsersInfo();
+					if(!myFileSystem.printUsersInfo()){
+						// return message if printing was denied
+						displayCommandPrompt();
+						System.out.println("Insufficient privileges");
+					};
 				}
 				break;
 
 			case "cd":
+				// change dir
 				if(commands.length != 2){
-					System.out.println("Invalid command");
+					System.out.println("One Argument Needed");
 				} else {
 					boolean moveSuccess = myFileSystem.moveLoc(commands[1]);
 					if(!moveSuccess){
+						displayCommandPrompt();
 						System.out.println("Invalid location passed");
 					}
 				}
 				break;
 
-			case "rm":
+			case "rm":	// TODO
+				// remove file or folder 
 				if(commands.length != 2){
-					System.out.println("Invalid command");
+					System.out.println("One Argument Needed");
 				} else {
-					System.out.println("rm <" + commands[1] + "> DETECTED");
-				}
-				break;
-
-			case "mkdir":
-				if(commands.length != 2){
-					System.out.println("Invalid command");
-				} else {
-					myFileSystem.mkdir(commands[1]);
-				}
-
-				break;
-
-			case "mkfile":
-
-				if(commands.length < 3){	// TODO temp solution 
-					System.out.println("Invalid command");
-				} else {
-					String filename = commands[1];
-					String content = input.substring(commands[0].length() 
-							+ commands[1].length() + 2);
-//					System.out.println("FILENAME <" + filename + ">");//TODO
-//					System.out.println("CONTENT <" + content + ">");//TODO
-					myFileSystem.addFile(filename, content);
-				}
-				break;
-
-			case "sh":
-				if(commands.length != 4 || commands[3].length() != 1){
-					System.out.println("Invalid command");
-				} else if (commands[3].charAt(0)!= 'w' && 
-						commands[3].charAt(0)!= 'r'){
-					System.out.println("Invalid permission type");
-				} else {
-					String filename = commands[1];
-					String username =  commands[2];
-					char accessType =  commands[3].charAt(0);
-					// TODO illegal input will crash the program
-					boolean success = myFileSystem.addUser(filename, username, accessType);
-					if(!success){
-						System.out.println("Invalid command");
+					// check w permission, if no permission // TODO
+					boolean success = myFileSystem.remove(commands[1]);
+					if(success){
+						displayCommandPrompt();
+						System.out.println(commands[1] + " removed");
+					} else {
+						displayCommandPrompt();
+						System.out.println("Insufficient privilege");
 					}
 				}
 				break;
 
-			case "x":
-				if(commands.length != 1){
-					System.out.println("Invalid command");
+			case "mkdir":
+				// make a dir
+				if(commands.length != 2){
+					System.out.println("One Argument Needed");
 				} else {
-					System.exit(0);
+					// make the directory
+					myFileSystem.mkdir(commands[1]);
+					// if the currUser is not admin, add the admin//TODO 
+					// or do it in the SimpleFileSystem
+					
+					displayCommandPrompt();
+					System.out.println(commands[1] + " added");
 				}
+				break;
+
+			case "mkfile":
+				// make a file 
+				if(commands.length < 3){ 
+					System.out.println("One Argument Needed");
+				} else {
+					// read the filename and the content
+					String filename = commands[1];
+					String content = input.substring(commands[0].length() 
+							+ commands[1].length() + 2);
+					// add the file 
+					myFileSystem.addFile(filename, content);
+					// display the confirmation message 
+					displayCommandPrompt();
+					System.out.println(filename + " added");
+				}
+				break;
+
+			case "sh":
+				// grant the permission 
+				if(commands.length != 4){
+					System.out.println("Four Arguments Needed");
+				} else if (commands[3].charAt(0)!= 'w' && 
+						commands[3].charAt(0)!= 'r'){
+					System.out.println("Invalid permission type");
+				} else {
+					// read the commands
+					String filename = commands[1];
+					String username =  commands[2];
+					char accessType =  commands[3].charAt(0);
+					// grant the permission to a user
+					boolean success = myFileSystem.addUser(filename, username, accessType);
+					if(success){
+						displayCommandPrompt();
+						System.out.println("Privilege granted");
+					} else {
+						System.out.println("Invalid command");
+					}
+				}
+
+				break;
+
+			case "x":
+				// exit the program
+				// don't check # arguments (by instruction)
+				System.exit(0);
 				break;
 
 			default:
@@ -275,20 +309,11 @@ public class FileSystemMain {
 		}// end of the while 
 	}// end of the cmdInterface method
 
-
 	/**
-	 * print all users, for debugging purpose merely 
-	 * @param users
+	 * A helper method that displays the command prompt to the interface
 	 */
-	private static void PrintUsers_debugging() {
-		// TODO Auto-generated method stub
-		System.out.println("Users: ");
-		for (int i = 0; i < users.size(); i ++){
-			System.out.println(users.get(i).getName());
-		}
+	private static void displayCommandPrompt() {
+		System.out.print(myFileSystem.currUser.getName() + "@CS367$ ");
 	}
 
-
-
-
-}
+}// end of the class

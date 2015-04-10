@@ -1,4 +1,8 @@
-
+/**
+ * The Access class represents an access (user with access - r/w) having a 
+ * user (as a User) and accessType (as a char).
+ * @author Qihong
+ */
 public class Access {
 	
 	private User user;
@@ -10,7 +14,6 @@ public class Access {
 	 * @param accessType
 	 */
 	public Access(User user, char accessType) {
-		//TODO
 		this.user = user;
 		this.accessType = accessType;
 	}
@@ -20,7 +23,6 @@ public class Access {
 	 * @return user 
 	 */
 	public User getUser() {
-		//TODO
 		return this.user;
 	}
 
@@ -29,7 +31,6 @@ public class Access {
 	 * @return
 	 */
 	public char getAccessType() {
-		//TODO
 		return this.accessType;
 	}
 
@@ -38,7 +39,7 @@ public class Access {
 	 * @param accessType
 	 */
 	public void setAccessType(char accessType) {
-		//TODO
+		// input validation 
 		if(accessType != 'r' || accessType != 'w')
 			throw new IllegalArgumentException();
 		this.accessType = accessType;

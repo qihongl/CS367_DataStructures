@@ -68,4 +68,34 @@ public class TempStorage {
 
 	}
 
+	
+	
+//	// CASE 2: relative path, if argument doesn't start with the root
+//	System.out.println("*RELATIVE PATH DETECTED");	// TODO
+//	// read every folder info in the argument  
+//	for(int i = 0; i < pathSeq.length; i ++){
+//		// if the folder is contained in the current location 
+//		if (containsFileFolder(pathSeq[i])){
+//			// move down to that folder
+//			currLoc = currLoc.getSubFolder(pathSeq[i]);
+//			// if the input is ".."
+//		} else if (pathSeq[i].equals("..")){
+//			// move up
+//			System.out.println("*MOVE UP TO " + currLoc.getParent().getName());// TODO
+//			if(currLoc.getParent()!= null){
+//				currLoc = currLoc.getParent();
+//			} else {
+//				currLoc = initialLoc;
+//				return false;
+//			}
+//			// if neither
+//		} else {
+//			// move is not successful, go back to initial location
+//			currLoc = initialLoc;
+//			System.out.println("*Move FAILED");
+//			return false;
+//		}
+//	}
+//}
+	
 }
