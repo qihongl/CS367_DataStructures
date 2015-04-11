@@ -1,7 +1,9 @@
 //////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Title:            Simulating File System
-// Files:            
+// Files:            Access.java, SimpleFolder.java, Extension.java,
+//                   SimpleFile.java, User.java, FileSystemMain.java
+//                   SimpleFileSystem.java
 // Semester:         CS367 Spring 2015
 //
 // Author:           Qihong Lu
@@ -117,17 +119,15 @@ public class FileSystemMain {
 		// get the last segment 
 		String foldername = filesFolders[filesFolders.length - 1];
 		// get the parent of the last segment 
-		String absPath = textLine.substring(0, textLine.length() - foldername.length());
-
+		String absPath = textLine.substring(0, textLine.length() 
+				- foldername.length());
 		// move to the correct location and create the directory 
-		myFileSystem.moveLoc(absPath);
+		myFileSystem.moveLoc("/" + absPath);
 		myFileSystem.mkdir(foldername);
 		// grant all users 'r' access
 		for(int i = 1; i < users.size(); i ++){
 			myFileSystem.addUser(foldername, users.get(i).getName(), 'r');
 		}
-		//				System.out.println("*<" + foldername + "> with path <" + absPath + ">"
-		//						+ " was created in <" + myFileSystem.currLoc.getName() + ">\n");	//TODO DELETE
 	}
 
 
@@ -140,13 +140,14 @@ public class FileSystemMain {
 		// get the last segment, which should contains file info 
 		String fileInfo = filesFolders[filesFolders.length - 1];
 		// get the parent of the last segment 
-		String absPath = textLine.substring(0, textLine.length() - fileInfo.length());
+		String absPath = textLine.substring(0, textLine.length() 
+				- fileInfo.length());
 		// separate the content from the file name
 		int sep = fileInfo.indexOf(" ");
 		String filenameWithExt = fileInfo.substring(0, sep);
 		String content = fileInfo.substring(sep + 1);
 		// move to the correct location and create the file 
-		myFileSystem.moveLoc(absPath);
+		myFileSystem.moveLoc("/" + absPath);
 		myFileSystem.addFile(filenameWithExt, content);
 		// grant all users 'r' access
 		for(int i = 1; i < users.size(); i ++){
@@ -166,165 +167,186 @@ public class FileSystemMain {
 			String input = inputScnr.nextLine();
 			// covert the input to lower case and split it to command pieces
 			String [] commands = input.toLowerCase().split(" ");
-			// decide which command to execute according to the input command
-			switch (commands[0]) {
-			case "reset":
-				// reset to admin and root location 
-				if(commands.length != 1){
-					System.out.println("No Argument Needed");
-				} else {
-					myFileSystem.reset();
+			if(commands.length != 0){
+				// decide which command to execute according to the input command
+				switch (commands[0]) {
+				case "reset":
+					// reset to admin and root location 
+					if(commands.length != 1){
+						displayCommandPrompt();
+						System.out.println("No Argument Needed");
+					} else {
+						myFileSystem.reset();
+						displayCommandPrompt();
+						System.out.println("Reset done");
+					}
+					break;
+
+				case "pwd":
+					// display the current working directory 
+					if(commands.length != 1){
+						displayCommandPrompt();
+						System.out.println("No Argument Needed");
+					} else {
+						System.out.println(myFileSystem.getPWD());
+					}
+					break;
+
+				case "ls":
+					// display what's in the current directory 
+					if(commands.length != 1){
+						displayCommandPrompt();
+						System.out.println("No Argument Needed");
+					} else {
+						myFileSystem.printAll();
+					}
+					break;
+
+				case "u":
+					// change user 
+					if(commands.length != 2){
+						displayCommandPrompt();
+						System.out.println("One Argument Needed");
+					} else {
+						// set the current user according to the input command
+						if(!myFileSystem.setCurrentUser(commands[1])){
+							displayCommandPrompt();
+							System.out.println("user <" + commands[1] + 
+									"> does not exist");
+						};
+					}
+					break;
+
+				case "uinfo":
+					// display user info 
+					if(commands.length != 1){
+						displayCommandPrompt();
+						System.out.println("No Argument Needed");
+					} else {
+						if(!myFileSystem.printUsersInfo()){
+							// return message if printing was denied
+							displayCommandPrompt();
+							System.out.println("Insufficient privileges");
+						};
+					}
+					break;
+
+				case "cd":
+					// change dir
+					if(commands.length != 2){
+						displayCommandPrompt();
+						System.out.println("One Argument Needed");
+					} else {
+						boolean moveSuccess = myFileSystem.moveLoc(commands[1]);
+						if(!moveSuccess){
+							displayCommandPrompt();
+							System.out.println("Invalid location passed");
+						}
+					}
+					break;
+
+				case "rm":	
+					// remove file or folder 
+					if(commands.length != 2){
+						displayCommandPrompt();
+						System.out.println("One Argument Needed");
+					} else {
+						boolean success = myFileSystem.remove(commands[1]);
+						if(success){
+							displayCommandPrompt();
+							System.out.println(commands[1] + " removed");
+						} else {
+							displayCommandPrompt();
+							System.out.println("Insufficient privilege");
+						}
+					}
+					break;
+
+				case "mkdir":
+					// make a dir
+					if(commands.length != 2){
+						displayCommandPrompt();
+						System.out.println("One Argument Needed");
+					} else {
+						// make the directory
+						if(nameIsValid(commands[1])){
+							myFileSystem.mkdir(commands[1]);
+							displayCommandPrompt();
+							System.out.println(commands[1] + " added");
+						}
+					}
+					break;
+
+				case "mkfile":
+					// make a file 
+					if(commands.length < 3){ 
+						displayCommandPrompt();
+						System.out.println("One Argument Needed");
+					} else {
+						// read the filename, extension and the content
+						String filename = commands[1];
+						String content = input.substring(commands[0].length() 
+								+ commands[1].length() + 2);
+						String [] fileinfo = filename.split("\\.");
+						String nameWithoutExtension = fileinfo[0];
+						String extension = fileinfo[1];						
+						// prompt correspondingly to valid or invalid file name
+						if(nameIsValid(nameWithoutExtension) 
+								&& extensionIsValid(extension)){
+							// add the file iff name is valid  
+							myFileSystem.addFile(filename, content);
+							displayCommandPrompt();
+							System.out.println(filename + " added");						
+						} else {
+							displayCommandPrompt();
+							System.out.println("Invalid filename");
+						}
+					}
+					break;
+
+				case "sh":
+					// grant the permission 
+					if(commands.length != 4){
+						displayCommandPrompt();
+						System.out.println("Four Arguments Needed");
+					} else if (commands[3].charAt(0)!= 'w' && 
+							commands[3].charAt(0)!= 'r'){
+						displayCommandPrompt();
+						System.out.println("Invalid permission type");
+					} else {
+						// read the commands
+						String filename = commands[1];
+						String username =  commands[2];
+						char accessType =  commands[3].charAt(0);
+						// grant the permission to a user
+						boolean success = myFileSystem.addUser(filename, 
+								username, accessType);
+						if(success){
+							displayCommandPrompt();
+							System.out.println("Privilege granted");
+						} else {
+							displayCommandPrompt();
+							System.out.println("Insufficient privilege");
+						}
+					}
+					break;
+
+				case "":
+					// print nothing if the input is an empty string 
+					break;
+
+				case "x":
+					// exit the program
+					// don't check # arguments (by instruction)
+					System.exit(0);
+					break;
+
+				default:
 					displayCommandPrompt();
-					System.out.println("Reset done");
-				}
-				break;
-
-			case "pwd":
-				// display the current working directory 
-				if(commands.length != 1){
-					System.out.println("No Argument Needed");
-				} else {
-					System.out.println(myFileSystem.getPWD());
-				}
-				break;
-
-			case "ls":
-				// display what's in the current directory 
-				if(commands.length != 1){
-					System.out.println("No Argument Needed");
-				} else {
-					myFileSystem.printAll();
-				}
-				break;
-
-			case "u":
-				// change user 
-				if(commands.length != 2){
-					System.out.println("One Argument Needed");
-				} else {
-					// set the current user according to the input command
-					if(!myFileSystem.setCurrentUser(commands[1])){
-						displayCommandPrompt();
-						System.out.println("user <" + commands[1] + 
-								"> does not exist");
-					};
-				}
-				break;
-
-			case "uinfo":
-				// display user info 
-				if(commands.length != 1){
-					System.out.println("No Argument Needed");
-				} else {
-					if(!myFileSystem.printUsersInfo()){
-						// return message if printing was denied
-						displayCommandPrompt();
-						System.out.println("Insufficient privileges");
-					};
-				}
-				break;
-
-			case "cd":
-				// change dir
-				if(commands.length != 2){
-					System.out.println("One Argument Needed");
-				} else {
-					boolean moveSuccess = myFileSystem.moveLoc(commands[1]);
-					if(!moveSuccess){
-						displayCommandPrompt();
-						System.out.println("Invalid location passed");
-					}
-				}
-				break;
-
-			case "rm":	
-				// remove file or folder 
-				if(commands.length != 2){
-					System.out.println("One Argument Needed");
-				} else {
-					boolean success = myFileSystem.remove(commands[1]);
-					if(success){
-						displayCommandPrompt();
-						System.out.println(commands[1] + " removed");
-					} else {
-						displayCommandPrompt();
-						System.out.println("Insufficient privilege");
-					}
-				}
-				break;
-
-			case "mkdir":
-				// make a dir
-				if(commands.length != 2){
-					System.out.println("One Argument Needed");
-				} else {
-					// make the directory
-					if(nameIsValid(commands[1])){
-						myFileSystem.mkdir(commands[1]);
-						displayCommandPrompt();
-						System.out.println(commands[1] + " added");
-					}
-				}
-				break;
-
-			case "mkfile":
-				// make a file 
-				if(commands.length < 3){ 
-					System.out.println("One Argument Needed");
-				} else {
-					// read the filename and the content
-					String filename = commands[1];
-					String content = input.substring(commands[0].length() 
-							+ commands[1].length() + 2);
-					String nameWithoutExtension = filename.split("\\.")[0];
-					// prompt correspondingly to valid or invalid file name
-					displayCommandPrompt();
-					if(nameIsValid(nameWithoutExtension)){
-						// add the file iff name is valid  
-						myFileSystem.addFile(filename, content);
-						System.out.println(filename + " added");						
-					} else {
-						System.out.println("Invalid filename");
-
-					}
-				}
-				break;
-
-			case "sh":
-				// grant the permission 
-				if(commands.length != 4){
-					System.out.println("Four Arguments Needed");
-				} else if (commands[3].charAt(0)!= 'w' && 
-						commands[3].charAt(0)!= 'r'){
-					System.out.println("Invalid permission type");
-				} else {
-					// read the commands
-					String filename = commands[1];
-					String username =  commands[2];
-					char accessType =  commands[3].charAt(0);
-					// grant the permission to a user
-					boolean success = myFileSystem.addUser(filename, username, 
-							accessType);
-					if(success){
-						displayCommandPrompt();
-						System.out.println("Privilege granted");
-					} else {
-						System.out.println("Invalid command");
-					}
-				}
-
-				break;
-
-			case "x":
-				// exit the program
-				// don't check # arguments (by instruction)
-				System.exit(0);
-				break;
-
-			default:
-				System.out.println("Invalid command");
-				break;
-			} // end of the switch 
+					System.out.println("Invalid command");
+					break;
+				} // end of the switch 
+			}
 		}// end of the while 
 	}// end of the cmdInterface method
 
@@ -358,4 +380,18 @@ public class FileSystemMain {
 		return true;
 	}
 
+	/**
+	 * Check if the extension is valid. 
+	 * @param extension
+	 * @return true if valid, false otherwise 
+	 */
+	private static boolean extensionIsValid(String extension){
+		// check all values in the Extension class
+		for(Extension ext : Extension.values()){
+			if(ext.toString().equals(extension))
+				return true;
+		}
+		return false;
+	} 
+	
 }// end of the class

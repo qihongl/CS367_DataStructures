@@ -130,13 +130,13 @@ public class SimpleFileSystem {
 		// memorize the initial location (restore it if move falied)
 		SimpleFolder initialLoc = currLoc;
 		// CASE 1: if the 1st folder is the root, it is absolute path
-		if(pathSeq[0].equals(root.getName())){
-			// start from the root
-			currLoc = root;
+		if(argument.charAt(0) == '/'){
 			// complete all the remaining movements in the path sequence
 			for(int i = 1; i < pathSeq.length; i ++){
-				// if the folder is contained in the currLoc
-				if(containsFileFolder(pathSeq[i])){
+				if(pathSeq[i].equals(root.getName()) && i == 1){
+					currLoc = root;
+				} else if(containsFileFolder(pathSeq[i]) && i != 1){
+					// if the folder is contained in the currLoc
 					// move down to that folder 
 					currLoc = currLoc.getSubFolder(pathSeq[i]);
 				} else {
@@ -149,16 +149,16 @@ public class SimpleFileSystem {
 			// CASE 2: relative path, if argument doesn't start with the root
 			// read every folder info in the argument  
 			for(int i = 0; i < pathSeq.length; i ++){
-				// if the folder is contained in the current location 
-				if (containsFileFolder(pathSeq[i])){
-					// move down to that folder
-					currLoc = currLoc.getSubFolder(pathSeq[i]);
-					// if the input is ".."
-				} else if (pathSeq[i].equals("..") && currLoc.getParent()!= null){
+				// if the input is ".."
+				if (pathSeq[i].equals("..") && currLoc.getParent()!= null){
 					// move up
 					currLoc = currLoc.getParent();
+					// if the folder is contained in the current location 
+				} else if (containsFileFolder(pathSeq[i])){
+					// move down to that folder
+					currLoc = currLoc.getSubFolder(pathSeq[i]);
 				} else {
-					// move is not successful, go back to initial location
+					// if move is not successful, go back to initial location
 					currLoc = initialLoc;
 					return false;
 				} // end of parsing a single path seq (if-else)
@@ -219,7 +219,8 @@ public class SimpleFileSystem {
 				// if the current user is the owner
 				if(currLoc.getSubFolder(fname).getOwner().equals(currUser)){
 					// give the permission to a folder 
-					Access newAccess = new Access(containsUser(username), permission);
+					Access newAccess = new Access(containsUser(username), 
+							permission);
 					currLoc.getSubFolder(fname).addAllowedUser(newAccess);
 					grantFoldersAccess(currLoc.getSubFolder(fname), newAccess);
 					return true;
@@ -231,7 +232,8 @@ public class SimpleFileSystem {
 				// if the current user is the owner
 				if(currLoc.getFile(filenames[0]).getOwner().equals(currUser)){
 					// give the permission to a file 
-					Access newAccess = new Access(containsUser(username), permission);
+					Access newAccess = new Access(containsUser(username), 
+							permission);
 					currLoc.getFile(filenames[0]).addAllowedUser(newAccess);
 					return true;
 				}	
@@ -259,7 +261,7 @@ public class SimpleFileSystem {
 			grantFoldersAccess(child, user);
 		}
 	}
-	
+
 	/**
 	 * Displays the user info if the current user is admin. 
 	 * @return true if successful, otherwise false.
@@ -355,26 +357,39 @@ public class SimpleFileSystem {
 		if(filenames.length == 2){
 			// get the file name component and the extension component 
 			String fname = filenames[0];
-			Extension extension = Extension.valueOf(filenames[1]);
-			// check if the name is valid 
-			if(nameIsValid(fname)){
-				// create and add the file  
-				SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
-						fileContent, currLoc, currUser);
-				// grant admin permission if admin is not the creator
-				if(!currUser.getName().equals("admin")){
-					User admin = users.get(0);	// the first user is admin
-					Access adminAccess = new Access(admin, 'w');
-					newFile.addAllowedUser(adminAccess);
+			if(extensionIsValid(filenames[1])){
+				Extension extension = Extension.valueOf(filenames[1]);
+				// check if the name is valid 
+				if(nameIsValid(fname)){
+					// create and add the file  
+					SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
+							fileContent, currLoc, currUser);
+					// grant admin permission if admin is not the creator
+					if(!currUser.getName().equals("admin")){
+						User admin = users.get(0);	// the first user is admin
+						Access adminAccess = new Access(admin, 'w');
+						newFile.addAllowedUser(adminAccess);
+					}
+					currLoc.addFile(newFile);
+					currUser.addFile(newFile);
 				}
-				currLoc.addFile(newFile);
-				currUser.addFile(newFile);
 			}
 		}
-		//		System.out.println("**<" + filename + "> was created "
-		//				+ "in <" + currLoc.getName() + ">\n");	//TODO DELETE
-
 	}
+
+	/**
+	 * Check if the extension is valid. 
+	 * @param extension
+	 * @return true if valid, false otherwise 
+	 */
+	private boolean extensionIsValid(String extension){
+		// check all values in the Extension class
+		for(Extension ext : Extension.values()){
+			if(ext.toString().equals(extension))
+				return true;
+		}
+		return false;
+	} 
 
 	/**
 	 * Check if the name starts with a letter and contains letters and numbers
@@ -383,7 +398,7 @@ public class SimpleFileSystem {
 	 * @param name
 	 * @return true if the criterion were met, false otherwise
 	 */
-	private static boolean nameIsValid(String name){
+	private boolean nameIsValid(String name){
 		if(name == null) throw new IllegalArgumentException();
 		// if the first element is not a letter, invalid
 		char firstLetter = name.charAt(0);

@@ -45,7 +45,8 @@ public class SimpleFolder {
 	 * @param parent
 	 * @param owner
 	 */
-	public SimpleFolder(String name, String path, SimpleFolder parent, User owner) {
+	public SimpleFolder(String name, String path, SimpleFolder parent, 
+			User owner) {
 		// input validation 
 		if(name == null || path == null || owner == null)
 			throw new IllegalArgumentException();

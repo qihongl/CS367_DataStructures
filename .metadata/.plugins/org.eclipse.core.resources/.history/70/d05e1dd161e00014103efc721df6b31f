@@ -1,0 +1,42 @@
+
+public class GeneralTesting {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String temp1 = "ASDASasd_";
+		String temp2 = "A1";
+//		System.out.println(nameValidation(temp1));
+//		System.out.println(nameValidation(temp2));
+
+		
+		extensionIsValid("asd");
+	}
+
+	private static boolean extensionIsValid(String extension){
+		
+		try
+		Extension ex = Extension.valueOf(extension);
+		
+		return false;
+	} 
+
+
+	private static boolean nameValidation(String name){
+		if(name == null) throw new IllegalArgumentException();
+
+		// if the first element is not a letter, invalid
+		char firstLetter = name.charAt(0);
+		if(!Character.isLetter(firstLetter)) return false;
+
+		// check the rest of the element
+		char [] chars = name.toCharArray();
+		for(int i = 1; i < chars.length; i ++){
+			// if not number or letter, then it is invalid
+			if(!Character.isLetter(chars[i]) && !Character.isDigit(chars[i])){
+				return false;
+			}
+		}
+		return true;
+	}
+}
