@@ -212,9 +212,6 @@ public class SimpleFolder {
 		if(!containsAllowedUser(allowedUser.getUser().getName())){
 			allowedUsers.add(allowedUser);
 		}
-		
-//		System.out.println("*<" + allowedUser.getUser().getName() + 
-//				"> WAS GIVEN PERMIT TO <" + this.getName() + ">");	//TODO
 	}
 
 	/**

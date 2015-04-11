@@ -250,6 +250,9 @@ public class FileSystemMain {
 					if(commands.length != 2){
 						displayCommandPrompt();
 						System.out.println("One Argument Needed");
+					}else if (!myFileSystem.containsFileFolder(commands[1])){
+						displayCommandPrompt();
+						System.out.println("Invalid name");
 					} else {
 						boolean success = myFileSystem.remove(commands[1]);
 						if(success){
@@ -307,12 +310,22 @@ public class FileSystemMain {
 				case "sh":
 					// grant the permission 
 					if(commands.length != 4){
+						// if the number of argument is invalid
 						displayCommandPrompt();
 						System.out.println("Four Arguments Needed");
 					} else if (commands[3].charAt(0)!= 'w' && 
 							commands[3].charAt(0)!= 'r'){
+						// if the permission type is invalid
 						displayCommandPrompt();
 						System.out.println("Invalid permission type");
+					} else if (myFileSystem.containsUser(commands[2]) == null){
+						// if the user does not exist
+						displayCommandPrompt();
+						System.out.println("Invalid user");
+					} else if (!myFileSystem.containsFileFolder(commands[1])){
+						// if the file or folder name is invalid 
+						displayCommandPrompt();
+						System.out.println("Invalid file/folder name");
 					} else {
 						// read the commands
 						String filename = commands[1];
@@ -331,8 +344,7 @@ public class FileSystemMain {
 					}
 					break;
 
-				case "":
-					// print nothing if the input is an empty string 
+				case "": // print nothing if the input is an empty string 
 					break;
 
 				case "x":
@@ -393,5 +405,5 @@ public class FileSystemMain {
 		}
 		return false;
 	} 
-	
+
 }// end of the class

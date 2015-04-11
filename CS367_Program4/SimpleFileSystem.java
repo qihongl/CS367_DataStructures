@@ -249,7 +249,11 @@ public class SimpleFileSystem {
 	private void grantFoldersAccess(SimpleFolder parent, Access user){
 		if(parent == null || user == null) 
 			throw new IllegalArgumentException();
-		// print all child info recursively 
+		// grant access to all files 
+		for(SimpleFile file : parent.getFiles()){
+			file.addAllowedUser(user);
+		}
+		// get all child folders info recursively 
 		for ( SimpleFolder child : parent.getSubFolders()){
 			// add the user to this folder
 			child.addAllowedUser(user);		
