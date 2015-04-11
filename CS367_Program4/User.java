@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  FileSystemMain.java
+// File:             User.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
 
 /**
@@ -18,8 +37,6 @@ public class User {
 	 * @param name
 	 */
 	public User(String name) {
-		//TODO
-		// init associated private fields
 		if(name == null) throw new IllegalArgumentException();
 		this.name = name;
 		this.files = new ArrayList<SimpleFile>();
@@ -33,7 +50,6 @@ public class User {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		//TODO
 		if(obj == null) throw new IllegalArgumentException();
 		// convert the object to a user type
 		User tempUser = (User) obj;	  
@@ -48,7 +64,6 @@ public class User {
 	 * @return name
 	 */
 	public String getName() {
-		//TODO
 		return this.name;
 	}
 
@@ -58,7 +73,6 @@ public class User {
 	 * @return files
 	 */
 	public ArrayList<SimpleFile> getFiles() {
-		//TODO
 		return this.files;
 	}
 
@@ -67,10 +81,7 @@ public class User {
 	 * @param newfile - the file you want to add
 	 */
 	public void addFile(SimpleFile newfile) {
-		//TODO do we need to handle dupilication?
 		if(newfile == null) throw new IllegalArgumentException();
-		// if file does not exist
-		//		if(!files.contains(newfile))	// TODO handle duplication
 		this.files.add(newfile);
 	} 
 
@@ -80,7 +91,6 @@ public class User {
 	 * @return true if the delete was successful, false otherwise. 
 	 */
 	public boolean removeFile(SimpleFile rmFile){
-		//TODO
 		if(rmFile == null) throw new IllegalArgumentException();
 		// if rmFile exists in the arraylist of files  
 		if(files.contains(rmFile)){
@@ -96,7 +106,6 @@ public class User {
 	 * @return the array list of folders
 	 */
 	public ArrayList<SimpleFolder> getFolders() {
-		//TODO
 		return this.folders;
 	}
 
@@ -105,10 +114,7 @@ public class User {
 	 * @param newFolder - the folder you want to add
 	 */
 	public void addFolder(SimpleFolder newFolder) {
-		//TODO do we need to handle dupilication?
-		if(newFolder == null) throw new IllegalArgumentException();
-		// if folder does not exist
-		//		if(!folders.contains(newFolder))	// TODO handle duplication 
+		if(newFolder == null) throw new IllegalArgumentException(); 
 		this.folders.add(newFolder);
 	}
 
@@ -118,7 +124,6 @@ public class User {
 	 * @return true is the removal was successful, false otherwise
 	 */
 	public boolean removeFolder(SimpleFolder rmFolder){
-		//TODO
 		if(rmFolder == null) throw new IllegalArgumentException();
 		// if rmFolder exists in the arraylist of folders  
 		if(folders.contains(rmFolder)){
@@ -146,7 +151,4 @@ public class User {
 		}
 		return retType;
 	}
-
-
-
 }

@@ -1,0 +1,31 @@
+
+public class GeneralTesting {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String temp = "asdasd";
+		String temp = "asdasd1";
+//		String [] strArr = temp.split("\\.");
+//		System.out.println(strArr.length);
+//		System.out.println(strArr[0]);
+		String str = temp.substring(0, 1);
+		char first = temp.charAt(0);
+		System.out.println(nameValidation(temp));
+		
+		
+	}
+
+	
+	private static boolean nameValidation(String name){
+		
+		char firstLetter = name.charAt(0);
+		if(!Character.isLetter(firstLetter)){
+			return false;
+		}
+		if (!name.matches("[a-zA-Z]+[0-9]")){
+			return false; 
+		}
+		return true;
+	}
+}

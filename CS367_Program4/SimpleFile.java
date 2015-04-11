@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  FileSystemMain.java
+// File:             SimpleFile.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -38,7 +57,6 @@ public class SimpleFile {
 		this.content = content;
 		this.parent = parent;
 		this.owner = owner;
-
 		this.allowedUsers = new ArrayList<Access>();
 		// give the owner w access
 		Access newAccess = new Access(owner, 'w');
@@ -110,8 +128,7 @@ public class SimpleFile {
 		// add if the user is not in the list yet 
 		if(!containsAllowedUser(newAllowedUser.getUser().getName())){
 			allowedUsers.add(newAllowedUser);
-		}
-		
+		}		
 //		System.out.println("*<" + newAllowedUser.getUser().getName() + 
 //				"> WAS GIVEN PERMIT TO <" + this.getName() + "." + this.getExtension() + ">");	//TODO
 	}
@@ -129,7 +146,6 @@ public class SimpleFile {
 			addAllowedUser(itr.next());
 		}
 	}
-
 
 	/**
 	 * Determine if the user in the allowed-list 
@@ -150,7 +166,6 @@ public class SimpleFile {
 		// return false otherwise 
 		return false;
 	}
-
 
 	/**
 	 * removes the file for all users.
@@ -192,7 +207,6 @@ public class SimpleFile {
 		}// end of the while
 		return false;
 	}
-
 
 	/**
 	 * returns the string representation of the file.

@@ -1,6 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Title:            Simulating File System
+// Files:            
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -55,16 +73,13 @@ public class FileSystemMain {
 		// read and create the root folder
 		String rootName = scnr.nextLine();// 1st line always has the root name
 		rootFolder = new SimpleFolder(rootName, "", null, admin);
-		
 		// read and create users (2nd line always has the user names)  
 		String [] userNames = scnr.nextLine().split(", ");
 		for(int i = 0 ; i < userNames.length; i ++){
 			users.add(new User (userNames[i]));
 		}
-
 		// create the fileSystem
 		myFileSystem = new SimpleFileSystem(rootFolder, users);
-
 		// process the inputFile, create the file system
 		while(scnr.hasNext()){
 			String textLine = scnr.nextLine();
@@ -75,11 +90,11 @@ public class FileSystemMain {
 	}
 
 	/**
-	 * 
+	 * Read a line of text in the input file and create the corresponding
+	 * objects, such as files, folders and users.   
 	 * @param textLine
 	 */
 	private static void readPathText(String textLine) {
-		// TODO Auto-generated method stub
 		String [] filesFolders = textLine.split("/");
 		// get the last segment 
 		String lastSegment = filesFolders[filesFolders.length - 1];
@@ -98,7 +113,6 @@ public class FileSystemMain {
 	 * @param filesFolders
 	 */
 	private static void makeFolder(String textLine) {
-		// TODO Auto-generated method stub
 		String [] filesFolders = textLine.split("/");
 		// get the last segment 
 		String foldername = filesFolders[filesFolders.length - 1];
@@ -223,12 +237,11 @@ public class FileSystemMain {
 				}
 				break;
 
-			case "rm":	// TODO
+			case "rm":	
 				// remove file or folder 
 				if(commands.length != 2){
 					System.out.println("One Argument Needed");
 				} else {
-					// check w permission, if no permission // TODO
 					boolean success = myFileSystem.remove(commands[1]);
 					if(success){
 						displayCommandPrompt();
@@ -246,12 +259,11 @@ public class FileSystemMain {
 					System.out.println("One Argument Needed");
 				} else {
 					// make the directory
-					myFileSystem.mkdir(commands[1]);
-					// if the currUser is not admin, add the admin//TODO 
-					// or do it in the SimpleFileSystem
-					
-					displayCommandPrompt();
-					System.out.println(commands[1] + " added");
+					if(nameIsValid(commands[1])){
+						myFileSystem.mkdir(commands[1]);
+						displayCommandPrompt();
+						System.out.println(commands[1] + " added");
+					}
 				}
 				break;
 
@@ -264,11 +276,17 @@ public class FileSystemMain {
 					String filename = commands[1];
 					String content = input.substring(commands[0].length() 
 							+ commands[1].length() + 2);
-					// add the file 
-					myFileSystem.addFile(filename, content);
-					// display the confirmation message 
+					String nameWithoutExtension = filename.split("\\.")[0];
+					// prompt correspondingly to valid or invalid file name
 					displayCommandPrompt();
-					System.out.println(filename + " added");
+					if(nameIsValid(nameWithoutExtension)){
+						// add the file iff name is valid  
+						myFileSystem.addFile(filename, content);
+						System.out.println(filename + " added");						
+					} else {
+						System.out.println("Invalid filename");
+
+					}
 				}
 				break;
 
@@ -285,7 +303,8 @@ public class FileSystemMain {
 					String username =  commands[2];
 					char accessType =  commands[3].charAt(0);
 					// grant the permission to a user
-					boolean success = myFileSystem.addUser(filename, username, accessType);
+					boolean success = myFileSystem.addUser(filename, username, 
+							accessType);
 					if(success){
 						displayCommandPrompt();
 						System.out.println("Privilege granted");
@@ -314,6 +333,29 @@ public class FileSystemMain {
 	 */
 	private static void displayCommandPrompt() {
 		System.out.print(myFileSystem.currUser.getName() + "@CS367$ ");
+	}
+
+	/**
+	 * Check if the name starts with a letter and contains letters and numbers
+	 * only.
+	 * 
+	 * @param name
+	 * @return true if the criterion were met, false otherwise
+	 */
+	private static boolean nameIsValid(String name){
+		if(name == null) throw new IllegalArgumentException();
+		// if the first element is not a letter, invalid
+		char firstLetter = name.charAt(0);
+		if(!Character.isLetter(firstLetter)) return false;
+		// check the rest of the element
+		char [] chars = name.toCharArray();
+		for(int i = 1; i < chars.length; i ++){
+			// if not number or letter, then it is invalid
+			if(!Character.isLetter(chars[i]) && !Character.isDigit(chars[i])){
+				return false;
+			}
+		}
+		return true;
 	}
 
 }// end of the class

@@ -1,0 +1,37 @@
+
+public class GeneralTesting {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String temp1 = "asdasd";
+		String temp2 = "asdasd1";
+
+
+		System.out.println(nameValidation(temp1));
+		System.out.println(nameValidation(temp2));
+		
+		
+	}
+
+	
+	private static boolean nameValidation(String name){
+		
+//		char firstLetter = name.charAt(0);
+//		if(!Character.isLetter(firstLetter)){
+//			System.out.println("*1st e not letter");
+//			return false;
+//		}
+//		if (!name.matches("[a-zA-Z]+")){
+//			System.out.println("* not all letters");
+//			return false;
+//		}
+		
+		char [] chars = name.toCharArray();
+		for( char e : chars){
+			System.out.println(e);
+		}
+		System.out.println("*DONE");
+		return true;
+	}
+}

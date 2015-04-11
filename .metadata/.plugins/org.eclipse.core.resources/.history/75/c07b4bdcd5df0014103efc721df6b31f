@@ -1,0 +1,28 @@
+
+public class GeneralTesting {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String temp1 = "asdasd";
+		String temp2 = "asdasd1";
+
+
+		System.out.println(nameValidation(temp1));
+		System.out.println(nameValidation(temp2));
+		
+		
+	}
+
+	
+	private static boolean nameValidation(String name){
+				
+		char [] chars = name.toCharArray();
+		for(int i = 0; i < chars.length; i ++){
+			if(Character.isLetter(chars[i]))
+			System.out.println(Character.isLetter(chars[i]));
+		}
+		System.out.println("*DONE");
+		return true;
+	}
+}

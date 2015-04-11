@@ -1,0 +1,39 @@
+
+public class GeneralTesting {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String temp1 = "asdasd";
+		String temp2 = "asdasd1";
+
+
+		System.out.println(nameValidation(temp1));
+		System.out.println(nameValidation(temp2));
+		
+		
+	}
+
+	
+	private static boolean nameValidation(String name){
+		if(name == null) throw new IllegalArgumentException();
+		// if the first element is not a letter, invalid
+		System.out.println("*start");
+		char firstLetter = name.charAt(0);
+		if(!Character.isLetter(firstLetter)){
+			System.out.println("*1st ");
+			return false;
+		}
+		
+		// check the rest of the element
+		char [] chars = name.toCharArray();
+		for(int i = 1; i < chars.length; i ++){
+			if(!Character.isLetter(chars[i]) && !Character.isDigit(chars[i]))
+				System.out.println("*rest ");
+				return false;
+		}
+		
+		System.out.println("*DONE");
+		return true;
+	}
+}

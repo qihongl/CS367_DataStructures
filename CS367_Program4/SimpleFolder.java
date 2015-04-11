@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  FileSystemMain.java
+// File:             SimpleFolder.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -38,11 +57,9 @@ public class SimpleFolder {
 		this.subFolders = new ArrayList<SimpleFolder>();
 		this.files = new ArrayList<SimpleFile>();
 		this.allowedUsers = new ArrayList<Access>();
-		
 		// give the owner w access
 		Access newAccess = new Access(owner, 'w');
 		addAllowedUser(newAccess);
-		
 	}
 	
 	

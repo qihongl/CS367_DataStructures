@@ -1,0 +1,18 @@
+
+public class GeneralTesting {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		String temp = "asda.sda";
+//		String [] strArr = temp.split("\\.");
+//		System.out.println(strArr.length);
+//		System.out.println(strArr[0]);
+		String str = temp.substring(0, 1);
+		char first = temp.charAt(0);
+		System.out.println(Character.isLetter(first));
+		
+		
+	}
+
+}

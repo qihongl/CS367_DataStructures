@@ -1,3 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  FileSystemMain.java
+// File:             SimpleFileSystem.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION //////////////////
+//
+// Pair Partner:     Qianyun Ma
+// Email:            qma27@wisc.edu
+// CS Login:         qianyun
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -199,18 +218,19 @@ public class SimpleFileSystem {
 			if(currLoc.getFile(fname) == null){
 				// if the current user is the owner
 				if(currLoc.getSubFolder(fname).getOwner().equals(currUser)){
-					// give the permission
+					// give the permission to a folder 
 					Access newAccess = new Access(containsUser(username), permission);
 					currLoc.getSubFolder(fname).addAllowedUser(newAccess);
+					grantFoldersAccess(currLoc.getSubFolder(fname), newAccess);
 					return true;
 				}
 				// ... otherwise the target is a file 
 			} else {
 				String [] filenames = fname.split("\\.");
-				
+
 				// if the current user is the owner
 				if(currLoc.getFile(filenames[0]).getOwner().equals(currUser)){
-					// give the permission
+					// give the permission to a file 
 					Access newAccess = new Access(containsUser(username), permission);
 					currLoc.getFile(filenames[0]).addAllowedUser(newAccess);
 					return true;
@@ -220,6 +240,26 @@ public class SimpleFileSystem {
 		return false;
 	}
 
+	/**
+	 * Grant the permission to all files and folders to the input folder  
+	 * @param parent
+	 */
+	private void grantFoldersAccess(SimpleFolder parent, Access user){
+		if(parent == null || user == null) 
+			throw new IllegalArgumentException();
+		// print all child info recursively 
+		for ( SimpleFolder child : parent.getSubFolders()){
+			// add the user to this folder
+			child.addAllowedUser(user);		
+			// add the user to all files in this folder
+			for(SimpleFile file : parent.getFiles()){
+				file.addAllowedUser(user);
+			}
+			// recursive calling all sub-folders of this folder
+			grantFoldersAccess(child, user);
+		}
+	}
+	
 	/**
 	 * Displays the user info if the current user is admin. 
 	 * @return true if successful, otherwise false.
@@ -250,14 +290,15 @@ public class SimpleFileSystem {
 	 */
 	private void printFilesInfo(SimpleFolder parent) {
 		if(parent == null) throw new IllegalArgumentException();
-		// print all child info recursively 
+		// print all child info recursively
+		// loop over all sub folders
 		for (SimpleFolder child : parent.getSubFolders()){
+			// get all files
 			for(SimpleFile file: child.getFiles()){
-//				System.out.println("FOLDER: <" + child.getPath() + "/" 
-//						+ child.getName() + ">");// TODO
 				System.out.println("\t"+ file.getPath() + "/" 
 						+ file.getName() + "." + file.getExtension());
 			}
+			// recursive call to all sub-folders 
 			printFilesInfo(child);
 		}
 	}
@@ -271,6 +312,7 @@ public class SimpleFileSystem {
 		// print all child info recursively 
 		for ( SimpleFolder child : parent.getSubFolders()){
 			System.out.println("\t" + child.getPath() + "/" + child.getName());
+			// recursive calling all sub-folders
 			printFoldersInfo(child);
 		}
 	}
@@ -282,7 +324,7 @@ public class SimpleFileSystem {
 	public void mkdir(String name){
 		if(name == null) throw new IllegalArgumentException();
 		// if the name doesn't conflict with any files or folders
-		if(!containsFileFolder(name)){
+		if(!containsFileFolder(name)  && nameIsValid(name)){
 			// create and add the folder 
 			SimpleFolder newfolder = new SimpleFolder(name, getPWD(), 
 					currLoc, currUser);
@@ -296,7 +338,6 @@ public class SimpleFileSystem {
 			currLoc.addSubFolder(newfolder);
 			currUser.addFolder(newfolder);
 		}
-
 	}
 
 
@@ -312,18 +353,50 @@ public class SimpleFileSystem {
 		// read the information 
 		String [] filenames = filename.split("\\.");
 		if(filenames.length == 2){
+			// get the file name component and the extension component 
 			String fname = filenames[0];
 			Extension extension = Extension.valueOf(filenames[1]);
-
-			// create and add the file  
-			SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
-					fileContent, currLoc, currUser);
-			currLoc.addFile(newFile);
-			currUser.addFile(newFile);
+			// check if the name is valid 
+			if(nameIsValid(fname)){
+				// create and add the file  
+				SimpleFile newFile = new SimpleFile(fname, extension, getPWD(), 
+						fileContent, currLoc, currUser);
+				// grant admin permission if admin is not the creator
+				if(!currUser.getName().equals("admin")){
+					User admin = users.get(0);	// the first user is admin
+					Access adminAccess = new Access(admin, 'w');
+					newFile.addAllowedUser(adminAccess);
+				}
+				currLoc.addFile(newFile);
+				currUser.addFile(newFile);
+			}
 		}
-//		System.out.println("**<" + filename + "> was created "
-//				+ "in <" + currLoc.getName() + ">\n");	//TODO DELETE
-		
+		//		System.out.println("**<" + filename + "> was created "
+		//				+ "in <" + currLoc.getName() + ">\n");	//TODO DELETE
+
+	}
+
+	/**
+	 * Check if the name starts with a letter and contains letters and numbers
+	 * only.
+	 * 
+	 * @param name
+	 * @return true if the criterion were met, false otherwise
+	 */
+	private static boolean nameIsValid(String name){
+		if(name == null) throw new IllegalArgumentException();
+		// if the first element is not a letter, invalid
+		char firstLetter = name.charAt(0);
+		if(!Character.isLetter(firstLetter)) return false;
+		// check the rest of the element
+		char [] chars = name.toCharArray();
+		for(int i = 1; i < chars.length; i ++){
+			// if not number or letter, then it is invalid
+			if(!Character.isLetter(chars[i]) && !Character.isDigit(chars[i])){
+				return false;
+			}
+		}
+		return true;
 	}
 
 
