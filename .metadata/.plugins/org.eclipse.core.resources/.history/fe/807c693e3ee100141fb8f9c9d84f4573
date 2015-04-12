@@ -149,11 +149,11 @@ public class SimpleFileSystem {
 		} else {
 			// CASE 2: relative path, if argument doesn't start with the root
 			// read every folder info in the argument
-
+			
 			for(int i = 0; i < pathSeq.length; i ++){
-				// check input validity
-				if(!nameIsValid(pathSeq[i]) && !pathSeq[i].equals("..")) 
-					return false;
+				
+				if(!nameIsValid(pathSeq[i]) && pathSeq[i]!= "..") return false;
+				
 				// if the input is ".."
 				if (pathSeq[i].equals("..")){
 					if(currLoc.getParent() == null){
@@ -172,8 +172,8 @@ public class SimpleFileSystem {
 					return false;
 				} // end of parsing a single path seq (if-else)
 			} // end of parsing all path seq (for)
-
-
+			
+			
 		}// end of the all moves
 		return true;
 	}
