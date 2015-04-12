@@ -1,17 +1,45 @@
+import java.util.ArrayList;
+
 
 public class GeneralTesting {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
-//		String temp1 = "ASDASasd_";
-//		String temp2 = "A1";
-//		System.out.println(nameValidation(temp1));
-//		System.out.println(nameValidation(temp2));
-
-		System.out.println(extensionIsValid("doc"));
+	
+		String temp = "testing.txt";
 		
+		User admin = new User ("admin");
+		User qihong = new User ("qihong");
+		ArrayList<User> users = new ArrayList<User>();
+		users.add(admin); users.add(qihong);
+		
+		SimpleFolder root = new SimpleFolder("test", "", null, admin);
+		
+		SimpleFileSystem system = new SimpleFileSystem(root, users);
+		
+		SimpleFile file = new SimpleFile("testing", Extension.valueOf("txt"), 
+				"/test", "asd", root, admin);
+		SimpleFolder subF = new SimpleFolder("cs", "/test", root, admin);
+		
+		
+		root.addFile(file);
+		root.addSubFolder(subF);
+		
+		System.out.println(root.getFile("testing").getName());
+		System.out.println(root.getSubFolder("cs").getName());
+		System.out.println(system.containsFileFolder("testing.txt"));
+		
+		String path = "../../...";
+		String [] paths = path.split("\\.");
+		System.out.println(paths.length);
+		System.out.println();
+		System.out.println(paths[4]);
+		System.out.println();
+//		System.out.println(system.containsFileFolder(paths[5]));
+
 	}
+	
+	
 
 	/**
 	 * Check if the extension is valid. 

@@ -110,13 +110,13 @@ public class SimpleFolder {
 	 * @return return File if it contain, otherwise null. 
 	 */
 	public SimpleFile getFile(String fname){
-		if(name == null) throw new IllegalArgumentException();
+		if(fname == null) throw new IllegalArgumentException();
 		// loop over all files
 		Iterator<SimpleFile> itr = files.iterator();
 		while(itr.hasNext()){
 			SimpleFile tempFile = itr.next();
 			// if a match on name is found 
-			if(tempFile.getName().equals(name)){
+			if(tempFile.getName().equals(fname)){
 				// return that file 
 				return tempFile;
 			}

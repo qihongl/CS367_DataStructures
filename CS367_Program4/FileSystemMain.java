@@ -61,6 +61,7 @@ public class FileSystemMain {
 		cmdInterface();
 	}	// end of the main method	
 
+	
 	/**
 	 * This method takes the input file and initialize the fileSystem 
 	 * @param inputFile - a text file contains information about the fileSys
@@ -246,7 +247,7 @@ public class FileSystemMain {
 					break;
 
 				case "rm":	
-					// remove file or folder 
+					// remove file or folder
 					if(commands.length != 2){
 						displayCommandPrompt();
 						System.out.println("One Argument Needed");
@@ -254,6 +255,7 @@ public class FileSystemMain {
 						displayCommandPrompt();
 						System.out.println("Invalid name");
 					} else {
+						// remove the file 
 						boolean success = myFileSystem.remove(commands[1]);
 						if(success){
 							displayCommandPrompt();
