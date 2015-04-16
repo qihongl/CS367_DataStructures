@@ -6,12 +6,13 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="textLine" key="selection"/>
+		<item value="root" key="selection"/>
 		<item value="true" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="true" key="wholeword"/>
 		<list key="findhistory">
+			<item value="folder"/>
 			<item value="pathText"/>
 			<item value="COMMAND INVALID"/>
 			<item value="fileSys"/>
@@ -19,9 +20,9 @@
 			<item value="here"/>
 			<item value="RC"/>
 			<item value="T"/>
-			<item value="K"/>
 		</list>
 		<list key="replacehistory">
+			<item value="root"/>
 			<item value="textLine"/>
 			<item value="Invalid command"/>
 			<item value="myFileSystem"/>
@@ -29,7 +30,6 @@
 			<item value="K"/>
 			<item value="BinaryTreenode"/>
 			<item value="BinaryTree"/>
-			<item value="BinaryTreeNode"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

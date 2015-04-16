@@ -56,8 +56,8 @@
 <fullyQualifiedTypeName name="Extension"/>
 <fullyQualifiedTypeName name="User"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="SimpleFolder"/>
 <fullyQualifiedTypeName name="SimpleFile"/>
 <fullyQualifiedTypeName name="SimpleFileSystem"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>
