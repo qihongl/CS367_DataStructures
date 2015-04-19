@@ -103,16 +103,22 @@ public class SimpleFileSystem {
 		if(fname == null) throw new IllegalArgumentException();
 		// if there is no file or folders with this name in the curreLoc...
 		String filenames[] = fname.split("\\.");
-		// return false if the length if not right
 		if(filenames.length < 1 || filenames.length > 2){
 			return false;
-			// return false if there is no . and it is not a valid folder 
 		} else if (filenames.length == 1 && currLoc.getSubFolder(fname) == null) {
 			return false;
-			// return false if there is . but no corresponding file
 		} else if (filenames.length == 2 && currLoc.getFile(filenames[0]) == null){
 			return false;
 		}
+			
+
+		
+		
+//		if( (currLoc.getSubFolder(fname) == null) 
+//				&& (currLoc.getFile(filenames[0]) == null)){
+//			// ... implies doesn't contains
+//			return false;
+//		}
 		return true;
 	}
 

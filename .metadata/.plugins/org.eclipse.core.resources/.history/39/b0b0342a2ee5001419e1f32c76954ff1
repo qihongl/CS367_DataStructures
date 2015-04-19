@@ -267,15 +267,11 @@ public class FileSystemMain {
 						System.out.println("One Argument Needed");
 					} else {
 						// make the directory
-						// check if the name is valid and if the name exist
-						if(nameIsValid(commands[1]) &&
-								!myFileSystem.containsFileFolder(commands[1])){
-							// make the directory
+						if(nameIsValid(commands[1])){
 							myFileSystem.mkdir(commands[1]);
-							// prompt
 							displayCommandPrompt();
 							System.out.println(commands[1] + " added");
-						} 
+						}
 					}
 					break;
 
@@ -295,10 +291,10 @@ public class FileSystemMain {
 							displayCommandPrompt();
 							System.out.println("Invalid filename");
 						} else {
-							// split the file name 
+							
 							String nameWithoutExtension = fileinfo[0];
 							String extension = fileinfo[1];						
-							// check name validity  
+							// prompt correspondingly 
 							if(nameIsValid(nameWithoutExtension) 
 									&& extensionIsValid(extension)){
 								// add the file iff name is valid  

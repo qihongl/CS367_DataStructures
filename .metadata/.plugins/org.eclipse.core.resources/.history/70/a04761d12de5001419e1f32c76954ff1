@@ -54,7 +54,7 @@ public class FileSystemMain {
 		cmdInterface();
 	}	// end of the main method	
 
-
+	
 	/**
 	 * This method takes the input file and initialize the fileSystem 
 	 * @param inputFile - a text file contains information about the fileSys
@@ -267,15 +267,11 @@ public class FileSystemMain {
 						System.out.println("One Argument Needed");
 					} else {
 						// make the directory
-						// check if the name is valid and if the name exist
-						if(nameIsValid(commands[1]) &&
-								!myFileSystem.containsFileFolder(commands[1])){
-							// make the directory
+						if(nameIsValid(commands[1])){
 							myFileSystem.mkdir(commands[1]);
-							// prompt
 							displayCommandPrompt();
 							System.out.println(commands[1] + " added");
-						} 
+						}
 					}
 					break;
 
@@ -290,25 +286,19 @@ public class FileSystemMain {
 						String content = input.substring(commands[0].length() 
 								+ commands[1].length() + 2);
 						String [] fileinfo = filename.split("\\.");
-						// check if the file name has the appropriate length
-						if(fileinfo.length < 2) {
+						
+						String nameWithoutExtension = fileinfo[0];
+						String extension = fileinfo[1];						
+						// prompt correspondingly to valid or invalid file name
+						if(nameIsValid(nameWithoutExtension) 
+								&& extensionIsValid(extension)){
+							// add the file iff name is valid  
+							myFileSystem.addFile(filename, content);
+							displayCommandPrompt();
+							System.out.println(filename + " added");						
+						} else {
 							displayCommandPrompt();
 							System.out.println("Invalid filename");
-						} else {
-							// split the file name 
-							String nameWithoutExtension = fileinfo[0];
-							String extension = fileinfo[1];						
-							// check name validity  
-							if(nameIsValid(nameWithoutExtension) 
-									&& extensionIsValid(extension)){
-								// add the file iff name is valid  
-								myFileSystem.addFile(filename, content);
-								displayCommandPrompt();
-								System.out.println(filename + " added");						
-							} else {
-								displayCommandPrompt();
-								System.out.println("Invalid filename");
-							}
 						}
 					}
 					break;

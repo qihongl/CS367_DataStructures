@@ -272,7 +272,6 @@ public class FileSystemMain {
 								!myFileSystem.containsFileFolder(commands[1])){
 							// make the directory
 							myFileSystem.mkdir(commands[1]);
-							// prompt
 							displayCommandPrompt();
 							System.out.println(commands[1] + " added");
 						} 
