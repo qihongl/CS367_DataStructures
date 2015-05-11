@@ -1,7 +1,0 @@
-/**
- * This class store some acceptable 
- * @author Qihong
- */
-public enum Extension {
-	txt, doc, rtf
-}

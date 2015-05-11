@@ -1,52 +1,82 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Title:            SocialNetworkingApp.java
+// Files:            SocialNetworkingApp.java, SocialGraph.java, GraphADT.java
+//                   UndirectedGraph.java
+// Semester:         CS367 Spring 2015
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * This me the main program for the social networking application. It can 
+ * load connection between people via a .txt file. And one can manipulate 
+ * the connection afterwards/
+ * 
+ * @author Qihong
+ *
+ */
 public class SocialNetworkingApp {
 
 	static Scanner stdin = new Scanner(System.in);
 	static SocialGraph graph;
 	static String prompt = ">> ";  // Command prompt
-	
-	private static Scanner scnr; // TODO
 
 	/**
 	 * Returns a social network as defined in the file 'filename'.
 	 * See assignment handout on the expected file format.
 	 * @param filename filename of file containing social connection data
-	 * @return
+	 * @return the graph with loaded connections
 	 * @throws FileNotFoundException if file does not exist
 	 */
-	public static SocialGraph loadConnections(String filename) throws FileNotFoundException {
-		//TODO
+	public static SocialGraph loadConnections(String filename) 
+			throws FileNotFoundException {
 		if(filename == null) throw new IllegalArgumentException();
+		// connect a scanner to the input file 
 		File inputFile = new File(filename);
-		
+		SocialGraph tempGraph = new SocialGraph();
+
+		// create all users (vertices)
+		Scanner scnr = new Scanner(inputFile);
+		while(scnr.hasNext()){
+			// identify the username (the 1st element in a line is the user)
+			String username = scnr.next();
+			tempGraph.addVertex(username);
+			if(scnr.hasNext()) scnr.nextLine();	// get rid of the rest 
+		}
+
+		// create all friends (edges) 
 		scnr = new Scanner(inputFile);
 		while(scnr.hasNext()){
-			String userName = scnr.next();
-			System.out.print("*" + userName + ":");
-			if(scnr.hasNext()){ 
-				String friends = scnr.nextLine();
-				System.out.println("\t" + friends);
-			} else {// other wise no friend, still print a line 
-				System.out.println();
-			}
-		} // end of while 
-		
-		
-		scnr.close(); // close the scanner for reading initial input file 
-		return new SocialGraph();
-	}
+			String textline = scnr.nextLine();
+			// split the text line 
+			String [] names = textline.split(" ");
+			// identify the user (the 1st element in a line is the user)
+			String username = names[0];
+			// add the friends (the remaining text represents the friends)
+			for(int i = 1; i < names.length; i ++)
+				tempGraph.addEdge(username, names[i]);
+		} // end of while
 
+		scnr.close(); // close the scanner for reading initial input file 
+		return tempGraph;
+	}
 
 	/**
 	 * Access main menu options to login or exit the application.
-	 * 
-	 * THIS METHOD HAS BEEN IMPLEMENTED FOR YOU.
 	 */
 	public static void enterMainMenu() {
 		boolean exit = false;
@@ -97,8 +127,6 @@ public class SocialNetworkingApp {
 			String otherPerson = (tokens.length > 1 ? tokens[1] : null);
 
 			// Reject erroneous commands
-			// You are free to do additional error checking of user input, but
-			// this isn't necessary to receive a full grade.
 			if (tokens.length == 0) continue;
 			if (!noArgCmds.contains(cmd) && !oneArgCmds.contains(cmd)) {
 				System.out.println("Invalid command");
@@ -109,40 +137,91 @@ public class SocialNetworkingApp {
 				continue;
 			}
 
+			// switch on the input command
 			switch(cmd) {
 
 			case "connection": {
-				//TODO
+				// print the shortest path
+				List <String> path = graph.getPathBetween(currUser, tokens[1]);
+				if(path == null){
+					System.out.println("You are not connected to " + tokens[1]);
+				} else {
+					System.out.println(path);
+				}
 				break;
 			}
 
 			case "friends": {
-				//TODO
+				Set friends = graph.getNeighbors(currUser);
+				if(friends.size() <= 0){ 
+					System.out.println("You do not have any friends");
+				} else { 
+					// store friends in a list 
+					ArrayList <String> friendsList = new ArrayList<String>();
+					Iterator<String> itr = friends.iterator();
+					while(itr.hasNext()){
+						friendsList.add(itr.next());
+					}
+					// sort the friends alphabetically and print them
+					Collections.sort(friendsList);
+					System.out.println(friendsList.toString());
+				}
 				break;
 			}
 
 			case "fof": {
-				//TODO
+				// get friends of friends as a set 
+				Set <String> fofs = graph.friendsOfFriends(currUser);
+				// store fofs in an arrayList (for sorting)
+				ArrayList<String> fofsList = new ArrayList<String>();
+				Iterator<String> itr = fofs.iterator();
+				while(itr.hasNext()){
+					fofsList.add(itr.next());
+				}
+				// sort the list 
+				Collections.sort(fofsList);
+				if(fofsList.size() <= 0){
+					System.out.println("You do not have any friends of friends");
+				} else {
+					System.out.println(fofsList.toString());
+				}
 				break;
 			}
 
 			case "friend": {
-				//TODO
+				// add connection and get the results of this operation 
+				boolean success = graph.addEdge(currUser, tokens[1]);
+				// and print the feedback correspondingly 
+				if(success){
+					System.out.println("You are now friends with " + tokens[1]);
+				} else { 
+					System.out.println("You are already friends with " + tokens[1]);
+				}
 				break;
 			}
 
 			case "unfriend": {
-				//TODO
+				// remove the connection only if they have connection
+				if (graph.getNeighbors(currUser).contains(tokens[1])){
+					graph.removeEdge(currUser, tokens[1]);
+					System.out.println("You are no longer friends with " + tokens[1]);
+				} else {
+					// prompt correspondingly if no connection to be removed
+					System.out.println("You are already not friends with " + tokens[1]);
+				}
 				break;
 			}
 
 			case "print": {
-				// This command is left here for your debugging needs.
-				// You may want to call graph.toString() or graph.pprint() here
-				// You are free to modify this or remove this command entirely.
-				//
-				// YOU DO NOT NEED TO COMPLETE THIS COMMAND
-				// THIS COMMAND WILL NOT BE PART OF GRADING
+				System.out.println("--------------------------\n"
+						+ "The graph:" +"\n" + graph.toString() 
+						+ "--------------------------");
+
+				graph.pprint();
+
+				System.out.println("* Get all vertices");
+				graph.getAllVertices();
+
 				break;
 			}
 
@@ -155,8 +234,6 @@ public class SocialNetworkingApp {
 
 	/**
 	 * Commandline interface for a social networking application.
-	 *
-	 * THIS METHOD HAS BEEN IMPLEMENTED FOR YOU.
 	 *
 	 * @param args
 	 */

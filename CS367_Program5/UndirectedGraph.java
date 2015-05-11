@@ -1,12 +1,34 @@
+//////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  SocialNetworkingApp.java
+// File:             UndirectedGraph.java
+// Semester:         CS367 Spring 2015
+// Author:           Qihong Lu
+// Email:            qlu36@wisc.edu
+// CS Login:         qihong
+// Lecturer's Name:  Jim Skrentny
+//
+//////////////////////////// 80 columns wide /////////////////////////////////
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * This is a generic class that defines that functionality of a undirected 
+ * graph. 
+ * @author Qihong
+ *
+ * @param <V>
+ */
 public class UndirectedGraph<V> implements GraphADT<V>{
 
-	// Stores the vertices of this graph, and their adjacency lists.
-	// It's protected rather than private so that subclasses can access it.
+	/**
+	 * Stores the vertices of this graph, and their adjacency lists.
+	 * It's protected rather than private so that subclasses can access it.
+	 */
 	protected HashMap<V, ArrayList<V>> hashmap;
 
 	public UndirectedGraph() {
@@ -22,13 +44,13 @@ public class UndirectedGraph<V> implements GraphADT<V>{
 	 * Adds the specified vertex to this graph if not already present. More 
 	 * formally, adds the specified vertex v to this graph if this graph 
 	 * contains no vertex u such that u.equals(v). If this graph already 
-	 * contains such vertex, the call leaves this graph unchanged and returns false.
+	 * contains such vertex, the call leaves this graph unchanged and returns
+	 *  false.
 	 * 
 	 * @param vertext - the vertext you want to add
 	 */
 	@Override
 	public boolean addVertex(V vertex) {
-		//TODO might need better way of check if the vertex is present
 		if(vertex == null) throw new IllegalArgumentException();
 		// if vertex do not exist in the hashmap
 		if(!hashmap.containsKey(vertex)){
@@ -51,12 +73,16 @@ public class UndirectedGraph<V> implements GraphADT<V>{
 	 */
 	@Override
 	public boolean addEdge(V v1, V v2) {
-		//TODO
 		if(v1 == null || v2 == null) throw new IllegalArgumentException();
+		// if they are different vertices 
 		if(!v1.equals(v2)){
-			// add edge
-			
-			return true;
+			// if they are not linked yet
+			if(!hashmap.get(v1).contains(v2) && !hashmap.get(v2).contains(v1)){
+				// add edge
+				hashmap.get(v1).add(v2);
+				hashmap.get(v2).add(v1);
+				return true;
+			}
 		} 
 		return false;
 	}
@@ -70,11 +96,15 @@ public class UndirectedGraph<V> implements GraphADT<V>{
 	 */
 	@Override
 	public Set<V> getNeighbors(V vertex) {
-		//TODO
-		if(vertex == null) throw new IllegalArgumentException();
-		
-		
-		return null;
+		if(vertex == null || !hashmap.containsKey(vertex)) 
+			throw new IllegalArgumentException();
+		HashSet hashset = new HashSet<V>();
+		// add all item for the input vertex to a hashset
+		Iterator itr = hashmap.get(vertex).iterator();		
+		while(itr.hasNext()){
+			hashset.add(itr.next());
+		}
+		return hashset;
 	}
 
 
@@ -87,11 +117,14 @@ public class UndirectedGraph<V> implements GraphADT<V>{
 	 */
 	@Override
 	public void removeEdge(V v1, V v2) {
-		//TODO
 		if(v1 == null || v2 == null) throw new IllegalArgumentException();
-		
-		
-		return;
+		if(hashmap.containsKey(v1) && hashmap.containsKey(v2)){
+			// if they are mutually connected
+			if(hashmap.get(v1).contains(v2) && hashmap.get(v2).contains(v1)){
+				hashmap.get(v1).remove(v2);
+				hashmap.get(v2).remove(v1); 
+			}
+		}
 	}
 
 	/**
@@ -99,11 +132,10 @@ public class UndirectedGraph<V> implements GraphADT<V>{
 	 */
 	@Override
 	public Set<V> getAllVertices() {
-		//TODO
-		return null;
+		return hashmap.keySet();
 	}
 
-	/* (non-Javadoc)
+	/** (non-Javadoc)
 	 * Returns a print of this graph in adjacency lists form.
 	 * 
 	 * This method has been written for your convenience (e.g., for debugging).
