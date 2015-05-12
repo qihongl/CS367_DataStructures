@@ -37,8 +37,7 @@ public class GeneralTesting {
 //		System.out.println();
 //		System.out.println(system.containsFileFolder(paths[5]));
 		System.out.println("hello");
-		int x = Integer.MAX_VALUE;
-		System.out.println(x);
+		System.out.println(Integer.MAX_VALUE);
 	}
 	
 	
