@@ -49,10 +49,9 @@ public class GeneralTesting {
 		
 		try {
 			throw new FileNotFoundException();
-			
 		} catch (FileNotFoundException e) {
 			throw new NullPointerException();
-			
+			// TODO: handle exception
 		}catch (NullPointerException e) {
 			System.out.println("here");
 			// 

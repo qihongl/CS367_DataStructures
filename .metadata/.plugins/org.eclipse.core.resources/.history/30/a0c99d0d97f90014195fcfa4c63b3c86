@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -48,14 +47,9 @@ public class GeneralTesting {
 		
 		
 		try {
-			throw new FileNotFoundException();
-			
-		} catch (FileNotFoundException e) {
-			throw new NullPointerException();
-			
-		}catch (NullPointerException e) {
-			System.out.println("here");
-			// 
+			File file = new File("bla");
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
 	}
 	

@@ -1,5 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -46,17 +44,8 @@ public class GeneralTesting {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("abc");list.add("abc");list.add("abc");
 		
-		
-		try {
-			throw new FileNotFoundException();
-			
-		} catch (FileNotFoundException e) {
-			throw new NullPointerException();
-			
-		}catch (NullPointerException e) {
-			System.out.println("here");
-			// 
-		}
+		list.remove(3);
+		System.out.println(list.toString());
 	}
 	
 	

@@ -50,8 +50,9 @@ public class GeneralTesting {
 		try {
 			throw new FileNotFoundException();
 			
+			
 		} catch (FileNotFoundException e) {
-			throw new NullPointerException();
+			throw new FileNotFoundException();
 			
 		}catch (NullPointerException e) {
 			System.out.println("here");

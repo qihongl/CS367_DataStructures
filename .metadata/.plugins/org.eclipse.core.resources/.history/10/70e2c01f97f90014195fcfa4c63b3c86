@@ -47,16 +47,7 @@ public class GeneralTesting {
 		list.add("abc");list.add("abc");list.add("abc");
 		
 		
-		try {
-			throw new FileNotFoundException();
-			
-		} catch (FileNotFoundException e) {
-			throw new NullPointerException();
-			
-		}catch (NullPointerException e) {
-			System.out.println("here");
-			// 
-		}
+		File file = new File("bla");
 	}
 	
 	
