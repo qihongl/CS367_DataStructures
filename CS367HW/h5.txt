@@ -1,0 +1,45 @@
+1. 
+
+A. This method counts and returns the number of nodes in a chain.  
+
+B. This method return true if the chain of nodes is arranged in a ascending order and return false otherwise. (Note that empty chain and a chain with only one integer are considered as ascending.)
+
+C. This method search the input string among the chain of node. It removes all nodes that contain the input string and return the first matched node it found. If it did not find match, it does not affect the chain and returns nothing. 
+
+
+
+2. Consider the following recursive method:
+
+A.output: 
+4
+13
+4
+122
+4
+13
+4
+1231
+4
+13
+4
+122
+4
+13
+4
+
+B.
+The parameter “d” controls the problem size
+
+C.
+maximum number of activation record: 5
+
+D.
+T(0) = 1
+T(N) = 1 + 2 * T(N - 1)
+
+E.
+2^(N - 1) - 1
+
+
+
+

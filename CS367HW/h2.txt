@@ -1,0 +1,98 @@
+1. What would be output if j1 is true and the other variables are false?
+
+m begin
+a begin
+b begin
+m caught Ex2
+m finally
+m end
+
+
+2. What would be output if j2 is true and the other variables are false?
+
+m begin
+a begin
+b begin
+b end
+a finally 
+m finally
+Program terminated due to Exception Ex1
+
+
+3. What would be output if j3 is true and the other variables are false?
+
+m begin
+a begin
+b begin
+b caught Ex3
+b end
+c begin
+c end
+a finally 
+a end
+m finally 
+m end
+
+
+4. What would be output if j4 is true and the other variables are false?
+
+m begin
+a begin
+b begin
+b end
+c begin
+a caught Ex2
+a finally 
+m caught Ex2
+m finally
+m end
+
+
+5. How would the code need to be modified if exception type Ex1 were 
+a checked exception? Show only lines of code that with changes.
+
+void main( ) throws Ex1 {
+
+void a( ) throws Ex1 {
+
+
+
+2. 
+
+	/**
+	 *  It must use exception handling in its body in the following way: if 
+	 *  the call to remove at the given position throws an exception, it 
+	 *  should be handled by removing the item at the appropriate end of the 
+	 *  list. 
+	 *  If the list is empty, throw an EmptyListException, which you 
+	 *  should assume is an unchecked exception
+	 *  
+	 *  @param pos - the position of the item you want to remove
+	 *  @return temp - the item that has been removed
+	 * */
+	public E forceRemove(int pos){
+		E temp = null; 
+		// throw an exception if the list is empty
+		if(this.size() == 0){
+			throw new EmptyListException();
+			// if the list is not empty, start the removing procedure 
+		} else {
+			try{
+				temp = remove(pos);
+			} catch(IndexOutOfBoundsException ex){
+				// if the index is bigger than the size
+				if(pos > this.size() - 1){
+					// remove the last item
+					temp = remove(items.length - 1);
+					// if the index is negative
+				} else if (pos < 0){
+					// remove the first item
+					temp = remove(0);
+				} 
+				// other exceptions 
+			} catch (Exception e) {
+				System.out.println("Other exceptions.");
+			}
+		}
+		return temp;
+	}

@@ -1,0 +1,127 @@
+CS367 - Homework 10
+//////////////////////////////////////////
+QUESTION 1. Comparing 4 hash functions
+//////////////////////////////////////////
+hash1: hash on the last name
+hash2: hash on the first 5 digits of the account number
+hash3: hash on the last 5 digits of the account number
+hash4: hash on the balance
+
+
+A. Briefly explain the problems/disadvantages with the four hash functions that make each unsuitable for this situation.
+
+
+hash1: 
+	The problem is that there might be many people with the same last name, which will resulting in many collisions. 
+
+
+hash2: 
+	Hashing on the first 5 digits is not a good idea, since the first 2 digits represents the district and the next 3 digits represents the branch. Therefore, customers with the same district and the same branch would collide, and it is reasonable to expect there are many account in the same district or the same branch. 
+
+
+hash3: 
+	When using this hash function, the distribution is not uniform on its range (from 10000 to 9999), because account number was assigned to user sequentially starting from 10000. In addition, this will also cause in many collisions, since every branch will start the account number from 10000. As a result, people with the same account number in different branch or different district would collide. 
+
+
+hash4: 
+	Hashing on the balance is a bad idea, as the balance is not a fixed value. The balance changes when the users make deposit or withdraw money, which would change hash index. Also, balance has a very large range, so the memory demand might be high, as we need large hash table. 
+
+
+
+
+
+B. Briefly describe a hash function that is suitable for this situation.
+
+	I think it is better to hash on the sum of first 5 digits and the last 5 digits. This will lower the chance of colliding for reasons mentioned previously. Also, since the last five digits are more likely to distinguish individuals, we can give it more weight, by multiply the last 5 digits by 3 before sum it with the first 5 digits. 
+
+
+
+
+
+
+//////////////////////////////////////////
+QUESTION 2. Comparing sorting algoritms
+//////////////////////////////////////////
+
+A. Bubble Sort: If a value in the unsorted part changes to the largest value in the entire array then the final array ... 
+	then the array is sorted, as the changed value will be on the right end. 
+
+
+B. Insertion Sort (linear): If the last value in the sorted part changes to the smallest value in the entire array then the final array... 
+	is unsorted and only that changed value will be out of order. More specifically, it will have to sorted sub-parts, divided by that changed value. 
+
+
+C. Insertion Sort (linear): If a value in the unsorted part changes to the smallest value in the entire array then the final array... 
+	is sorted, since the changed value will be compared to all values in the sorted part, and be placed at the left most position. 
+
+
+D. Selection Sort (straight): If the last value in the sorted part changes to the largest value in the entire array then the final array... 
+	is unsorted and only that changed value will be out of order. More specifically, it will have to sorted sub-parts, divided by that changed value. 
+
+
+E. Selection Sort (straight): If a value in the unsorted part changes to the smallest value in the entire array then the final array... 
+	is unsorted, and only that changed value will be out of order. More specifically, it will have to sorted sub-parts, divided by that changed value. 
+
+
+
+
+
+
+
+//////////////////////////////////////////
+QUESTION 3. Quick sort practice
+//////////////////////////////////////////
+
+A. Demonstrate how the list of values below is partitioned by showing one step of quick sort algorithm following the procedures below (put *stars* around numbers you're asked to identify).
+35  79  41  39  11  50  33  5  66  90  77  87  22
+
+1. Pivot Selection: Identify the values that are used and show the changes due to pivot selection.
+
+	During pivot selection, it uses these elements: 
+	Array[first] = 35, Array[middle] = 33, Array[last] = 22
+
+	And it picks 33 as the pivot. It also swap the pivot with the last second element, the procedure is illustrated below: 
+
+       *35*  79  41  39  11  50  *33*  5  66  90  77  *87*  *22*	-before moving
+                                 pivot
+
+       *22* 79 41 39 11 50 *87* 5 66 90 77 *33* *35*		-after pivot selection
+                                          pivot
+
+
+
+
+2. Partition the List: Show each successive swap as the list is partitioned.
+
+       22 79 41 39 11 50 87 5 66 90 77 *33* 35	after pivot selection 
+                                       pivot
+
+       22 5 41 39 11 50 87 79 66 90 77 33 35	-swap 79 & 5
+
+       22 5 11 39 41 50 87 79 66 90 77 33 35	-swap 41 & 11
+       (right index will cross the left index now, and [right index + 1] points to 39)
+
+       22 5 11 *33* 41 50 87 79 66 90 77 39 35	-swap pivot(33) & 39
+               pivot
+		
+	Now, a partition with respect to 33 if formed
+
+
+
+
+3. Pivot Placement: Move the pivot to its final location and identify the pivot.
+
+        After swap the pivot(33) with 39, this is the resulting array: 
+	22 5 11 *33* 41 50 87 79 66 90 77 39 35	
+                pivot
+
+
+
+ 
+B. Assume an array has N elements all containing the same value. Give the time complexity in big-O notation of the quick sort algorithm as specified in the readings for sorting this array.
+
+	It would take O(NlogN) time. 
+	If all elements have the same value, every pivot is grantee to separate all items into 2 equal-sized (~ N / 2) subarray, which is what we need for the best case.  
+
+
+

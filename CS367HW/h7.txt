@@ -1,0 +1,128 @@
+CS367 homework 7
+//////////////////////////////////////////////////////////////////////////////
+1. Show the binary search tree that results from inserting each sequence of integers into a tree that is initially empty:
+//////////////////////////////////////////////////////////////////////////////
+
+A. 11   22   33   44   99   88   77   66   55
+
+          11                <-- root node value
+            \               <-- edges (links)
+            22              <-- level 2 node values
+              \             <-- edges (links)
+              33            <-- level 3 node values
+                \           <-- edges (links)
+                44          <-- level 4 node values
+                  \         <-- edges (links)
+                   99       <-- level 5 node values
+                   /        <-- edges (links)
+                  88        <-- level 6 node values  
+                  /         <-- edges (links)
+                 77         <-- level 7 node values 
+                /           <-- edges (links)
+               66           <-- level 8 node values
+               /            <-- edges (links)
+              55            <-- level 9 node values
+^^^^^^^
+
+
+
+B. 33   77   55   66   22   88   11   44   99
+
+              33         <-- root node value
+             /  \        <-- edges (links)
+           22    77      <-- level 2 node values
+          /     /  \     <-- edges (links)
+        11     55  88    <-- level 3 node values
+              /  \   \   <-- edges (links)
+             44  66  99  <-- level 3 node values
+^^^^^^^
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+2. Consider the following binary search tree:
+//////////////////////////////////////////////////////////////////////////////
+
+         39
+     /        \
+    25        45
+   /  \         \
+  11  33        55
+ / \    \      /  \
+7   17  37    47  57
+
+A. List the nodes in the order they're visited for a preorder traversal on the given tree.
+
+	39 25 11 7 17 33 37 45 55 47 57 
+
+
+B. Which traversal will visit the nodes in increasing order?
+	
+	in-order traversal
+
+
+C. Show the binary search tree that results from deleting 45 and 17 from the given tree.
+
+AFTER DELETION: 
+         39
+     /        \
+    25        55
+   /  \      /  \
+  11  33    47   57
+ /      \     
+7       37    
+	
+
+
+D. Show the binary search tree that results from deleting 39 from the given tree using the in-order successor.
+
+AFTER DELETION: 
+
+         45
+     /        \
+    25        55
+   /  \      /  \
+  11  33    47  57
+ / \    \     
+7   17  37    
+
+
+
+E. Show the binary search tree that results from deleting 25 from the given tree using the in-order predecessor.
+
+AFTER DELETION: 
+         39
+     /        \
+    17        45
+   /  \         \
+  11  33        55
+ /      \      /  \
+7       37    47  57
+
+
+
+//////////////////////////////////////////////////////////////////////////////
+3. Complete the method below so that it returns the largest value in the binary search tree. Assume this is an instance method added to the BST class so it has access to the root instance variable. To receive full credit, your method must NOT use recursion.
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * This method finds the largest key value in the binary search tree. 
+ * It use the logic that the largest key value is at the right end of the 
+ * binary search tree. 
+ * @return the largest key value in the tree, 
+ * 			it return null if the tree is empty
+ */
+public K findLargestKey() {
+	// handle the condition of an empty tree
+	if (root == null) return null;
+	// set up the traversing node
+	BSTnode<K> currNode = root;
+	// traverse to the right end node  
+	while(currNode.getRight() != null){
+		currNode = currNode.getRight();
+	}
+	// return its key value;
+	return currNode.getKey(); 
+}
+
+

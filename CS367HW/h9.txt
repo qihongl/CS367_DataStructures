@@ -1,0 +1,83 @@
+Homework 9 
+
+——————————
+Question 1
+——————————
+A. List the nodes in the order they're visited by depth-first search starting at vertex 5. 
+
+5 4 7 3 1 2 6 9 8
+
+
+B. Show the corresponding breadth-first search spanning tree for the graph above starting at vertex 8. 
+
+         8
+     /   \   \
+    2     6   7
+   / \    \    \
+  4   5    1    3
+                 \
+                  9
+
+
+
+
+——————————
+Question 2
+——————————
+A. Briefly describe how you would model this problem as a graph problem, and name what kind of algorithm you would use to produce a sequence of steps to assemble widgets that doesn't violate the step dependencies.
+
+Build a graph with the “reversed” order, 
+which can be represented by the following adjacency list: 
+9: 8
+8: 5, 7 
+7: 4
+6: 2, 3, 4
+5:
+4: 
+3: 1 
+2: 
+1: 3, 5
+
+Use topological ordering to generate sequences, and reverse their order. 
+
+
+B. Doing the steps in the sequence 1, 2, 3, 4, 5, 6, 7, 8, 9 is a valid sequence since it doesn't violate the step dependencies. Is 1, 3, 5, 7, 9, 2, 4, 6, 8 a valid sequence?
+
+No, 8 has to be completed before 9. 
+
+C. Give 3 additional valid sequences.
+
+1, 3, 2, 4, 5, 6, 7, 8, 9
+1, 4, 3, 2, 5, 6, 7, 8, 9
+1, 5, 2, 3, 4, 6, 7, 8, 9
+
+
+
+
+
+——————————
+Question 3
+——————————
+A. Trace Dijkstra's algorithm starting at node A by completing the table started below where each row represents one iteration of the algorithm.
+
+Iteration       List of Visited Vertexes &                Priority Queue's items
+                their shortest distances from start
+
+0               -                                          0 A
+1               A 0                                        2 B, 4 D, 8 C
+2               A 0, B 2                                   3 D, 9 E, 8 C
+3               A 0, B 2, D 3                              6 E, 8 C
+4               A 0, B 2, D 3, E 6                         7 F, 8 C
+5               A 0, B 2, D 3, E 6, F 7                    8 C, 15 G
+6               A 0, B 2, D 3, E 6, F 7, C 8               13 G
+7               A 0, B 2, D 3, E 6, F 7, C 8, G 13         -      
+
+
+
+B. What is the shortest path from A to F? 
+
+A B D E F
+
+C. What is the shortest path from A to G? 
+
+A C G

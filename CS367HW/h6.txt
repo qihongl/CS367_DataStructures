@@ -1,0 +1,78 @@
+Homework 6
+
+////////////////////////////////////////////////
+1. 
+This method count the number of leaves in the tree. 
+
+
+////////////////////////////////////////////////
+2. 
+
+A. 
+The largest item in an empty tree is 0.
+The largest item in a tree with one node is the data of that one node. 
+The largest item in a tree with more than one node is the maximum between data contained in the current node and data contained in all decedents of the current node. 
+
+
+
+B. 
+	/**
+	 * This method finds the biggest data in the tree
+	 * 
+	 * @param tree
+	 * @return maxData - the biggest value among all nodes
+	 */
+	public static int findLargest(Treenode tree){
+		// base cases
+		if(tree == null) return 0;	
+		if (tree.getChildren().isEmpty()) return tree.getData();		
+		// start the recursive case
+		// let the root data be the temp max value 
+		int maxData = tree.getData();
+		// search among children 
+		Iterator<Treenode> itr = tree.getChildren().iterator();
+		while(itr.hasNext()){
+			int value = findLargest(itr.next());
+			// update the max if a larger value is found
+			if(value > maxData) maxData = value;
+		}
+		return maxData;
+	}
+
+
+
+////////////////////////////////////////////////
+3. 
+
+A. 
+The count of matches is 0 if the tree is empty. 
+The count of matches in a tree with one node is 1 if the item matches with the data field of that one node, or 0 otherwise. 
+The count of matches in a tree with more than one node is the number of matches of the children of the current node, plus 1 if the item matches with the current node, or 0 otherwise. 
+
+
+B. 
+	/**
+	 * This method counts the occurrence of the input item among all nodes
+	 * in a binary tree
+	 * 
+	 * @param tree 
+	 * @param item - the item that you want to search
+	 * @return the count of the occurrence of that item 
+	 */
+	public static <T> int countMatches(BinaryTreenode<T> tree, T item){
+    		if (item == null) throw new IllegalArgumentException();
+	    	// base cases 
+    		if (tree == null) return 0;
+	    	// return the count of current node + the count of two children 
+	    	if(tree.getData().equals(item)){
+	    		return 1 + countMatches(tree.getLeft(), item) 
+    				+ countMatches(tree.getRight(), item);
+	    	} else {
+			return countMatches(tree.getLeft(), item) 
+				+ countMatches(tree.getRight(), item);
+    		}
+    	}
+
+
+
+

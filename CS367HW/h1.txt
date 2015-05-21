@@ -1,0 +1,66 @@
+// CS 367 HW 1
+// Qihong
+
+// 1
+	/**
+	 * Given a list, this method swap two elements accorrding to the 
+	 * input indices 
+	 * 
+	 * precondition 1: x and y are >= 0 and < mylist.size() 
+	 * precondition 2: mylist is not null
+	 * 
+	 * @param x - the 1st index
+	 * @param y - the 2nd index
+	 * @param myList - a list of items 
+	 */
+	void swap(int x, int y, ListADT<String> myList) {
+		// save the element in the x positon 
+		String s = myList.get(x);
+		// add y th element to x position 
+		myList.add(x, myList.get(y));
+		// remove the element that originally at x position 
+		myList.remove(x + 1);
+		// add s element to y position 
+		myList.add(y, s);
+		// remove the element that originally at y position
+		myList.remove(y + 1);
+	}
+
+
+
+
+// 2
+	/**
+	 * The method find find all matches in the list, and replace them by 
+	 * another element. It also reports the number of matches
+	 * 
+	 * @param match - the things you want to find
+	 * @param replacement - the thing you want to replace with
+	 * @param myList - the list you want to search  
+	 * @return the number of matchesin the list  
+	 */
+	public static <E> int replace(E match, E replacement, ArrayList<E> myList) {
+		// throw an exception if anything is null
+		if (match == null || replacement == null || myList == null)
+			throw new IllegalArgumentException();
+		// check is the list is empty
+		if (myList.size() == 0)
+			return 0;
+		// otherwise, traverse through the list
+		int count = 0;	// keeping track of replacements
+		int index = 0;	// keeping track of current index
+		// create an iterator
+		Iterator <E> itr = myList.iterator();
+		while(itr.hasNext()){
+			index ++;	// advance the current position
+			E temp = itr.next();
+			// if a match is found
+			if (temp.equals(match)){
+				// advance the count
+				count ++;	
+				// replace it 
+				myList.set(index - 1, replacement);
+			}
+		}
+		return count;
+	}

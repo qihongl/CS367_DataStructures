@@ -1,0 +1,90 @@
+// CS 367 h3
+// 1. add to position 
+ 
+    /**
+     * This method add a new item to a list of nodes
+     * 
+     * @param items - the header of the listnodes
+     * @param item - the item you want to add
+     * @param pos - the position you want to add the item to
+     * */
+	public <E> void add(Listnode<E> items, E item, int pos){
+		// input validation 
+		if(pos < 0 || pos > this.numItems){
+			throw new IndexOutOfBoundsException();
+		} else {
+			// get a current node that traverse the listnodes 
+			Listnode<E> cur = items;
+			for (int i = 0; i < pos; i ++){
+				cur = cur.getNext();
+			}
+			// create a new node with input item, and link to the next item
+			Listnode<E> newnode = new Listnode <E>(item, cur.getNext());
+			// let the previous node link to the new node 
+			cur.setNext(newnode);
+		}
+	}
+
+
+// 2. remove from sublist 
+
+	/**
+	 * It removes all occurrences of target from the part of the list from 
+	 * position start to stop inclusive. This method returns the number of 
+	 * occurrences of target that were removed.
+	 * 
+	 * @param start - the starting index
+	 * @param stop - the stopping index
+	 * @param target - the item that you want to remove 
+	 * @return the count of # of target removed
+	 * */
+	public int removeFromSublist (int start, int stop, E target) {
+		// input validations 
+		if(target == null || start < 0 || stop < 0 || start > stop || 
+				start > numItems - 1 || stop > numItems -1){
+			throw new IllegalArgumentException();
+		}
+		// initialize the counter and current node
+		int count = 0;
+		Listnode<E> cur = this.head;
+		// skip all nodes before the starting index
+		for(int i = 0; i < start; i ++){
+			cur = cur.getNext();
+		} 
+		// check the following index before the stopping index
+		for(int i = 0; i <= stop - start; i ++){
+			// if the next node of the next node is a target
+			if (cur.getNext().getData().equals(target)){
+				// get rid of it 
+				cur.setNext(cur.getNext().getNext());
+				// increment the count 
+				count ++;
+			} else {
+				// otherwise, just go to the next node
+				cur = cur.getNext();
+			}
+		}
+		return count;
+	}
+
+
+// 3. Complexity pratice
+
+a)	1. Cubic - O(n^3) 
+	2. Quadratic - O(n^2)
+	3. Linear - O(n)
+
+b)	3, 2, 1 (low -> high complexity)
+
+c) 	
+No. Worst-case time complexity is one part of considerations. The complexity measures how does the resource consumption changes when the problem size increase. Sometimes, we don’t expect the problem size to be big. In this kind of situation, algorithm with higher complexity might not be the faster one. 
+
+For example, let’s say algorithm 1 is 100000N, and algorithm 2 is N^2, then algorithm 2 is actually faster when N < 10000. If we expect the problem size is never bigger than 10000, algorithm 2 might be a better choice.
+
+There are many other considerations still. For instance, we might want to use a more readable, more intuitive algorithm that has higher complexity, rather than a more opaque algorithm, if resource consumption is not a primary concern.
+
+
+
+
+
+
